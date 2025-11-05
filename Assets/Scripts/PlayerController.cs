@@ -12,52 +12,90 @@ public class PlayerController : MonoBehaviour
     bool facingRight = true;
 
     public bool isGround = true;
-    private bool jumpPressed; 
+    private bool jumpPressed;
+
+   
+    private bool teleportPressed;
+    private Vector2 teleportTarget;
+    public float teleportCooldown = 3f; 
+    private bool canTeleport = true;      
+
+    public AudioSource audioSource;     
+    public AudioClip teleportSound;     
 
     void Start()
     {
-       
+        if (animator == null)
+            animator = GetComponent<Animator>();
+        if (rb == null)
+            rb = GetComponent<Rigidbody2D>();
+
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-
         movement = Input.GetAxis("Horizontal");
-
+        animator.SetFloat("Run", Mathf.Abs(movement));
 
         if (Input.GetKeyDown(KeyCode.Space) && isGround)
         {
-            jumpPressed = true; 
+            jumpPressed = true;
+            animator.SetBool("Jump", true);
         }
 
-        if (Mathf.Abs(movement) > .1f)
+        if (Input.GetMouseButtonDown(0)) 
         {
-            animator.SetFloat("Run", 1f);
+            animator.SetTrigger("Attack");
         }
-        else if (movement < .1f)
+
+
+        if (Input.GetMouseButtonDown(1) && canTeleport)
         {
-            animator.SetFloat("Run", 0f);
+          
+            teleportPressed = true;
+            canTeleport = false; 
+
+           
+            animator.SetTrigger("Teleport"); 
+
+            
+            if (teleportSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(teleportSound);
+            }
+
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            teleportTarget = new Vector2(worldPos.x, worldPos.y);
+
+         
+            StartCoroutine(TeleportCooldownRoutine());
         }
     }
 
     private void FixedUpdate()
     {
-
-        transform.position += new Vector3(movement, 0f, 0f) * Time.fixedDeltaTime * moveSpeed;
-
+     
+        rb.linearVelocity = new Vector2(movement * moveSpeed, rb.linearVelocity.y);
 
         if (movement > 0 && !facingRight)
             Flip();
         else if (movement < 0 && facingRight)
             Flip();
 
-        
         if (jumpPressed)
         {
-            
             Jump();
-            jumpPressed = false; 
-            isGround = false;    
+            jumpPressed = false;
+            isGround = false;
+        }
+
+    
+        if (teleportPressed)
+        {
+            rb.MovePosition(teleportTarget);
+            teleportPressed = false;
         }
     }
 
@@ -74,13 +112,30 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(new Vector2(0f, jumpHeight), ForceMode2D.Impulse);
     }
 
- 
+
+    private IEnumerator TeleportCooldownRoutine()
+    {
+     
+        yield return new WaitForSeconds(teleportCooldown);
+
+        
+        canTeleport = true;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
             isGround = true;
+            animator.SetBool("Jump", false);
         }
     }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            isGround = false;
+        }
     }
+}
