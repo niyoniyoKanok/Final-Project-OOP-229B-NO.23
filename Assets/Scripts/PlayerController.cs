@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    public Animator animator;
     public Rigidbody2D rb;
     private float jumpHeight = 15f;
 
@@ -28,6 +29,15 @@ public class PlayerController : MonoBehaviour
         {
             jumpPressed = true; 
         }
+
+        if (Mathf.Abs(movement) > .1f)
+        {
+            animator.SetFloat("Run", 1f);
+        }
+        else if (movement < .1f)
+        {
+            animator.SetFloat("Run", 0f);
+        }
     }
 
     private void FixedUpdate()
@@ -44,6 +54,7 @@ public class PlayerController : MonoBehaviour
         
         if (jumpPressed)
         {
+            
             Jump();
             jumpPressed = false; 
             isGround = false;    

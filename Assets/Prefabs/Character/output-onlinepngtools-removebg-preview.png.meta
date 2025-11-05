@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 86d9a40cd78a83e48bfe04cf42cf9faf
+guid: 60301ebcea47ea84aa696de2c1ac4e38
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6217027802512277904
-    second: unnamed__9_-removebg-preview (1)_0
-  - first:
-      213: 5660703615999367721
-    second: unnamed__9_-removebg-preview (1)_1
+      213: -8770686784667823738
+    second: output-onlinepngtools-removebg-preview_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: unnamed__9_-removebg-preview (1)_0
+      name: output-onlinepngtools-removebg-preview_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 178
-        width: 136
-        height: 173
+        x: 5
+        y: 11
+        width: 162
+        height: 233
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,30 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 091c87fd8d1574650800000000000000
-      internalID: 6217027802512277904
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: unnamed__9_-removebg-preview (1)_1
-      rect:
-        serializedVersion: 2
-        x: 170
-        y: 178
-        width: 194
-        height: 176
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 92a596272fbde8e40800000000000000
-      internalID: 5660703615999367721
+      spriteID: 68159a3a6d2484680800000000000000
+      internalID: -8770686784667823738
       vertices: []
       indices: 
       edges: []
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      unnamed__9_-removebg-preview (1)_0: 6217027802512277904
-      unnamed__9_-removebg-preview (1)_1: 5660703615999367721
+      output-onlinepngtools-removebg-preview_0: -8770686784667823738
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
