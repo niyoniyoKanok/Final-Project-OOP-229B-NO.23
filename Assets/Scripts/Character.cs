@@ -1,9 +1,7 @@
-using Unity.VisualScripting;
 using UnityEngine;
-public class PlayerMovement : MonoBehaviour
-{
-    private float movement;
 
+public class Character : MonoBehaviour
+{
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,6 +11,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        movement = Input.GetAxis("Horizontal");
+        
     }
 }
