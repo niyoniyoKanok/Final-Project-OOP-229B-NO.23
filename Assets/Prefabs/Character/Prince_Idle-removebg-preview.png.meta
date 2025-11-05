@@ -1,22 +1,61 @@
 fileFormatVersion: 2
-guid: 57d986d762995aa49b876f67c71a4561
+guid: 2a2a7e19efbf73840b2abaeca4fd0e9a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4944230376442633554
-    second: Run_0
+      213: 5587001155607680101
+    second: Prince_Idle-removebg-preview_0
   - first:
-      213: -2274363484027164459
-    second: Run_1
+      213: 4540081789037958703
+    second: Prince_Idle-removebg-preview_1
   - first:
-      213: 8284087734974297348
-    second: Run_2
+      213: -6904910023409170599
+    second: Prince_Idle-removebg-preview_2
   - first:
-      213: 5304202850863732263
-    second: Run_3
+      213: 2500485549063162637
+    second: Prince_Idle-removebg-preview_3
   - first:
-      213: 2833043080597125133
-    second: Run_4
+      213: -2412190323090844272
+    second: Prince_Idle-removebg-preview_4
+  - first:
+      213: -8680613294163725194
+    second: Prince_Idle-removebg-preview_5
+  - first:
+      213: 2404952416507495235
+    second: Prince_Idle-removebg-preview_6
+  - first:
+      213: 806376998258107365
+    second: Prince_Idle-removebg-preview_7
+  - first:
+      213: 7165818601782263473
+    second: Prince_Idle-removebg-preview_8
+  - first:
+      213: -4660144808928440915
+    second: Prince_Idle-removebg-preview_9
+  - first:
+      213: -410294001513208765
+    second: Prince_Idle-removebg-preview_10
+  - first:
+      213: -8964753636717705857
+    second: Prince_Idle-removebg-preview_11
+  - first:
+      213: -2715892619133837862
+    second: Prince_Idle-removebg-preview_12
+  - first:
+      213: 3295587283445641434
+    second: Prince_Idle-removebg-preview_13
+  - first:
+      213: 5524763169947561773
+    second: Prince_Idle-removebg-preview_14
+  - first:
+      213: 2317137642538794650
+    second: Prince_Idle-removebg-preview_15
+  - first:
+      213: -3196156097246343328
+    second: Prince_Idle-removebg-preview_16
+  - first:
+      213: 7101519893056483021
+    second: Prince_Idle-removebg-preview_17
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -112,13 +151,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Run_0
+      name: Prince_Idle-removebg-preview_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 458
-        width: 99
-        height: 107
+        y: 159
+        width: 160
+        height: 232
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,20 +166,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25d1f8be45f6d9440800000000000000
-      internalID: 4944230376442633554
+      spriteID: 56451b723f3098d40800000000000000
+      internalID: 5587001155607680101
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Run_1
+      name: Prince_Idle-removebg-preview_1
       rect:
         serializedVersion: 2
-        x: 102
-        y: 458
-        width: 102
-        height: 107
+        x: 165
+        y: 155
+        width: 166
+        height: 236
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,20 +188,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d8e07c1676df60e0800000000000000
-      internalID: -2274363484027164459
+      spriteID: f26d3de255c910f30800000000000000
+      internalID: 4540081789037958703
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Run_2
+      name: Prince_Idle-removebg-preview_2
       rect:
         serializedVersion: 2
-        x: 204
-        y: 458
-        width: 102
-        height: 107
+        x: 331
+        y: 159
+        width: 169
+        height: 232
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,8 +210,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 405305b67edf6f270800000000000000
-      internalID: 8284087734974297348
+      spriteID: 95789a0eae4dc20a0800000000000000
+      internalID: -6904910023409170599
       vertices: []
       indices: 
       edges: []
@@ -181,7 +220,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 03b7bf15d75822e4882dccfcae8bf02c
+    spriteID: 749b17fcff06f1242a09d43ac5436e9d
     internalID: 0
     vertices: []
     indices: 
@@ -191,12 +230,24 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Prince_Run_0: -1757344095
-      Run_0: 4944230376442633554
-      Run_1: -2274363484027164459
-      Run_2: 8284087734974297348
-      Run_3: 5304202850863732263
-      Run_4: 2833043080597125133
+      Prince_Idle-removebg-preview_0: 5587001155607680101
+      Prince_Idle-removebg-preview_1: 4540081789037958703
+      Prince_Idle-removebg-preview_10: -410294001513208765
+      Prince_Idle-removebg-preview_11: -8964753636717705857
+      Prince_Idle-removebg-preview_12: -2715892619133837862
+      Prince_Idle-removebg-preview_13: 3295587283445641434
+      Prince_Idle-removebg-preview_14: 5524763169947561773
+      Prince_Idle-removebg-preview_15: 2317137642538794650
+      Prince_Idle-removebg-preview_16: -3196156097246343328
+      Prince_Idle-removebg-preview_17: 7101519893056483021
+      Prince_Idle-removebg-preview_2: -6904910023409170599
+      Prince_Idle-removebg-preview_3: 2500485549063162637
+      Prince_Idle-removebg-preview_4: -2412190323090844272
+      Prince_Idle-removebg-preview_5: -8680613294163725194
+      Prince_Idle-removebg-preview_6: 2404952416507495235
+      Prince_Idle-removebg-preview_7: 806376998258107365
+      Prince_Idle-removebg-preview_8: 7165818601782263473
+      Prince_Idle-removebg-preview_9: -4660144808928440915
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

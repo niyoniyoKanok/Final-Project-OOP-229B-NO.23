@@ -1,22 +1,49 @@
 fileFormatVersion: 2
-guid: 57d986d762995aa49b876f67c71a4561
+guid: 3cb2ea2e5d129e04f8f44ddf1eb488f8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4944230376442633554
-    second: Run_0
+      213: 4939047198466432030
+    second: unnamed__8_-removebg-preview_0
   - first:
-      213: -2274363484027164459
-    second: Run_1
+      213: -3498974101267072298
+    second: unnamed__8_-removebg-preview_1
   - first:
-      213: 8284087734974297348
-    second: Run_2
+      213: -5184077647166765856
+    second: unnamed__8_-removebg-preview_2
   - first:
-      213: 5304202850863732263
-    second: Run_3
+      213: -2873648791847318668
+    second: unnamed__8_-removebg-preview_3
   - first:
-      213: 2833043080597125133
-    second: Run_4
+      213: -5701174395073528738
+    second: unnamed__8_-removebg-preview_4
+  - first:
+      213: -6819147345474590864
+    second: unnamed__8_-removebg-preview_5
+  - first:
+      213: -6622851277634577942
+    second: unnamed__8_-removebg-preview_6
+  - first:
+      213: -510972031042949615
+    second: unnamed__8_-removebg-preview_7
+  - first:
+      213: -7811377672887325240
+    second: unnamed__8_-removebg-preview_8
+  - first:
+      213: 9036802884247292453
+    second: unnamed__8_-removebg-preview_9
+  - first:
+      213: -3147341504689936098
+    second: unnamed__8_-removebg-preview_10
+  - first:
+      213: -3922041237855080572
+    second: unnamed__8_-removebg-preview_11
+  - first:
+      213: -2098483688691012266
+    second: unnamed__8_-removebg-preview_12
+  - first:
+      213: -8780640777543086253
+    second: unnamed__8_-removebg-preview_13
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -112,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Run_0
+      name: unnamed__8_-removebg-preview_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 458
-        width: 99
-        height: 107
+        x: 17
+        y: 430
+        width: 105
+        height: 93
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,20 +154,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25d1f8be45f6d9440800000000000000
-      internalID: 4944230376442633554
+      spriteID: e1cda7142450b8440800000000000000
+      internalID: 4939047198466432030
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Run_1
+      name: unnamed__8_-removebg-preview_1
       rect:
         serializedVersion: 2
-        x: 102
-        y: 458
-        width: 102
-        height: 107
+        x: 151
+        y: 437
+        width: 130
+        height: 137
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -149,20 +176,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5d8e07c1676df60e0800000000000000
-      internalID: -2274363484027164459
+      spriteID: 6da3fafd795217fc0800000000000000
+      internalID: -3498974101267072298
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Run_2
+      name: unnamed__8_-removebg-preview_2
       rect:
         serializedVersion: 2
-        x: 204
-        y: 458
-        width: 102
-        height: 107
+        x: 293
+        y: 430
+        width: 116
+        height: 131
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,8 +198,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 405305b67edf6f270800000000000000
-      internalID: 8284087734974297348
+      spriteID: 0e40598a8d47e08b0800000000000000
+      internalID: -5184077647166765856
       vertices: []
       indices: 
       edges: []
@@ -181,7 +208,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 03b7bf15d75822e4882dccfcae8bf02c
+    spriteID: 588ccc3120cbdc74ab9f7a504c146193
     internalID: 0
     vertices: []
     indices: 
@@ -191,12 +218,20 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Prince_Run_0: -1757344095
-      Run_0: 4944230376442633554
-      Run_1: -2274363484027164459
-      Run_2: 8284087734974297348
-      Run_3: 5304202850863732263
-      Run_4: 2833043080597125133
+      unnamed__8_-removebg-preview_0: 4939047198466432030
+      unnamed__8_-removebg-preview_1: -3498974101267072298
+      unnamed__8_-removebg-preview_10: -3147341504689936098
+      unnamed__8_-removebg-preview_11: -3922041237855080572
+      unnamed__8_-removebg-preview_12: -2098483688691012266
+      unnamed__8_-removebg-preview_13: -8780640777543086253
+      unnamed__8_-removebg-preview_2: -5184077647166765856
+      unnamed__8_-removebg-preview_3: -2873648791847318668
+      unnamed__8_-removebg-preview_4: -5701174395073528738
+      unnamed__8_-removebg-preview_5: -6819147345474590864
+      unnamed__8_-removebg-preview_6: -6622851277634577942
+      unnamed__8_-removebg-preview_7: -510972031042949615
+      unnamed__8_-removebg-preview_8: -7811377672887325240
+      unnamed__8_-removebg-preview_9: 9036802884247292453
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
