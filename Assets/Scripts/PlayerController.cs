@@ -24,6 +24,15 @@ public class PlayerController : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip teleportSound;
 
+    public GameObject attackFXPrefab;
+    public Transform attackFXSpawnPoint;
+
+    public GameObject attackFXPrefab_1;
+    public Transform attackFXSpawnPoint_1;
+
+    public GameObject attackFXPrefab_2;
+    public Transform attackFXSpawnPoint_2;
+
     void Start()
     {
         if (animator == null)
@@ -61,7 +70,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Execution");
             audioSource.PlayOneShot(teleportSound);
-            SetMovementLock(true);
+
         }
 
         if (Input.GetMouseButtonDown(1) && canTeleport)
@@ -152,4 +161,34 @@ public class PlayerController : MonoBehaviour
     {
         isMovementLocked = isLocked;
     }
+
+    public void PlayAttackFX()
+    {
+
+        if (attackFXPrefab != null && attackFXSpawnPoint != null)
+        {
+       
+            Instantiate(attackFXPrefab, attackFXSpawnPoint.position, attackFXSpawnPoint.rotation);
+        }
+    }
+
+    public void PlayAttackFX_1()
+    {
+
+        if (attackFXPrefab_1 != null && attackFXSpawnPoint_1 != null)
+        {
+
+            Instantiate(attackFXPrefab_1, attackFXSpawnPoint_1.position, attackFXSpawnPoint_1.rotation);
+        }
+    }
+    public void PlayerExecuteFX()
+    {
+
+        if (attackFXPrefab_2 != null && attackFXSpawnPoint_2 != null)
+        {
+
+            Instantiate(attackFXPrefab_2, attackFXSpawnPoint_2.position, attackFXSpawnPoint_2.rotation);
+        }
+    
+}
 }
