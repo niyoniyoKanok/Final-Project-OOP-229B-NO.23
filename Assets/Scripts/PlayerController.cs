@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     private float jumpHeight = 15f;
 
+    private bool isMovementLocked = false;
+
     private float movement;
     private float moveSpeed = 5f;
     bool facingRight = true;
@@ -14,14 +16,13 @@ public class PlayerController : MonoBehaviour
     public bool isGround = true;
     private bool jumpPressed;
 
-   
     private bool teleportPressed;
     private Vector2 teleportTarget;
-    public float teleportCooldown = 3f; 
-    private bool canTeleport = true;      
+    public float teleportCooldown = 3f;
+    private bool canTeleport = true;
 
-    public AudioSource audioSource;     
-    public AudioClip teleportSound;     
+    public AudioSource audioSource;
+    public AudioClip teleportSound;
 
     void Start()
     {
@@ -29,13 +30,19 @@ public class PlayerController : MonoBehaviour
             animator = GetComponent<Animator>();
         if (rb == null)
             rb = GetComponent<Rigidbody2D>();
-
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
+        if (isMovementLocked)
+        {
+            movement = 0;
+            animator.SetFloat("Run", 0);
+            return;
+        }
+
         movement = Input.GetAxis("Horizontal");
         animator.SetFloat("Run", Mathf.Abs(movement));
 
@@ -45,22 +52,25 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Jump", true);
         }
 
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Attack");
         }
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            animator.SetTrigger("Execution");
+            audioSource.PlayOneShot(teleportSound);
+            SetMovementLock(true);
+        }
 
         if (Input.GetMouseButtonDown(1) && canTeleport)
         {
-          
             teleportPressed = true;
-            canTeleport = false; 
+            canTeleport = false;
 
-           
-            animator.SetTrigger("Teleport"); 
+            animator.SetTrigger("Teleport");
 
-            
             if (teleportSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(teleportSound);
@@ -69,14 +79,18 @@ public class PlayerController : MonoBehaviour
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             teleportTarget = new Vector2(worldPos.x, worldPos.y);
 
-         
             StartCoroutine(TeleportCooldownRoutine());
         }
     }
 
     private void FixedUpdate()
     {
-     
+        if (isMovementLocked)
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            return;
+        }
+
         rb.linearVelocity = new Vector2(movement * moveSpeed, rb.linearVelocity.y);
 
         if (movement > 0 && !facingRight)
@@ -91,7 +105,6 @@ public class PlayerController : MonoBehaviour
             isGround = false;
         }
 
-    
         if (teleportPressed)
         {
             rb.MovePosition(teleportTarget);
@@ -112,13 +125,9 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(new Vector2(0f, jumpHeight), ForceMode2D.Impulse);
     }
 
-
     private IEnumerator TeleportCooldownRoutine()
     {
-     
         yield return new WaitForSeconds(teleportCooldown);
-
-        
         canTeleport = true;
     }
 
@@ -137,5 +146,10 @@ public class PlayerController : MonoBehaviour
         {
             isGround = false;
         }
+    }
+
+    public void SetMovementLock(bool isLocked)
+    {
+        isMovementLocked = isLocked;
     }
 }
