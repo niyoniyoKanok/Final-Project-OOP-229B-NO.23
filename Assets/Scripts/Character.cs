@@ -1,36 +1,90 @@
 using UnityEngine;
+using System.Collections; 
 
-public class Character : MonoBehaviour
+abstract public class Character : MonoBehaviour
 {
     private int health;
+    private int maxHealth;
+
+    protected Animator animator;
+    [SerializeField] private float healthBarVisibleTime = 3f;
+    private Coroutine hideHealthBarCoroutine;
+
     public int Health
     {
         get { return health; }
-        set { health = (value < 0) ? 0 : value; }
+        protected set
+        {
+            health = Mathf.Clamp(value, 0, maxHealth);
+
+            if (healthBar != null)
+            {
+                healthBar.UpdateBar(health, maxHealth);
+            }
+        }
     }
 
-    private int maxHealth;
-
-    [SerializeField] HealthBar healthBar;
+    [SerializeField] private HealthBar healthBar;
 
     public void Initialized(int starterHealth)
     {
-        Health = starterHealth;
         maxHealth = starterHealth;
+        Health = starterHealth;
 
-        healthBar = GetComponent<HealthBar>();
+   
+        if (healthBar != null)
+        {
+            healthBar.gameObject.SetActive(false);
+        }
+
+        animator = GetComponent<Animator>();
     }
+
+    public void TakeDamage(int damageAmount)
+    {
+        if (health <= 0) return;
+
+        Health -= damageAmount;
+
+    
+        ShowHealthBarThenHide();
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+ 
+    protected void ShowHealthBarThenHide()
+    {
+        if (healthBar == null) return;
+
+
+        if (hideHealthBarCoroutine != null)
+        {
+            StopCoroutine(hideHealthBarCoroutine);
+        }
+
+      
+        healthBar.gameObject.SetActive(true);
+
+       
+        hideHealthBarCoroutine = StartCoroutine(HideHealthBarRoutine());
+    }
+
+   
+    protected IEnumerator HideHealthBarRoutine()
+    {
+        yield return new WaitForSeconds(healthBarVisibleTime);
+        healthBar.gameObject.SetActive(false);
+        hideHealthBarCoroutine = null;
+    }
+
+    protected abstract void Die();
 
     public bool IsDead()
     {
-        if (Health <= 0)
-        {
-            Destroy(this.gameObject);
-            return true;
-        }
-
-        else { return false; }
+        return health <= 0;
     }
-
-
 }

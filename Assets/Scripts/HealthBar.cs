@@ -1,17 +1,13 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI; 
+
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
+    public Slider slider;
 
-
-    public void UpdateHealthBar(float currentValue, float maxValue)
+    public void UpdateBar(int currentHealth, int maxHealth)
     {
-        slider.value = currentValue / maxValue;
-    }
-
-    private void Update()
-    {
-
+        slider.maxValue = maxHealth;
+        slider.value = currentHealth;
     }
 }

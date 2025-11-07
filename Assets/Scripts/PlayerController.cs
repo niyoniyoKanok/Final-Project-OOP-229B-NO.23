@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     public GameObject attackFXPrefab_2;
     public Transform attackFXSpawnPoint_2;
 
+
+
     void Start()
     {
         if (animator == null)
