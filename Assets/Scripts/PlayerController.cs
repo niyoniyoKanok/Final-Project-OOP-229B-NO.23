@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour
     public bool isGround = true;
     private bool jumpPressed;
 
+    public Transform groundCheck;
+    public LayerMask groundLayer;
+    public float groundCheckRadius = 0.1f;
+
     private bool teleportPressed;
     private Vector2 teleportTarget;
     public float teleportCooldown = 3f;
@@ -100,6 +104,15 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        bool isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+
+        if (isTouchingGround)
+        {
+            isGround = true;
+            animator.SetBool("Jump", false);
+        }
+
         rb.linearVelocity = new Vector2(movement * moveSpeed, rb.linearVelocity.y);
 
         if (movement > 0 && !facingRight)
@@ -167,7 +180,7 @@ public class PlayerController : MonoBehaviour
 
         if (attackFXPrefab != null && attackFXSpawnPoint != null)
         {
-       
+
             Instantiate(attackFXPrefab, attackFXSpawnPoint.position, attackFXSpawnPoint.rotation);
         }
     }
@@ -189,6 +202,6 @@ public class PlayerController : MonoBehaviour
 
             Instantiate(attackFXPrefab_2, attackFXSpawnPoint_2.position, attackFXSpawnPoint_2.rotation);
         }
-    
-}
+
+    }
 }
