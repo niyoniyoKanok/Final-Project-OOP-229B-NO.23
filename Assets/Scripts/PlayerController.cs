@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private float moveSpeed = 5f;
     bool facingRight = true;
 
-    public bool isGround = true;
+    public bool IsGround = true;
     private bool jumpPressed;
 
     public Transform groundCheck;
@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+     
+
         if (isMovementLocked)
         {
             movement = 0;
@@ -56,7 +58,7 @@ public class PlayerController : MonoBehaviour
         movement = Input.GetAxis("Horizontal");
         animator.SetFloat("Run", Mathf.Abs(movement));
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGround)
+        if (Input.GetKeyDown(KeyCode.Space) && IsGround)
         {
             jumpPressed = true;
             animator.SetBool("Jump", true);
@@ -71,14 +73,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             animator.SetTrigger("Execution");
-    
-
         }
+
+
 
     }
 
     private void FixedUpdate()
     {
+
+        
+
         if (isMovementLocked)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
@@ -90,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
         if (isTouchingGround)
         {
-            isGround = true;
+            IsGround = true;
             animator.SetBool("Jump", false);
         }
 
@@ -105,7 +110,7 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
             jumpPressed = false;
-            isGround = false;
+            IsGround = false;
         }
 
      
@@ -129,7 +134,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            isGround = true;
+            IsGround = true;
             animator.SetBool("Jump", false);
         }
     }
@@ -138,7 +143,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            isGround = false;
+            IsGround = false;
         }
     }
 
@@ -176,4 +181,5 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+  
 }

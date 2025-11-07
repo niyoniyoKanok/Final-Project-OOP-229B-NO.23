@@ -6,12 +6,12 @@ public class Prince : Character
 {
 
     [Header("Game Dependencies")]
-    public Camera playerCamera;
+    public Camera PlayerCamera;
 
     [Header("Ability 1")]
     public Image AbilityImage1;
     public Text AbilityText1;
-    public KeyCode ability1Key;
+    public KeyCode Ability1Key;
     public float Ability1Cooldown = 7f;
     private Vector2 teleportTarget;
     private bool teleportPressed;
@@ -19,17 +19,18 @@ public class Prince : Character
     [Header("Ability 2")]
     public Image AbilityImage2;
     public Text AbilityText2;
-    public KeyCode ability2Key;
+    public KeyCode Ability2Key;
     public float Ability2Cooldown = 5f;
 
 
     [Header("Ability 3")]
     public Image AbilityImage3;
     public Text AbilityText3;
-    public KeyCode ability3Key;
+    public KeyCode Ability3Key;
     public float Ability3Cooldown = 15f;
 
-    public AudioSource audioSource;
+    [Header("AudioPanel")]
+    public AudioSource AudioSource;
     public AudioClip HitSound;
     public AudioClip HealSound;
     public AudioClip TeleportSound;
@@ -41,6 +42,12 @@ public class Prince : Character
     private float currentAbility1Cooldown;
     private float currentAbility2Cooldown;
     private float currentAbility3Cooldown;
+
+    [Header("AttackPanel")]
+    public Transform AttackPoint;
+    public float AttackRadius = 1;
+    public LayerMask AttackLayer; 
+
     void Start()
     {
         base.Initialized(100);
@@ -73,7 +80,7 @@ public class Prince : Character
         {
             OnHitWith(enemy);
 
-            audioSource.PlayOneShot(HitSound);
+            AudioSource.PlayOneShot(HitSound);
         }
     }
     void Update()
@@ -85,11 +92,16 @@ public class Prince : Character
         AbilityCooldown(ref currentAbility1Cooldown, Ability1Cooldown, ref isAbility1Cooldown, AbilityImage1, AbilityText1);
         AbilityCooldown(ref currentAbility2Cooldown, Ability2Cooldown, ref isAbility2Cooldown, AbilityImage2, AbilityText2);
         AbilityCooldown(ref currentAbility3Cooldown, Ability3Cooldown, ref isAbility3Cooldown, AbilityImage3, AbilityText3);
-    }
 
+        var dashInput = Input.GetButtonDown("Dash");
+
+     
+
+     
+    }
     public void Ability1Input()
     { 
-        if (Input.GetKeyDown(ability1Key) && !isAbility1Cooldown)
+        if (Input.GetKeyDown(Ability1Key) && !isAbility1Cooldown)
         {
             isAbility1Cooldown = true;
             currentAbility1Cooldown = Ability2Cooldown;
@@ -102,9 +114,9 @@ public class Prince : Character
     {
         animator.SetTrigger("Teleport");
 
-        if (TeleportSound != null && audioSource != null)
+        if (TeleportSound != null && AudioSource != null)
         {
-            audioSource.PlayOneShot(TeleportSound);
+            AudioSource.PlayOneShot(TeleportSound);
         }
 
 
@@ -112,10 +124,10 @@ public class Prince : Character
         Vector3 mouseScreenPos = Input.mousePosition;
 
 
-        mouseScreenPos.z = playerCamera.transform.position.z * -1;
+        mouseScreenPos.z = PlayerCamera.transform.position.z * -1;
 
        
-        Vector3 worldPos = playerCamera.ScreenToWorldPoint(mouseScreenPos);
+        Vector3 worldPos = PlayerCamera.ScreenToWorldPoint(mouseScreenPos);
         teleportTarget = new Vector2(worldPos.x, worldPos.y);
 
         rb.position = teleportTarget; 
@@ -127,7 +139,7 @@ public class Prince : Character
 
     public void Ability2Input()
     {
-        if (Input.GetKeyDown(ability2Key) && !isAbility2Cooldown)
+        if (Input.GetKeyDown(Ability2Key) && !isAbility2Cooldown)
         {
             isAbility2Cooldown = true;
             currentAbility2Cooldown = Ability2Cooldown;
@@ -136,13 +148,13 @@ public class Prince : Character
 
     public void Ability3Input()
     {
-        if (Input.GetKeyDown(ability3Key) && !isAbility3Cooldown)
+        if (Input.GetKeyDown(Ability3Key) && !isAbility3Cooldown)
         {
 
             Ability3Heal(10);
             isAbility3Cooldown = true;
             currentAbility3Cooldown = Ability3Cooldown;
-            audioSource.PlayOneShot(HealSound);
+            AudioSource.PlayOneShot(HealSound);
         }
     }
 
@@ -208,6 +220,29 @@ public class Prince : Character
         }
 
         Destroy(this.gameObject, 3f);
+    }
+
+    public void Attack()
+    {
+      Collider2D collInfo =  Physics2D.OverlapCircle(AttackPoint.position, AttackRadius, AttackLayer);
+      if (collInfo)
+        {
+           if (collInfo.gameObject.GetComponent<TestEnemyObject>() != null)
+            {
+                collInfo.gameObject.GetComponent<TestEnemyObject>().TakeDamage(20);
+            }
+        }
+
+    }
+
+
+    void OnDrawGizmosSelected()
+    {
+        if (AttackPoint == null)
+        {
+            return;
+        }
+        Gizmos.DrawWireSphere(AttackPoint.position, AttackRadius);
     }
 
 
