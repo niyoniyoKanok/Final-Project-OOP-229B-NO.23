@@ -20,13 +20,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public float groundCheckRadius = 0.1f;
 
-    private bool teleportPressed;
-    private Vector2 teleportTarget;
-    public float teleportCooldown = 3f;
-    private bool canTeleport = true;
-
     public AudioSource audioSource;
-    public AudioClip teleportSound;
     public AudioClip JumpSound;
 
     public GameObject attackFXPrefab;
@@ -77,27 +71,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             animator.SetTrigger("Execution");
-            audioSource.PlayOneShot(teleportSound);
+    
 
         }
 
-        if (Input.GetMouseButtonDown(1) && canTeleport)
-        {
-            teleportPressed = true;
-            canTeleport = false;
-
-            animator.SetTrigger("Teleport");
-
-            if (teleportSound != null && audioSource != null)
-            {
-                audioSource.PlayOneShot(teleportSound);
-            }
-
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            teleportTarget = new Vector2(worldPos.x, worldPos.y);
-
-            StartCoroutine(TeleportCooldownRoutine());
-        }
     }
 
     private void FixedUpdate()
@@ -131,11 +108,7 @@ public class PlayerController : MonoBehaviour
             isGround = false;
         }
 
-        if (teleportPressed)
-        {
-            rb.MovePosition(teleportTarget);
-            teleportPressed = false;
-        }
+     
     }
 
     void Flip()
@@ -151,11 +124,6 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(new Vector2(0f, jumpHeight), ForceMode2D.Impulse);
     }
 
-    private IEnumerator TeleportCooldownRoutine()
-    {
-        yield return new WaitForSeconds(teleportCooldown);
-        canTeleport = true;
-    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

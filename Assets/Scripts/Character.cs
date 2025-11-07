@@ -7,6 +7,7 @@ abstract public class Character : MonoBehaviour
     private int maxHealth;
 
     protected Animator animator;
+    protected Rigidbody2D rb;
     [SerializeField] private float healthBarVisibleTime = 3f;
     private Coroutine hideHealthBarCoroutine;
 

@@ -5,11 +5,16 @@ using UnityEngine.UI;
 public class Prince : Character
 {
 
+    [Header("Game Dependencies")]
+    public Camera playerCamera;
+
     [Header("Ability 1")]
     public Image AbilityImage1;
     public Text AbilityText1;
     public KeyCode ability1Key;
     public float Ability1Cooldown = 7f;
+    private Vector2 teleportTarget;
+    private bool teleportPressed;
 
     [Header("Ability 2")]
     public Image AbilityImage2;
@@ -27,6 +32,7 @@ public class Prince : Character
     public AudioSource audioSource;
     public AudioClip HitSound;
     public AudioClip HealSound;
+    public AudioClip TeleportSound;
 
     private bool isAbility1Cooldown = false;
     private bool isAbility2Cooldown = false;
@@ -38,6 +44,10 @@ public class Prince : Character
     void Start()
     {
         base.Initialized(100);
+        if (rb == null)
+            rb = GetComponent<Rigidbody2D>();
+        if (animator == null)
+            animator = GetComponent<Animator>();
 
         AbilityImage1.fillAmount = 0;
         AbilityImage2.fillAmount = 0;
@@ -82,18 +92,37 @@ public class Prince : Character
         if (Input.GetKeyDown(ability1Key) && !isAbility1Cooldown)
         {
             isAbility1Cooldown = true;
-            currentAbility1Cooldown = Ability1Cooldown;
+            currentAbility1Cooldown = Ability2Cooldown;
+
+            Ability1Teleport();
         }
     }
 
-    public void Ability1Teleport(int healAmount)
+    public void Ability1Teleport()
     {
-        if (healAmount < 0 || IsDead())
+        animator.SetTrigger("Teleport");
+
+        if (TeleportSound != null && audioSource != null)
         {
-            return;
+            audioSource.PlayOneShot(TeleportSound);
         }
-            Health += healAmount;
-            base.ShowHealthBarThenHide();
+
+
+
+        Vector3 mouseScreenPos = Input.mousePosition;
+
+
+        mouseScreenPos.z = playerCamera.transform.position.z * -1;
+
+       
+        Vector3 worldPos = playerCamera.ScreenToWorldPoint(mouseScreenPos);
+        teleportTarget = new Vector2(worldPos.x, worldPos.y);
+
+        rb.position = teleportTarget; 
+        rb.linearVelocity = Vector2.zero; 
+        teleportPressed = true;
+
+
     }
 
     public void Ability2Input()
