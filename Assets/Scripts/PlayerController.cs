@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     public AudioSource audioSource;
     public AudioClip teleportSound;
+    public AudioClip JumpSound;
 
     public GameObject attackFXPrefab;
     public Transform attackFXSpawnPoint;
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpPressed = true;
             animator.SetBool("Jump", true);
+            audioSource.PlayOneShot(JumpSound);
         }
 
         if (Input.GetMouseButtonDown(0))

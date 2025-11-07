@@ -46,6 +46,8 @@ abstract public class Character : MonoBehaviour
 
         Health -= damageAmount;
 
+
+
     
         ShowHealthBarThenHide();
 
