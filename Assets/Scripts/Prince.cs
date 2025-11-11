@@ -2,8 +2,15 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-public class Prince : Character
+public class Prince : Character , IShootable
 {
+
+    [field: SerializeField] public GameObject Bullet { get; set; }
+    [field: SerializeField] public Transform ShootPoint { get; set; }
+
+   
+
+    public int SwordWaveDamage = 30;
 
     [Header("Game Dependencies")]
     public Camera PlayerCamera;
@@ -104,7 +111,7 @@ public class Prince : Character
         if (Input.GetKeyDown(Ability1Key) && !isAbility1Cooldown)
         {
             isAbility1Cooldown = true;
-            currentAbility1Cooldown = Ability2Cooldown;
+            currentAbility1Cooldown = Ability1Cooldown;
 
             Ability1Teleport();
         }
@@ -143,6 +150,24 @@ public class Prince : Character
         {
             isAbility2Cooldown = true;
             currentAbility2Cooldown = Ability2Cooldown;
+
+            Shoot();
+        }
+    }
+
+    public void Shoot()
+    {
+      
+        GameObject newWaveObject = Instantiate(Bullet, ShootPoint.position, ShootPoint.rotation);
+
+        
+        Weapon weaponScript = newWaveObject.GetComponent<Weapon>();
+
+      
+        if (weaponScript != null)
+        {
+            
+            weaponScript.InitWeapon(SwordWaveDamage, this);
         }
     }
 
@@ -246,4 +271,4 @@ public class Prince : Character
     }
 
 
-}
+    }
