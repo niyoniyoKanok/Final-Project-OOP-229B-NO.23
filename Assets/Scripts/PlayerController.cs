@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
     public Transform attackFXSpawnPoint_2;
 
 
+    public static PlayerController Instance;
+    public bool IsAttacking = false;
+
 
     void Start()
     {
@@ -61,13 +64,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsGround)
         {
             jumpPressed = true;
-            animator.SetBool("Jump", true);
+            
             audioSource.PlayOneShot(JumpSound);
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            animator.SetTrigger("Attack");
         }
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -75,6 +73,10 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Execution");
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            animator.SetTrigger("Attack");
+        }
 
 
     }

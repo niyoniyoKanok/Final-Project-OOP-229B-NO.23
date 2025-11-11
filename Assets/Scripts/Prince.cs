@@ -14,7 +14,7 @@ public class Prince : Character
     public KeyCode Ability1Key;
     public float Ability1Cooldown = 7f;
     private Vector2 teleportTarget;
-    private bool teleportPressed;
+
 
     [Header("Ability 2")]
     public Image AbilityImage2;
@@ -93,7 +93,7 @@ public class Prince : Character
         AbilityCooldown(ref currentAbility2Cooldown, Ability2Cooldown, ref isAbility2Cooldown, AbilityImage2, AbilityText2);
         AbilityCooldown(ref currentAbility3Cooldown, Ability3Cooldown, ref isAbility3Cooldown, AbilityImage3, AbilityText3);
 
-        var dashInput = Input.GetButtonDown("Dash");
+     
 
      
 
@@ -132,7 +132,7 @@ public class Prince : Character
 
         rb.position = teleportTarget; 
         rb.linearVelocity = Vector2.zero; 
-        teleportPressed = true;
+     
 
 
     }
