@@ -5,12 +5,16 @@ using UnityEngine.UI;
 public class Prince : Character , IShootable
 {
 
-    [field: SerializeField] public GameObject Bullet { get; set; }
     [field: SerializeField] public Transform ShootPoint { get; set; }
 
-   
+    [Header("Invincibility")]
+    [SerializeField] private float invincibilityDuration = 1f; 
+    private bool isInvincible = false;
 
     public int SwordWaveDamage = 30;
+    [Header("Knockback")]
+    [SerializeField] private float knockbackForce = 10f;
+
 
     [Header("Game Dependencies")]
     public Camera PlayerCamera;
@@ -28,6 +32,7 @@ public class Prince : Character , IShootable
     public Text AbilityText2;
     public KeyCode Ability2Key;
     public float Ability2Cooldown = 5f;
+    [field: SerializeField] public GameObject Bullet { get; set; }
 
 
     [Header("Ability 3")]
@@ -41,6 +46,7 @@ public class Prince : Character , IShootable
     public AudioClip HitSound;
     public AudioClip HealSound;
     public AudioClip TeleportSound;
+    public AudioClip SwordWaveSound;
 
     private bool isAbility1Cooldown = false;
     private bool isAbility2Cooldown = false;
@@ -85,9 +91,14 @@ public class Prince : Character , IShootable
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
         if (enemy != null)
         {
+
+
             OnHitWith(enemy);
 
             AudioSource.PlayOneShot(HitSound);
+
+            Vector2 knockbackDirection = (transform.position - other.transform.position).normalized;
+            rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
         }
     }
     void Update()
@@ -150,6 +161,11 @@ public class Prince : Character , IShootable
         {
             isAbility2Cooldown = true;
             currentAbility2Cooldown = Ability2Cooldown;
+
+            if (SwordWaveSound != null && AudioSource != null)
+            {
+                AudioSource.PlayOneShot(SwordWaveSound);
+            }
 
             Shoot();
         }
@@ -249,13 +265,18 @@ public class Prince : Character , IShootable
 
     public void Attack()
     {
-      Collider2D collInfo =  Physics2D.OverlapCircle(AttackPoint.position, AttackRadius, AttackLayer);
-      if (collInfo)
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(AttackPoint.position, AttackRadius, AttackLayer);
+
+        foreach (Collider2D collInfo in hitEnemies)
         {
-           if (collInfo.gameObject.GetComponent<TestEnemyObject>() != null)
+            Enemy enemy = collInfo.gameObject.GetComponent<Enemy>();
+
+            if (enemy != null)
             {
-                collInfo.gameObject.GetComponent<TestEnemyObject>().TakeDamage(20);
+
+                enemy.TakeDamage(20);
             }
+
         }
 
     }
@@ -270,5 +291,42 @@ public class Prince : Character , IShootable
         Gizmos.DrawWireSphere(AttackPoint.position, AttackRadius);
     }
 
+    public override void TakeDamage(int damageAmount)
+    {
+      
+        if (isInvincible) return;
 
+      
+        base.TakeDamage(damageAmount);
+
+        
+        if (this.gameObject.activeInHierarchy)
+        {
+            StartCoroutine(InvincibilityRoutine());
+        }
     }
+
+    private IEnumerator InvincibilityRoutine()
+    {
+        isInvincible = true; 
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+
+        float timer = 0f;
+
+ 
+        while (timer < invincibilityDuration)
+        {
+         
+            spriteRenderer.color = Color.red;
+
+            timer += Time.deltaTime; 
+            yield return null; 
+        }
+
+
+        spriteRenderer.color = Color.white;
+        isInvincible = false;
+    }
+
+
+}

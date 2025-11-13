@@ -11,6 +11,10 @@ abstract public class Character : MonoBehaviour
     [SerializeField] private float healthBarVisibleTime = 3f;
     private Coroutine hideHealthBarCoroutine;
 
+
+    protected SpriteRenderer spriteRenderer;
+    [Header("Hit FX")]
+    [SerializeField] private float flashDuration = 0.1f; 
     public int Health
     {
         get { return health; }
@@ -39,17 +43,26 @@ abstract public class Character : MonoBehaviour
         }
 
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void TakeDamage(int damageAmount)
+    public virtual void TakeDamage(int damageAmount)
     {
         if (health <= 0) return;
 
         Health -= damageAmount;
 
+       
+        if (this.gameObject.activeInHierarchy)
+        {
+            StartCoroutine(HitFlashRoutine());
+        }
+   
+        if (animator != null)
+        {
+            animator.SetTrigger("TakeHit");
+        }
 
-
-    
         ShowHealthBarThenHide();
 
         if (health <= 0)
@@ -58,7 +71,23 @@ abstract public class Character : MonoBehaviour
         }
     }
 
- 
+    private IEnumerator HitFlashRoutine()
+    {
+      
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.red;
+        }
+
+      
+        yield return new WaitForSeconds(flashDuration);
+
+       
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.white;
+        }
+    }
     protected void ShowHealthBarThenHide()
     {
         if (healthBar == null) return;
