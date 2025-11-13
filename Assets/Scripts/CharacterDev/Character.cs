@@ -52,22 +52,28 @@ abstract public class Character : MonoBehaviour
 
         Health -= damageAmount;
 
-       
+
         if (this.gameObject.activeInHierarchy)
         {
             StartCoroutine(HitFlashRoutine());
         }
-   
-        if (animator != null)
-        {
-            animator.SetTrigger("TakeHit");
-        }
-
-        ShowHealthBarThenHide();
 
         if (health <= 0)
         {
+       
             Die();
+        }
+        else
+        {
+           
+            if (animator != null)
+            {
+                animator.SetTrigger("TakeHit");
+            }
+
+            ShowHealthBarThenHide();
+
+           
         }
     }
 

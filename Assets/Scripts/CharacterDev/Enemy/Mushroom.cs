@@ -12,16 +12,26 @@ public class Mushroom : Enemy
 
     public override void Move()
     {
-       
 
-        transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
-    }
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb == null) return;
 
-    protected override void Die()
-    {
-        if (animator != null)
+
+        float direction = Mathf.Sign(playerTransform.position.x - transform.position.x);
+
+
+        if (Mathf.Abs(transform.position.x - playerTransform.position.x) > 0.5f)
         {
-            animator.SetTrigger("Dead");
+
+            rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
+
+        }
+        else
+        {
+
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+
+
         }
     }
 }

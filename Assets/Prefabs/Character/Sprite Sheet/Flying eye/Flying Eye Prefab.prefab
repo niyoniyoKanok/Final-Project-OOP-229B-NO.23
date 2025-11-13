@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3924052781201440379}
   - component: {fileID: 2848955130578956839}
   - component: {fileID: 6332214096487222738}
+  - component: {fileID: -4013331375659482921}
   m_Layer: 0
   m_Name: Flying Eye Prefab
   m_TagString: Untagged
@@ -104,7 +105,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyingEye
   healthBarVisibleTime: 3
-  invincibilityDuration: 0.5
+  flashDuration: 0.1
   healthBar: {fileID: 0}
   moveSpeed: 0
+  stunDuration: 0.5
   idealDistance: 6
+  projectilePrefab: {fileID: 6282259654324480118, guid: fa504f4cc3e62b54aa950af06ca43604, type: 3}
+  attackCooldown: 2
+--- !u!70 &-4013331375659482921
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7886277527524934135}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.34375, y: 1.03125}
+  m_Direction: 0

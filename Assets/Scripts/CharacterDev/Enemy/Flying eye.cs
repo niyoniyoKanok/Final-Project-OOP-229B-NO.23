@@ -38,13 +38,5 @@ public class FlyingEye : Enemy
         }
     }
            
-    protected override void Die()
-    {
-        if (animator != null)
-        {
-            animator.SetTrigger("Dead");
-        }
-    }
-
 
 }

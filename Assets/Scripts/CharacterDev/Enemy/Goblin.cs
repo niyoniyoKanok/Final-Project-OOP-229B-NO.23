@@ -13,10 +13,27 @@ public class Goblin : Enemy
 
     public override void Move()
     {
+        
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb == null) return;
 
-        Vector2 targetPosition = new Vector2(playerTransform.position.x, transform.position.y);
+        
+        float direction = Mathf.Sign(playerTransform.position.x - transform.position.x);
 
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+   
+        if (Mathf.Abs(transform.position.x - playerTransform.position.x) > 0.5f)
+        {
+          
+            rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
+
+        }
+        else
+        {
+          
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+
+     
+        }
     }
 
 }
