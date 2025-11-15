@@ -6,6 +6,8 @@ public abstract class Enemy : Character
 {
     protected Transform playerTransform;
     public float moveSpeed;
+
+    protected PlayerLevel playerLevel;
     public int DamageHit { get; protected set; }
     protected float deathDelayTime = 1.0f;
 
@@ -19,6 +21,8 @@ public abstract class Enemy : Character
         {
             playerTransform = player.transform;
         }
+
+        playerLevel = player.GetComponent<PlayerLevel>();
     }
 
 
@@ -64,6 +68,11 @@ public abstract class Enemy : Character
 
     protected override void Die()
     {
+        if (playerLevel != null)
+        {
+            playerLevel.AddXP();
+        }
+
         Collider2D col = GetComponent<Collider2D>();
         if (col != null)
         {

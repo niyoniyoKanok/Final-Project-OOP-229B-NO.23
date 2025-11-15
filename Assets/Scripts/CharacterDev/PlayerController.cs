@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour
 
             IsGround = true;
 
-            animator.SetBool("Jump", false);
+          
 
         }
 
@@ -289,7 +289,7 @@ public class PlayerController : MonoBehaviour
 
             IsGround = true;
 
-            animator.SetBool("Jump", false);
+          
 
         }
 
