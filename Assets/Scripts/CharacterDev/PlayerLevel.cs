@@ -14,6 +14,9 @@ public class PlayerLevel : MonoBehaviour
     [SerializeField] private Slider xpSlider;
     [SerializeField] private TextMeshProUGUI levelText;
 
+    [SerializeField] private TextMeshProUGUI killCountText; 
+    public int KillCount { get; private set; }
+
     [SerializeField] private TextMeshProUGUI xpText;
 
     [Header("Game System")]
@@ -29,12 +32,13 @@ public class PlayerLevel : MonoBehaviour
         CurrentXP = 0;
         XpToNextLevel = baseXPToLevelUp;
         UpdateUI();
+        KillCount = 0;
     }
 
     public void AddXP()
     {
         CurrentXP += xpPerKill;
-
+        KillCount++;
 
         while (CurrentXP >= XpToNextLevel)
         {
@@ -75,6 +79,11 @@ public class PlayerLevel : MonoBehaviour
         if (xpText != null)
         {
             xpText.text = string.Format("{0} / {1}", CurrentXP, XpToNextLevel);
+        }
+
+        if (killCountText != null)
+        {
+            killCountText.text = "Kills: " + KillCount;
         }
     }
 }
