@@ -32943,9 +32943,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 333826441}
     - target: {fileID: 7538996840933028655, guid: 41ebf312199fcd944b49008c5f65afe2, type: 3}
+      propertyPath: BonusMaxHealth
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538996840933028655, guid: 41ebf312199fcd944b49008c5f65afe2, type: 3}
       propertyPath: SwordWaveSound
       value: 
       objectReference: {fileID: 8300000, guid: 7670cb81b76b4c74fbc6a32a08182e41, type: 3}
+    - target: {fileID: 7538996840933028655, guid: 41ebf312199fcd944b49008c5f65afe2, type: 3}
+      propertyPath: BonusPotionHeal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538996840933028655, guid: 41ebf312199fcd944b49008c5f65afe2, type: 3}
+      propertyPath: BonusAttackSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7538996840933028655, guid: 41ebf312199fcd944b49008c5f65afe2, type: 3}
       propertyPath: playerController
       value: 
@@ -32953,6 +32965,10 @@ PrefabInstance:
     - target: {fileID: 7538996840933028655, guid: 41ebf312199fcd944b49008c5f65afe2, type: 3}
       propertyPath: invincibilityDuration
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538996840933028655, guid: 41ebf312199fcd944b49008c5f65afe2, type: 3}
+      propertyPath: BonusCooldownReduction
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7538996840933028655, guid: 41ebf312199fcd944b49008c5f65afe2, type: 3}
       propertyPath: <Bullet>k__BackingField

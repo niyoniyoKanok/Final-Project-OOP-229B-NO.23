@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour
 
     private float jumpHeight = 15f;
 
-
+    private Prince prince;
+    private Character princeCharacter;
 
     private bool isMovementLocked = false;
 
@@ -98,6 +99,9 @@ public class PlayerController : MonoBehaviour
 
             audioSource = GetComponent<AudioSource>();
 
+        prince = GetComponent<Prince>();
+        princeCharacter = GetComponent<Character>();
+
     }
 
 
@@ -157,6 +161,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
 
         {
+            float speedMultiplier = 1f + (prince.BonusAttackSpeed / 100f);
+            animator.SetFloat("AttackSpeed", speedMultiplier);
 
             animator.SetTrigger("Attack");
 

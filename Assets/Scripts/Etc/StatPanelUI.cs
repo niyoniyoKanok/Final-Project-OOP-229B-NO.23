@@ -83,19 +83,21 @@ public class StatPanelUI : MonoBehaviour
         attackPowerText.text = "Attack Power: " + prince.BaseAttackDamage + " + " + prince.BonusAttackDamage;
 
 
-        cooldownReductionText.text = "Skill Cooldown Reduction: " + (prince.BonusCooldownReduction * 100) + "%";
+        cooldownReductionText.text = "Skill Cooldown Reduction: " + prince.BonusCooldownReduction + "%";
 
 
         potionHealText.text = "Potion Heal: " + prince.BasePotionHeal + " + " + prince.BonusPotionHeal;
 
 
-        xpBonusText.text = "XP Bonus Increase: " + ((playerLevel.BonusXPMultiplier - 1.0f) * 100) + "%";
+        float xpPercent = (playerLevel.BonusXPMultiplier - 1f) * 100f;
+        xpBonusText.text = $"XP Bonus : {xpPercent}%";
 
-     
-        attackSpeedText.text = "Attack Speed: " + (prince.BonusAttackSpeed * 100) + "%";
 
-        
-        swordWaveDamageText.text = "SwordWave Damage: " + (prince.SwordWaveDamage + prince.BonusSwordWaveDamage);
+        float realAttackSpeedPercent = 100f + prince.BonusAttackSpeed;
+        attackSpeedText.text = $"Attack Speed : {realAttackSpeedPercent}%";
+
+
+        swordWaveDamageText.text = "SwordWave Damage: " + prince.SwordWaveDamage + " + " + prince.BonusSwordWaveDamage;
 
  
         maxHealthText.text = "Max Health: " + playerCharacter.MaxHealth;

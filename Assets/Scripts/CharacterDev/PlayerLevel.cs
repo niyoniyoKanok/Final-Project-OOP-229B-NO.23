@@ -27,7 +27,7 @@ public class PlayerLevel : MonoBehaviour
     public int CurrentLevel { get; private set; }
     public int CurrentXP { get; private set; }
     public int XpToNextLevel { get; private set; }
-    
+
     public float BonusXPMultiplier = 1.0f;
 
     void Start()
