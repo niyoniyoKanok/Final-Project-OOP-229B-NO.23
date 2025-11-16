@@ -44,7 +44,7 @@ public abstract class Character : MonoBehaviour
 
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>(); // <-- ensure rb exists for subclasses
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public virtual void AddMaxHealth(int amount)
@@ -52,7 +52,7 @@ public abstract class Character : MonoBehaviour
         if (amount <= 0) return;
 
         MaxHealth += amount;
-        // Do NOT force-heal the player unless intended. Keep current HP but clamp to new max.
+     
         Health = Mathf.Min(Health, MaxHealth);
 
         ShowHealthBarThenHide();
@@ -77,14 +77,12 @@ public abstract class Character : MonoBehaviour
 
             ShowHealthBarThenHide();
 
-            // Let subclasses override how they display hit visuals (flash, invincible frames, etc.)
+ 
             TriggerHitVisuals();
         }
     }
 
-    /// <summary>
-    /// Default hit visual: a quick flash. Subclasses can override to implement different behavior (e.g. invincibility windows).
-    /// </summary>
+   
     protected virtual void TriggerHitVisuals()
     {
         if (this.gameObject.activeInHierarchy)

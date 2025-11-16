@@ -61,4 +61,9 @@ public class Timer : MonoBehaviour
         }
 
     }
+
+    public float GetRemainingTime()
+    {
+        return remainingTime;
+    }
 }

@@ -6,7 +6,7 @@ public class Prince : Character, IShootable
 {
     [Header("Player Stats (Bonuses)")]
     public int BonusAttackDamage = 0;
-    public float BonusCooldownReduction = 0f; // percent (e.g. 20 = 20%)
+    public float BonusCooldownReduction = 0f;
     public int BonusPotionHeal = 0;
     public float BonusAttackSpeed = 1f;
     public int BonusSwordWaveDamage = 0;
@@ -41,7 +41,7 @@ public class Prince : Character, IShootable
     public Image AbilityImage1;
     public Text AbilityText1;
     public KeyCode Ability1Key;
-    public float Ability1Cooldown = 7f; // base cooldown
+    public float Ability1Cooldown = 7f; 
     private Vector2 teleportTarget;
 
     [Header("Ability 2")]
@@ -72,7 +72,6 @@ public class Prince : Character, IShootable
     private float currentAbility2Cooldown;
     private float currentAbility3Cooldown;
 
-    // effective max cooldowns (after applying CDR)
     private float effectiveAbility1Max;
     private float effectiveAbility2Max;
     private float effectiveAbility3Max;
@@ -95,7 +94,7 @@ public class Prince : Character, IShootable
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // init ability UI
+     
         if (AbilityImage1 != null) AbilityImage1.fillAmount = 0f;
         if (AbilityImage2 != null) AbilityImage2.fillAmount = 0f;
         if (AbilityImage3 != null) AbilityImage3.fillAmount = 0f;
@@ -143,13 +142,13 @@ public class Prince : Character, IShootable
     {
         if (Input.GetKeyDown(Ability1Key) && !isAbility1Cooldown)
         {
-            // Apply CDR when starting the cooldown: shorten cooldown duration
+        
             float cdr = Mathf.Clamp(BonusCooldownReduction / 100f, 0f, 0.99f);
             effectiveAbility1Max = Ability1Cooldown * (1f - cdr);
 
             if (effectiveAbility1Max <= 0f)
             {
-                // Instant ready — perform without starting cooldown.
+             
                 Ability1Teleport();
                 return;
             }
@@ -181,13 +180,13 @@ public class Prince : Character, IShootable
 
         teleportTarget = new Vector2(worldPos.x, worldPos.y);
 
-        // MovePosition keeps physics behavior consistent
+       
         if (rb != null)
             rb.MovePosition(teleportTarget);
         else
             transform.position = teleportTarget;
 
-        // reset velocity (if any)
+       
         if (rb != null)
             rb.linearVelocity = Vector2.zero;
     }
@@ -244,7 +243,7 @@ public class Prince : Character, IShootable
 
             if (effectiveAbility3Max <= 0f)
             {
-                // Instant ready, no cooldown start
+              
                 return;
             }
 
@@ -265,22 +264,19 @@ public class Prince : Character, IShootable
         ShowHealthBarThenHide();
     }
 
-    /// <summary>
-    /// Ticks the cooldown (simple and robust).
-    /// effectiveMax is computed when ability is started (so here we compute again if needed).
-    /// </summary>
+    
     private void AbilityCooldownTick(ref float currentCooldown, float baseMaxCooldown, ref bool isCooldown, Image skillImage, Text skillText, ref float effectiveMax)
     {
         if (!isCooldown) return;
 
-        // ensure effectiveMax has fall back value if not set
+       
         if (effectiveMax <= 0f)
         {
             float cdr = Mathf.Clamp(BonusCooldownReduction / 100f, 0f, 0.99f);
             effectiveMax = baseMaxCooldown * (1f - cdr);
             if (effectiveMax <= 0f)
             {
-                // should not be here: instant ready
+             
                 isCooldown = false;
                 currentCooldown = 0f;
                 if (skillImage != null) skillImage.fillAmount = 0f;
@@ -361,10 +357,10 @@ public class Prince : Character, IShootable
         }
     }
 
-    // Overriding default hit visual to NO-OP: Prince handles visuals in invincibility routine
+   
     protected override void TriggerHitVisuals()
     {
-        // Do nothing here; invincibility routine will handle flashing.
+        
     }
 
     private IEnumerator InvincibilityRoutine()
@@ -379,12 +375,12 @@ public class Prince : Character, IShootable
         {
             if (spriteRenderer != null)
             {
-                // simple flashing effect (toggle between red and white)
+               
                 spriteRenderer.color = flashOn ? Color.red : Color.white;
                 flashOn = !flashOn;
             }
 
-            timer += 0.1f; // flash interval
+            timer += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
 

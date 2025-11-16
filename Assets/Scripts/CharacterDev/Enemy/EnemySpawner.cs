@@ -3,94 +3,102 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Game Settings")]
-    [SerializeField] private float gameDurationInMinutes = 15f;
-    private float gameTimer; 
-
-    [Header("Player Reference")]
-    [SerializeField] private Transform playerTransform; 
-
-    [Header("Enemy Prefabs")]
-    [SerializeField] private GameObject[] enemyPrefabs; 
+    [Header("Player")]
+    [SerializeField] private Transform player;
 
     [Header("Spawn Settings")]
-    [SerializeField] private float minSpawnRadius = 10f; 
-    [SerializeField] private float maxSpawnRadius = 15f; 
+    [SerializeField] private float spawnRadius = 8f;
+    [SerializeField] private float minDistanceFromPlayer = 2f;
 
- 
-    [Header("Difficulty Curves")]
-   
-    [SerializeField] private AnimationCurve spawnIntervalCurve;
+    [Header("Enemy Prefabs")]
+    [SerializeField] private Enemy[] enemyPrefabs;
 
-    [SerializeField] private AnimationCurve spawnQuantityCurve;
+    [Header("Difficulty Settings")]
+    [SerializeField] private SpawnDifficulty difficulty;
+    [SerializeField] private Timer timer;
 
-    private float spawnTimer;
+    private float currentSpawnInterval;
+    private int currentSpawnAmount;
+
+    private float timerMaxTime;
 
     void Start()
     {
-        
-        gameTimer = gameDurationInMinutes * 60f;
+        if (timer != null)
+            timerMaxTime = timer.GetRemainingTime();
 
-      
-        if (playerTransform == null)
-        {
-         
-            playerTransform = FindFirstObjectByType<Prince>().transform;
-        }
+        StartCoroutine(SpawnLoop());
     }
 
     void Update()
     {
-       
-        if (gameTimer <= 0f)
-        {
-            Debug.Log("Game Over! You Survived!");
-           
-            enabled = false;
-            return;
-        }
-
-      
-        gameTimer -= Time.deltaTime;
-
-       
-        spawnTimer -= Time.deltaTime;
-
-       
-        if (spawnTimer <= 0f)
-        {
-         
-            SpawnEnemies();
-
-          
-            float gameProgress = 1f - (gameTimer / (gameDurationInMinutes * 60f));
-
-        
-            spawnTimer = spawnIntervalCurve.Evaluate(gameProgress);
-        }
+        UpdateDifficulty();
     }
 
-    void SpawnEnemies()
+    private void UpdateDifficulty()
     {
-        
-        float gameProgress = 1f - (gameTimer / (gameDurationInMinutes * 60f));
+        if (timer == null || difficulty == null) return;
 
-  
-        int quantity = Mathf.RoundToInt(spawnQuantityCurve.Evaluate(gameProgress));
+        float t = 1f - (timer.GetRemainingTime() / timerMaxTime);
+        float curve = difficulty.difficultyByTime.Evaluate(t);
 
-       
-        for (int i = 0; i < quantity; i++)
+        currentSpawnInterval =
+            Mathf.Lerp(difficulty.baseSpawnInterval, difficulty.minSpawnInterval, curve);
+
+        currentSpawnAmount =
+            Mathf.RoundToInt(Mathf.Lerp(difficulty.baseSpawnAmount, difficulty.maxSpawnAmount, curve));
+    }
+
+    private IEnumerator SpawnLoop()
+    {
+        while (true)
         {
-            
-            GameObject enemyToSpawn = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+            yield return new WaitForSeconds(currentSpawnInterval);
 
-            
-            Vector2 randomDirection = Random.insideUnitCircle.normalized;
-            float randomDistance = Random.Range(minSpawnRadius, maxSpawnRadius);
-            Vector3 spawnPosition = playerTransform.position + (Vector3)(randomDirection * randomDistance);
-
-           
-            Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
+            for (int i = 0; i < currentSpawnAmount; i++)
+            {
+                SpawnEnemy();
+            }
         }
     }
+
+    private void SpawnEnemy()
+    {
+        if (player == null || enemyPrefabs.Length == 0) return;
+
+        Vector2 spawnPos = GetSpawnPosition();
+
+        Enemy prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+        Instantiate(prefab, spawnPos, Quaternion.identity);
+    }
+
+    [SerializeField] private LayerMask groundLayer;
+
+    private Vector2 GetSpawnPosition()
+    {
+        Vector2 finalPos = player.position;
+        int safety = 20;
+
+        while (safety-- > 0)
+        {
+           
+            Vector2 offset = Random.insideUnitCircle.normalized * spawnRadius;
+            Vector2 candidatePos = (Vector2)player.position + new Vector2(offset.x, 0);
+
+           
+            RaycastHit2D hit = Physics2D.Raycast(candidatePos + Vector2.up * 3f, Vector2.down, 10f, groundLayer);
+
+            if (hit.collider != null)
+            {
+                finalPos = hit.point;
+
+                if (Vector2.Distance(finalPos, player.position) >= minDistanceFromPlayer)
+                    return finalPos;
+            }
+        }
+
+       
+        return player.position + Vector3.right * (minDistanceFromPlayer + 1f);
+    }
+
 }
