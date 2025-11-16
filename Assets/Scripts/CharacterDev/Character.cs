@@ -46,7 +46,6 @@ public abstract class Character : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
     }
-
     public virtual void AddMaxHealth(int amount)
     {
         if (amount <= 0) return;

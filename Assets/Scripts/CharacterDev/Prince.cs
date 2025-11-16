@@ -83,7 +83,7 @@ public class Prince : Character, IShootable
 
     void Start()
     {
-        base.Initialized(100);
+        Initialized(100);
 
         if (rb == null)
             rb = GetComponent<Rigidbody2D>();
@@ -104,11 +104,19 @@ public class Prince : Character, IShootable
         if (AbilityText3 != null) AbilityText3.text = "";
     }
 
+  
     public void OnHitWith(Enemy enemy)
     {
         if (enemy == null) return;
         Debug.Log("Prince hit by Enemy. Enemy's DamageHit is: " + enemy.DamageHit);
         TakeDamage(enemy.DamageHit);
+    }
+
+    public override void Initialized(int starterHealth)
+    {
+        
+        base.Initialized(starterHealth);
+        AddMaxHealth(BonusMaxHealth);
     }
 
     private void OnCollisionEnter2D(Collision2D other)

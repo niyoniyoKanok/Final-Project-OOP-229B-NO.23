@@ -89,8 +89,9 @@ public class StatPanelUI : MonoBehaviour
         potionHealText.text = "Potion Heal: " + prince.BasePotionHeal + " + " + prince.BonusPotionHeal;
 
 
-        float xpPercent = (playerLevel.BonusXPMultiplier - 1f) * 100f;
-        xpBonusText.text = $"XP Bonus : {xpPercent}%";
+
+        xpBonusText.text = $"XP Bonus : {playerLevel.BonusXPMultiplier}%";
+
 
 
         float realAttackSpeedPercent = 100f + prince.BonusAttackSpeed;
@@ -99,8 +100,8 @@ public class StatPanelUI : MonoBehaviour
 
         swordWaveDamageText.text = "SwordWave Damage: " + prince.SwordWaveDamage + " + " + prince.BonusSwordWaveDamage;
 
- 
-        maxHealthText.text = "Max Health: " + playerCharacter.MaxHealth;
+
+        maxHealthText.text = $"Health: {playerCharacter.Health} / {playerCharacter.MaxHealth}";
     }
 
     void ForceEnableChildren(GameObject parent)

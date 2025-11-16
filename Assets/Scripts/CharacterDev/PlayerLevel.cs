@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
 public class PlayerLevel : MonoBehaviour
 {
     [Header("XP Settings")]
     [SerializeField] private int xpPerKill = 10;
     [SerializeField] private int baseXPToLevelUp = 100;
-    [SerializeField] private float xpMultiplier = 1.5f;
+    [SerializeField] private float xpGrowthMultiplier = 1.5f;
 
     [Header("Permanent Stat Gains")]
     [SerializeField] private int attackDamagePerLevel = 2;
@@ -14,40 +15,43 @@ public class PlayerLevel : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private Slider xpSlider;
     [SerializeField] private TextMeshProUGUI levelText;
-
-    [SerializeField] private TextMeshProUGUI killCountText; 
-    public int KillCount { get; private set; }
-
     [SerializeField] private TextMeshProUGUI xpText;
+    [SerializeField] private TextMeshProUGUI killCountText;
 
-    [Header("Game System")]
-    [SerializeField] private LevelUpManager levelUpManager;
+    private Prince princeRef;
 
-    private Prince princeReference;
     public int CurrentLevel { get; private set; }
     public int CurrentXP { get; private set; }
     public int XpToNextLevel { get; private set; }
+    public int KillCount { get; private set; }
 
-    public float BonusXPMultiplier = 1.0f;
+    [Header("Bonus (%)")]
+    [Tooltip("XP Bonus in percent. Example: 7 = +7% xp gain")]
+    public float BonusXPMultiplier = 0f; 
 
     void Start()
     {
         CurrentLevel = 1;
         CurrentXP = 0;
         XpToNextLevel = baseXPToLevelUp;
-        princeReference = GetComponent<Prince>();
         KillCount = 0;
-        UpdateUI();
 
+        princeRef = GetComponent<Prince>();
+
+        UpdateUI();
     }
 
     public void AddXP()
     {
-        int modifiedXP = Mathf.RoundToInt(xpPerKill * BonusXPMultiplier);
+  
+        float bonusRate = 1f + (BonusXPMultiplier / 100f);
 
-        CurrentXP += modifiedXP;
+        int gainedXP = Mathf.RoundToInt(xpPerKill * bonusRate);
+
+        CurrentXP += gainedXP;
         KillCount++;
 
+      
         while (CurrentXP >= XpToNextLevel)
         {
             LevelUp();
@@ -56,25 +60,21 @@ public class PlayerLevel : MonoBehaviour
         UpdateUI();
     }
 
-
     private void LevelUp()
     {
         CurrentLevel++;
         CurrentXP -= XpToNextLevel;
 
-       
-        float newXpRequired = XpToNextLevel * xpMultiplier;
-        XpToNextLevel = Mathf.RoundToInt(newXpRequired);
 
-        if (princeReference != null)
+        if (princeRef != null)
         {
-            
-            princeReference.BonusAttackDamage += attackDamagePerLevel;
+            princeRef.BonusAttackDamage += attackDamagePerLevel;
         }
 
-
-        Debug.Log("LEVEL UP! New Level: " + CurrentLevel + " | XP Needed: " + XpToNextLevel);
+       
+        XpToNextLevel = Mathf.RoundToInt(XpToNextLevel * xpGrowthMultiplier);
     }
+
     private void UpdateUI()
     {
         if (xpSlider != null)
@@ -82,20 +82,20 @@ public class PlayerLevel : MonoBehaviour
             xpSlider.maxValue = XpToNextLevel;
             xpSlider.value = CurrentXP;
         }
+
         if (levelText != null)
         {
-            levelText.text = "LV " + CurrentLevel;
+            levelText.text = $"LV {CurrentLevel}";
         }
 
         if (xpText != null)
         {
-            xpText.text = string.Format("{0} / {1}", CurrentXP, XpToNextLevel);
+            xpText.text = $"{CurrentXP} / {XpToNextLevel}";
         }
 
         if (killCountText != null)
         {
-            killCountText.text = "Kills: " + KillCount;
+            killCountText.text = $"Kills: {KillCount}";
         }
     }
 }
-
