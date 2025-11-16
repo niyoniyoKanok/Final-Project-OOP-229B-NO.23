@@ -15,9 +15,16 @@ public class Prince : Character , IShootable
     [Header("Knockback")]
     [SerializeField] private float knockbackForce = 10f;
 
+    [Header("Map Boundaries")]
+    [SerializeField] private float minX = -25.23f; 
+    [SerializeField] private float maxX = 50.27f; 
+    [SerializeField] private float minY = -1.56f; 
+    [SerializeField] private float maxY = 15f; 
 
     [Header("Game Dependencies")]
     public Camera PlayerCamera;
+
+    public GameManager GameManager;
 
     [Header("Ability 1")]
     public Image AbilityImage1;
@@ -140,17 +147,23 @@ public class Prince : Character , IShootable
 
 
         Vector3 mouseScreenPos = Input.mousePosition;
-
-
         mouseScreenPos.z = PlayerCamera.transform.position.z * -1;
-
-       
         Vector3 worldPos = PlayerCamera.ScreenToWorldPoint(mouseScreenPos);
+
+        
+        worldPos.x = Mathf.Clamp(worldPos.x, minX, maxX);
+     
+        worldPos.y = Mathf.Clamp(worldPos.y, minY, maxY);
+        
+
+      
         teleportTarget = new Vector2(worldPos.x, worldPos.y);
 
-        rb.position = teleportTarget; 
-        rb.linearVelocity = Vector2.zero; 
-     
+        rb.position = teleportTarget;
+
+        
+        rb.linearVelocity = Vector2.zero;
+
 
 
     }
@@ -260,7 +273,8 @@ public class Prince : Character , IShootable
             prince.SetMovementLock(true);
         }
 
-        Destroy(this.gameObject, 3f);
+        
+        GameManager.Instance.ShowGameOverScreen();
     }
 
     public void Attack()

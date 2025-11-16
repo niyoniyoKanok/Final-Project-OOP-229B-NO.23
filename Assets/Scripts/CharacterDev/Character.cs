@@ -4,7 +4,8 @@ using System.Collections;
 abstract public class Character : MonoBehaviour
 {
     private int health;
-    private int maxHealth;
+    protected int maxHealth;
+    public int MaxHealth { get { return maxHealth; } }
 
     protected Animator animator;
     protected Rigidbody2D rb;

@@ -110,8 +110,8 @@ MonoBehaviour:
   moveSpeed: 0
   stunDuration: 0.5
   idealDistance: 6
+  attackCooldown: 3
   projectilePrefab: {fileID: 6282259654324480118, guid: fa504f4cc3e62b54aa950af06ca43604, type: 3}
-  attackCooldown: 2
 --- !u!70 &-4013331375659482921
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

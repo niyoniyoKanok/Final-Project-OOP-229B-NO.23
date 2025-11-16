@@ -20,10 +20,10 @@ public class FlyingEye_Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-       
-        Character target = other.GetComponent<Character>();
 
-     
+        Character target = other.GetComponentInParent<Character>();
+
+
         if (target != null && target is Prince)
         {
             target.TakeDamage(damage); 
