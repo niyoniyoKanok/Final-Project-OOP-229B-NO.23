@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
     [Header("UI Panels")]
     public GameObject gameOverPanel;
+
+    [SerializeField] private GameObject inGameHUD;
 
     void Awake()
     {
@@ -27,6 +30,13 @@ public class GameManager : MonoBehaviour
         {
             gameOverPanel.SetActive(false);
         }
+
+        if (inGameHUD != null)
+        {
+            inGameHUD.SetActive(true);
+        }
+
+
         Time.timeScale = 1f;
     }
 
@@ -36,6 +46,11 @@ public class GameManager : MonoBehaviour
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
+        }
+
+        if (inGameHUD != null)
+        {
+            inGameHUD.SetActive(false);
         }
     }
 

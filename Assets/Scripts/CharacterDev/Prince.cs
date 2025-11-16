@@ -4,7 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Prince : Character , IShootable
 {
+    [Header("Player Stats (Bonuses)")]
+    public int BonusAttackDamage = 0; 
+    public float BonusCooldownReduction = 0f; 
+    public int BonusPotionHeal = 0;
+    public float BonusAttackSpeed = 1f; 
+    public int BonusSwordWaveDamage = 0;
 
+    [Header("Player Stats (Bases)")]
+    public int BaseAttackDamage = 20;
+    public int BasePotionHeal = 10;
+    public int AttackDamgerPerLevelUp = 1;
     [field: SerializeField] public Transform ShootPoint { get; set; }
 
     [Header("Invincibility")]
@@ -204,8 +214,8 @@ public class Prince : Character , IShootable
     {
         if (Input.GetKeyDown(Ability3Key) && !isAbility3Cooldown)
         {
-
-            Ability3Heal(10);
+            int totalHeal = BasePotionHeal + BonusPotionHeal;
+            Ability3Heal(totalHeal);
             isAbility3Cooldown = true;
             currentAbility3Cooldown = Ability3Cooldown;
             AudioSource.PlayOneShot(HealSound);
@@ -288,7 +298,8 @@ public class Prince : Character , IShootable
             if (enemy != null)
             {
 
-                enemy.TakeDamage(20);
+                int totalDamage = BaseAttackDamage + BonusAttackDamage;
+                enemy.TakeDamage(totalDamage);
             }
 
         }
