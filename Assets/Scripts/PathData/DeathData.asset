@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ce71271f18c95419a3bc6c18a0a0ce, type: 3}
+  m_Name: DeathData
+  m_EditorClassIdentifier: Assembly-CSharp::PathData
+  pathType: 2
+  pathName: Death Path
+  pathIcon: {fileID: 2313701960166479690, guid: 531242721d8f19241be2135656985370, type: 3}
+  pathDescription: Specializes in crowd control, chain reactions, and status ailments.
+    (Combo & Debuff Focus)
+  skill1Name: Death Circle
+  skill1Icon: {fileID: 8548952481652750231, guid: af3cf8ddddeac404ea6edf28d9eb3927, type: 3}
+  skill1Desc: 'Ability: Creates a magic circle around enemies, dealing damage and
+    applying the Death status.
+
+
+    Damage: 25% of Sword Wave Damage (~7-8).
+
+
+    Effect:
+    Death status slows enemies movement speed and triggers an Explosion (AOE damage)
+    upon expiration or death.'
+  skill2Name: Death Slice
+  skill2Icon: {fileID: -4649296418967476806, guid: c92484de1c72c22468470d84896b9421, type: 3}
+  skill2Desc: 'Ability: Slashes a random enemy.
+
+
+    Damage: 50% of Sword Wave Damage
+    (~15).
+
+
+    Effect: If the target is afflicted with Death status and has been
+    hit recently, triggers a Double Hit (strikes 2-3 times instantly with no cooldown).'
+  skill3Name: Curse Shout
+  skill3Icon: {fileID: -8154520737313663591, guid: 44b0d3be6f6df7d41afc81a6fab1654a, type: 3}
+  skill3Desc: 'Ability: Unleashes a shockwave from the player that expands outward.
+
+
+    Damage:
+    100% of Sword Wave Damage (~30).
+
+
+    Effect: Knocks enemies back (Knockback)
+    and applies Death status to all targets hit.'

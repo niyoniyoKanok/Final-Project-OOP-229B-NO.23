@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ce71271f18c95419a3bc6c18a0a0ce, type: 3}
+  m_Name: VampireData
+  m_EditorClassIdentifier: Assembly-CSharp::PathData
+  pathType: 1
+  pathName: Vampire Path
+  pathIcon: {fileID: 6021983849546841124, guid: 17f58660adeb4be49a3c3f15dadb95de, type: 3}
+  pathDescription: Specializes in sustain, continuous damage, and blood magic. (Lifesteal
+    focus)
+  skill1Name: Bat
+  skill1Icon: {fileID: 6360131877946120522, guid: a25d93ba082329c4cb78fa29a8b795ea, type: 3}
+  skill1Desc: 'Ability: Summons a bat every 2 seconds that homes in on an enemy,
+    deals damage upon impact, and disappears.
+
+
+    Damage: 50% of Sword Wave Damage
+    (~15).
+
+
+    Effect: Heals the player for an amount equal to the damage dealt.'
+  skill2Name: Vampire Blade
+  skill2Icon: {fileID: 5160979380686935779, guid: c56c6cbb63908a544a431689b0f50541, type: 3}
+  skill2Desc: 'Ability: Thrusts a blood blade forward every 3 seconds.
+
+
+    Damage:
+    50% of Sword Wave Damage (~15).
+
+
+    Effect: Inflicts Bleed status on enemies,
+    dealing continuous damage over time.'
+  skill3Name: Vampire Scratch
+  skill3Icon: {fileID: 0}
+  skill3Desc: 'Ability: Randomly spawns a scratch attack on a nearby enemy every
+    5 seconds (auto-targeting).
+
+
+    Damage: 50% of Sword Wave Damage (~15), split
+    into 2 ticks.
+
+
+    Effect: Lifesteals a small amount on each successful hit
+    (25% of total damage per tick).'

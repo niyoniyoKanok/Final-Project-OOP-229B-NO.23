@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ce71271f18c95419a3bc6c18a0a0ce, type: 3}
+  m_Name: StarData
+  m_EditorClassIdentifier: Assembly-CSharp::PathData
+  pathType: 3
+  pathName: Star Path
+  pathIcon: {fileID: -6997349640991869917, guid: 7a28cc1d9a1a89745ab5c4117b7298f8, type: 3}
+  pathDescription: 'Specializes in area-of-effect magic and chance-based skill repetition.
+    (AOE & RNG Focus)
+
+'
+  skill1Name: Star Impact
+  skill1Icon: {fileID: 3180557591394666520, guid: 53c9d469365207f4aba21831921887b8, type: 3}
+  skill1Desc: 'Ability: Instantly blasts energy on all enemies within range of the
+    player (Lock-on AOE).
+
+
+    Damage: 25% of Sword Wave Damage (~7-8).'
+  skill2Name: Star Falling
+  skill2Icon: {fileID: 2097989297919222410, guid: 07014d382e319af4ca2ae960fc65652b, type: 3}
+  skill2Desc: 'Ability: Summons 3 falling stars to strike 3 random enemies.
+
+
+    Damage:
+    25% of Sword Wave Damage per star (~7-8).'
+  skill3Name: Arcane Comet
+  skill3Icon: {fileID: -6292230534184451920, guid: 2adb9d40f53a6714cbf4a971056229b4, type: 3}
+  skill3Desc: 'Ability: Summons a massive comet to fall on a random enemy, passing
+    through obstacles.
+
+
+    Damage: 50% of Sword Wave Damage (~15) in a wide area
+    (AOE) upon impact.'

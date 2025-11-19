@@ -2,6 +2,13 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+public enum PathType
+{
+    None,       
+    Vampire,    
+    Death,      
+    Star    
+}
 public class Prince : Character, IShootable
 {
     [Header("--- Star Path ---")]
@@ -106,7 +113,7 @@ public class Prince : Character, IShootable
     public KeyCode Ability2Key;
     public float Ability2Cooldown = 5f;
     [field: SerializeField] public GameObject Bullet { get; set; }
-
+    private PathType currentPathType = PathType.None;
     [Header("Ability 3")]
     public Image AbilityImage3;
     public Text AbilityText3;
@@ -159,21 +166,35 @@ public class Prince : Character, IShootable
         if (AbilityText2 != null) AbilityText2.text = "";
         if (AbilityText3 != null) AbilityText3.text = "";
 
-        StartCoroutine(BatSpawnerRoutine());
-        StartCoroutine(VampireBladeSpawnerRoutine());
-        StartCoroutine(VampireScratchSpawnerRoutine());
-
-        StartCoroutine(DeathCircleSpawner());
-        StartCoroutine(DeathSliceSpawner());
-        StartCoroutine(CurseShoutSpawner());
-
-        StartCoroutine(StarImpactSpawner());
-        StartCoroutine(StarFallingSpawner());
-        StartCoroutine(ArcaneCometSpawner());
-
-
     }
 
+    public void SetPathData(PathData data)
+    {
+        currentPathType = data.pathType;
+        Debug.Log($"Prince selected path: {currentPathType}");
+
+        // ตรวจสอบว่าเลือกสายไหน แล้วเปิดสกิลของสายนั้น
+        switch (currentPathType)
+        {
+            case PathType.Vampire:
+                StartCoroutine(BatSpawnerRoutine());
+                StartCoroutine(VampireBladeSpawnerRoutine());
+                StartCoroutine(VampireScratchSpawnerRoutine());
+                break;
+
+            case PathType.Death:
+                StartCoroutine(DeathCircleSpawner());
+                StartCoroutine(DeathSliceSpawner());
+                StartCoroutine(CurseShoutSpawner());
+                break;
+
+            case PathType.Star:
+                StartCoroutine(StarImpactSpawner());
+                StartCoroutine(StarFallingSpawner());
+                StartCoroutine(ArcaneCometSpawner());
+                break;
+        }
+        }
     private bool CheckStarPassive()
     {
        
