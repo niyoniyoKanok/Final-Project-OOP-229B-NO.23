@@ -4,7 +4,7 @@ using System.Collections;
 public abstract class Character : MonoBehaviour
 {
     private int health;
-    public int BaseMaxHealth { get; private set; }
+    public int BaseMaxHealth { get; set; }
     public int MaxHealth { get; private set; }
 
     protected Animator animator;

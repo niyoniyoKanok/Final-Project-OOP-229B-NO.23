@@ -66,6 +66,15 @@ public abstract class Enemy : Character
 
     public abstract void Move();
 
+    public void ApplyStun(float duration)
+    {
+        if (!isStunned)
+        {
+            stunDuration = duration;
+            StartCoroutine(StunRoutine());
+        }
+    }
+
     protected override void Die()
     {
         if (playerLevel != null)
@@ -86,12 +95,13 @@ public abstract class Enemy : Character
             rb.linearVelocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
         }
-
-      
+        Prince prince = FindFirstObjectByType<Prince>();
+       
         if (animator != null)
         {
             animator.SetTrigger("Dead");
         }
+
 
       
         Destroy(this.gameObject, deathDelayTime);

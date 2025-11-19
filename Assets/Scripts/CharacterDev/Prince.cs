@@ -4,6 +4,23 @@ using UnityEngine.UI;
 
 public class Prince : Character, IShootable
 {
+    [Header("--- Star Path ---")]
+    public AudioClip starRepeatSound;
+
+    [Header("Skill 1: Star Impact")]
+    public GameObject starImpactPrefab;
+    public float starImpactInterval = 3f;
+    public float starImpactRadius = 4f;
+
+    [Header("Skill 2: Star Falling")]
+    public GameObject starFallingPrefab;
+    public float starFallingInterval = 4f;
+    public float starFallingHeight = 5f; 
+
+    [Header("Skill 3: Arcane Comet")]
+    public GameObject arcaneCometPrefab;
+    public float arcaneCometInterval = 6f;
+
     [Header("--- Death Path ---")]
 
     [Header("Skill 1: Death Circle")]
@@ -141,9 +158,171 @@ public class Prince : Character, IShootable
         StartCoroutine(DeathCircleSpawner());
         StartCoroutine(DeathSliceSpawner());
         StartCoroutine(CurseShoutSpawner());
+
+        StartCoroutine(StarImpactSpawner());
+        StartCoroutine(StarFallingSpawner());
+        StartCoroutine(ArcaneCometSpawner());
+
+
     }
 
+    private bool CheckStarPassive()
+    {
+       
+        bool isRepeat = Random.value <= 0.1f;
+        if (isRepeat && AudioSource != null && starRepeatSound != null)
+        {
+            AudioSource.PlayOneShot(starRepeatSound); 
+            Debug.Log("Star Passive Triggered! Skill Repeated.");
+        }
+        return isRepeat;
+    }
 
+    private IEnumerator StarImpactSpawner()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(starImpactInterval);
+            if (IsDead()) continue;
+
+            
+            CastStarImpact();
+
+           
+            if (CheckStarPassive())
+            {
+                yield return new WaitForSeconds(0.2f); 
+                CastStarImpact();
+            }
+        }
+    }
+    private void CastStarImpact()
+    {
+        
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, starImpactRadius);
+
+    
+        int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) * 0.25f);
+
+        bool hitAny = false;
+
+        foreach (var hit in hits)
+        {
+            
+            if (hit == null || hit.gameObject == null) continue;
+
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if (enemy != null && !enemy.IsDead())
+            {
+                hitAny = true;
+
+                
+                if (starImpactPrefab != null)
+                {
+                    Instantiate(starImpactPrefab, enemy.transform.position, Quaternion.identity);
+                }
+
+                
+                enemy.TakeDamage(dmg);
+            }
+        }
+
+       
+        if (!hitAny)
+        {
+            Debug.Log("No targets for Star Impact");
+        }
+    }
+
+    private IEnumerator StarFallingSpawner()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(starFallingInterval);
+            if (IsDead()) continue;
+
+            CastStarFalling();
+
+            if (CheckStarPassive())
+            {
+                yield return new WaitForSeconds(0.3f);
+                CastStarFalling();
+            }
+        }
+    }
+
+    private void CastStarFalling()
+    {
+        if (starFallingPrefab == null) return;
+
+       
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 10f); 
+        System.Collections.Generic.List<Transform> targets = new System.Collections.Generic.List<Transform>();
+
+        foreach (var hit in hits)
+        {
+            if (hit.GetComponent<Enemy>() && !hit.GetComponent<Enemy>().IsDead())
+                targets.Add(hit.transform);
+        }
+
+       
+        int count = 0;
+        while (count < 3 && targets.Count > 0)
+        {
+            int randIndex = Random.Range(0, targets.Count);
+            Transform target = targets[randIndex];
+            targets.RemoveAt(randIndex);
+
+           
+            Vector3 spawnPos = target.position + new Vector3(0, starFallingHeight, 0);
+            GameObject star = Instantiate(starFallingPrefab, spawnPos, Quaternion.identity);
+
+           
+            int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) * 0.25f);
+            star.GetComponent<StarFalling>().Init(dmg);
+
+            count++;
+        }
+    }
+
+    private IEnumerator ArcaneCometSpawner()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(arcaneCometInterval);
+            if (IsDead()) continue;
+
+            CastArcaneComet();
+
+            if (CheckStarPassive())
+            {
+                yield return new WaitForSeconds(0.5f);
+                CastArcaneComet();
+            }
+        }
+    }
+
+    private void CastArcaneComet()
+    {
+        if (arcaneCometPrefab == null) return;
+
+        Enemy target = FindRandomEnemy(10f);
+
+        if (target != null)
+        {
+            
+            Vector3 spawnPos = target.transform.position + new Vector3(0, 3.5f, 0);
+
+            GameObject comet = Instantiate(arcaneCometPrefab, spawnPos, Quaternion.identity);
+
+     
+            comet.transform.localScale = new Vector3(2f, 2f, 1f); 
+
+          
+            int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) * 0.5f);
+            comet.GetComponent<ArcaneComet>().Init(dmg);
+        }
+    }
     private IEnumerator DeathCircleSpawner()
     {
         while (true)
