@@ -9,7 +9,7 @@ public class HUDManager : MonoBehaviour
 
     [Header("Tab Info Panel")]
     public GameObject tabInfoPanel; 
-    public Image tabPathIcon;
+ 
     public TextMeshProUGUI tabPathName;
 
    
@@ -33,7 +33,7 @@ public class HUDManager : MonoBehaviour
         pathIconDisplay.gameObject.SetActive(true);
 
    
-        tabPathIcon.sprite = data.pathIcon;
+      
         tabPathName.text = data.pathName;
 
         s1Icon.sprite = data.skill1Icon; s1Desc.text = data.skill1Desc;
@@ -43,7 +43,13 @@ public class HUDManager : MonoBehaviour
 
     void Update()
     {
-      
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            ToggleTabInfo();
+        }
+
+
         if (tabInfoPanel.activeSelf && currentData != null)
         {
             int lvl = playerLevel.CurrentLevel;
@@ -55,5 +61,13 @@ public class HUDManager : MonoBehaviour
            
             s3LockOverlay.SetActive(lvl < 11);
         }
+    }
+
+    public void ToggleTabInfo()
+    {
+        bool isActive = tabInfoPanel.activeSelf;
+
+       
+        tabInfoPanel.SetActive(!isActive);
     }
 }

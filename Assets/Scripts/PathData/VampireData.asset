@@ -40,7 +40,7 @@ MonoBehaviour:
     Effect: Inflicts Bleed status on enemies,
     dealing continuous damage over time.'
   skill3Name: Vampire Scratch
-  skill3Icon: {fileID: 0}
+  skill3Icon: {fileID: -5484168563719466894, guid: d87750b5c6c72e045a1ad6b5db04b7bd, type: 3}
   skill3Desc: 'Ability: Randomly spawns a scratch attack on a nearby enemy every
     5 seconds (auto-targeting).
 
