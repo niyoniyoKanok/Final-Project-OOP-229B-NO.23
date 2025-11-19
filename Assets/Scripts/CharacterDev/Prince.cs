@@ -4,6 +4,37 @@ using UnityEngine.UI;
 
 public class Prince : Character, IShootable
 {
+    [Header("--- Death Path ---")]
+
+    [Header("Skill 1: Death Circle")]
+    public GameObject deathCirclePrefab;
+    public float deathCircleInterval = 4f;
+    public float deathCircleRange = 6f;
+
+    [Header("Skill 2: Death Slice")]
+    public GameObject deathSlicePrefab;
+    public float deathSliceInterval = 3f;
+
+    [Header("Skill 3: Curse Shout")]
+    public GameObject curseShoutPrefab;
+    public float curseShoutInterval = 5f;
+    public Transform shoutPoint;
+
+    [Header("--- Vampire Path ---")]
+
+    [Header("Skill 1: Bat")]
+    public GameObject batPrefab;
+    public float batSpawnInterval = 2f;
+    
+    [Header("Skill 2: Vampire Blade")]
+    public GameObject vampireBladePrefab; 
+    public float vampireBladeInterval = 3f;
+    
+    [Header("Skill 2: Vampire Scratch")]
+    public GameObject vampireScratchPrefab; 
+    public float vampireScratchInterval = 5f; 
+    public float scratchSearchRadius = 8f;
+
     [Header("Player Stats (Bonuses)")]
     public int BonusAttackDamage = 0;
     public float BonusCooldownReduction = 0f;
@@ -41,7 +72,7 @@ public class Prince : Character, IShootable
     public Image AbilityImage1;
     public Text AbilityText1;
     public KeyCode Ability1Key;
-    public float Ability1Cooldown = 7f; 
+    public float Ability1Cooldown = 7f;
     private Vector2 teleportTarget;
 
     [Header("Ability 2")]
@@ -94,7 +125,7 @@ public class Prince : Character, IShootable
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
 
-     
+
         if (AbilityImage1 != null) AbilityImage1.fillAmount = 0f;
         if (AbilityImage2 != null) AbilityImage2.fillAmount = 0f;
         if (AbilityImage3 != null) AbilityImage3.fillAmount = 0f;
@@ -102,9 +133,232 @@ public class Prince : Character, IShootable
         if (AbilityText1 != null) AbilityText1.text = "";
         if (AbilityText2 != null) AbilityText2.text = "";
         if (AbilityText3 != null) AbilityText3.text = "";
+
+        StartCoroutine(BatSpawnerRoutine());
+        StartCoroutine(VampireBladeSpawnerRoutine());
+        StartCoroutine(VampireScratchSpawnerRoutine());
+
+        StartCoroutine(DeathCircleSpawner());
+        StartCoroutine(DeathSliceSpawner());
+        StartCoroutine(CurseShoutSpawner());
     }
 
-  
+
+    private IEnumerator DeathCircleSpawner()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(deathCircleInterval);
+
+            if (!IsDead() && deathCirclePrefab != null)
+            {
+                Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, deathCircleRange);
+
+                int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 4f);
+                int explodeDmg = dmg;
+
+                foreach (var hit in hits)
+                {
+                    
+                    if (hit == null || hit.gameObject == null)
+                    {
+                        continue; 
+                    }
+                   
+
+                    Enemy enemy = hit.GetComponent<Enemy>();
+
+                   
+                    if (enemy != null && !enemy.IsDead() && enemy.GetComponent<Death>() == null)
+                    {
+                        GameObject circle = Instantiate(deathCirclePrefab, enemy.transform.position, Quaternion.identity);
+                        circle.GetComponent<DeathCircle>().Init(enemy, dmg, explodeDmg);
+
+                  
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+            }
+        }
+    }
+
+    private IEnumerator DeathSliceSpawner()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(deathSliceInterval);
+
+          
+            Enemy target = FindRandomEnemy(8f);
+
+            if (!IsDead() && target != null && deathSlicePrefab != null)
+            {
+                GameObject slice = Instantiate(deathSlicePrefab, target.transform.position, Quaternion.identity);
+
+                
+                int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 2f);
+
+                slice.GetComponent<DeathSlice>().Init(target, dmg);
+            }
+        }
+    }
+
+    private IEnumerator CurseShoutSpawner()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(curseShoutInterval);
+
+            if (!IsDead() && curseShoutPrefab != null)
+            {
+                GameObject shout = Instantiate(curseShoutPrefab, ShootPoint.position, Quaternion.identity);
+
+                
+                shout.transform.SetParent(this.transform);
+      
+
+                CurseShout shoutScript = shout.GetComponent<CurseShout>();
+
+                if (shoutScript != null)
+                {
+                    int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 2f);
+                    shoutScript.InitWeapon(dmg, this);
+                }
+            }
+        }
+    }
+
+    private Enemy FindRandomEnemy(float range)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range);
+        System.Collections.Generic.List<Enemy> enemies = new System.Collections.Generic.List<Enemy>();
+        foreach (var hit in hits)
+        {
+            Enemy e = hit.GetComponent<Enemy>();
+            if (e != null && !e.IsDead()) enemies.Add(e);
+        }
+        if (enemies.Count > 0) return enemies[Random.Range(0, enemies.Count)];
+        return null;
+    }
+private IEnumerator VampireScratchSpawnerRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(vampireScratchInterval);
+
+            if (!IsDead() && vampireScratchPrefab != null)
+            {
+                SpawnVampireScratch();
+            }
+        }
+    }
+
+    private void SpawnVampireScratch()
+    {
+
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, scratchSearchRadius);
+
+       
+        Transform targetEnemy = null;
+
+       
+        System.Collections.Generic.List<Transform> validEnemies = new System.Collections.Generic.List<Transform>();
+
+        foreach (var col in enemies)
+        {
+            Enemy e = col.GetComponent<Enemy>();
+            if (e != null && !e.IsDead())
+            {
+                validEnemies.Add(e.transform);
+            }
+        }
+
+     
+        if (validEnemies.Count > 0)
+        {
+            targetEnemy = validEnemies[Random.Range(0, validEnemies.Count)];
+        }
+
+ 
+        if (targetEnemy != null)
+        {
+            GameObject scratchObj = Instantiate(vampireScratchPrefab, targetEnemy.position, Quaternion.identity);
+
+            VampireScratch scratchScript = scratchObj.GetComponent<VampireScratch>();
+            if (scratchScript != null)
+            {
+                
+                int totalSwordDamage = SwordWaveDamage + BonusSwordWaveDamage;
+
+                int scratchDamage = Mathf.RoundToInt(totalSwordDamage / 2f);
+
+            
+                int scratchHeal = Mathf.RoundToInt(totalSwordDamage / 4f);
+
+                scratchScript.Init(scratchDamage, scratchHeal, this);
+            }
+        }
+    }
+
+private IEnumerator VampireBladeSpawnerRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(vampireBladeInterval);
+
+            if (!IsDead() && vampireBladePrefab != null)
+            {
+                SpawnVampireBlade();
+            }
+        }
+    }
+
+    private void SpawnVampireBlade()
+    {
+
+
+        GameObject bladeObj = Instantiate(vampireBladePrefab, ShootPoint.position, Quaternion.identity);
+
+        bladeObj.transform.SetParent(this.transform);
+    
+
+        VampireBlade bladeScript = bladeObj.GetComponent<VampireBlade>();
+        if (bladeScript != null)
+        {
+            int bladeDamage = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 2f);
+
+            bladeScript.InitWeapon(bladeDamage, this);
+        }
+    }
+private IEnumerator BatSpawnerRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(batSpawnInterval);
+
+            if (!IsDead() && batPrefab != null)
+            {
+                SpawnBat();
+            }
+        }
+    }
+
+    private void SpawnBat()
+    {
+   
+        GameObject batObj = Instantiate(batPrefab, transform.position, Quaternion.identity);
+
+        
+        Bat batScript = batObj.GetComponent<Bat>();
+        if (batScript != null)
+        {
+           
+            int batDamage = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 2f);
+
+         
+            batScript.InitWeapon(batDamage, this);
+        }
+    } 
     public void OnHitWith(Enemy enemy)
     {
         if (enemy == null) return;
