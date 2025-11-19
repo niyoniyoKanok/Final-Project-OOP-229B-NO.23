@@ -6,6 +6,13 @@ public class Prince : Character, IShootable
 {
     [Header("--- Star Path ---")]
     public AudioClip starRepeatSound;
+  
+    public AudioClip darkStarSound;
+
+    [Header("Star Path: Passive 2")]
+    public GameObject darkStarPrefab;
+    public float darkStarChance = 0.4f;
+    private GameObject activeDarkStar;
 
     [Header("Skill 1: Star Impact")]
     public GameObject starImpactPrefab;
@@ -76,10 +83,10 @@ public class Prince : Character, IShootable
     [SerializeField] private float knockbackForce = 10f;
 
     [Header("Map Boundaries")]
-    [SerializeField] private float minX = -25.23f;
-    [SerializeField] private float maxX = 50.27f;
-    [SerializeField] private float minY = -1.56f;
-    [SerializeField] private float maxY = 15f;
+    [SerializeField] private float minX = -66.44f;
+    [SerializeField] private float maxX = 74.63f;
+    [SerializeField] private float minY = -3.31f;
+    [SerializeField] private float maxY = 10.65f;
 
     [Header("Game Dependencies")]
     public Camera PlayerCamera;
@@ -91,6 +98,7 @@ public class Prince : Character, IShootable
     public KeyCode Ability1Key;
     public float Ability1Cooldown = 7f;
     private Vector2 teleportTarget;
+    public GameObject teleportVFX;
 
     [Header("Ability 2")]
     public Image AbilityImage2;
@@ -178,27 +186,71 @@ public class Prince : Character, IShootable
         return isRepeat;
     }
 
-    private IEnumerator StarImpactSpawner()
+    private void TriggerStarPassives()
+    {
+        
+        if (Random.value <= darkStarChance)
+        {
+            SpawnDarkStar();
+        }
+    }
+
+    private void SpawnDarkStar()
+    {
+    
+        if (activeDarkStar != null)
+        {
+            return;
+        }
+    
+
+        if (darkStarPrefab != null)
+        {
+            if (darkStarSound != null && AudioSource != null)
+            {
+                AudioSource.PlayOneShot(darkStarSound);
+            }
+            activeDarkStar = Instantiate(darkStarPrefab, ShootPoint.position, Quaternion.identity);
+           
+
+            int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 2f);
+
+            DarkStar dsScript = activeDarkStar.GetComponent<DarkStar>(); 
+            if (dsScript != null)
+            {
+                dsScript.InitWeapon(dmg, this);
+            }
+
+            Debug.Log("Passive Dark Star Activated!");
+        }
+    }
+
+
+private IEnumerator StarImpactSpawner()
     {
         while (true)
         {
             yield return new WaitForSeconds(starImpactInterval);
             if (IsDead()) continue;
 
-            
             CastStarImpact();
 
            
+            TriggerStarPassives();
+
+          
             if (CheckStarPassive())
             {
-                yield return new WaitForSeconds(0.2f); 
+                yield return new WaitForSeconds(0.2f);
                 CastStarImpact();
+                
             }
         }
     }
     private void CastStarImpact()
     {
         
+
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, starImpactRadius);
 
     
@@ -242,6 +294,7 @@ public class Prince : Character, IShootable
             if (IsDead()) continue;
 
             CastStarFalling();
+            TriggerStarPassives(); 
 
             if (CheckStarPassive())
             {
@@ -253,6 +306,9 @@ public class Prince : Character, IShootable
 
     private void CastStarFalling()
     {
+
+        
+
         if (starFallingPrefab == null) return;
 
        
@@ -293,6 +349,7 @@ public class Prince : Character, IShootable
             if (IsDead()) continue;
 
             CastArcaneComet();
+            TriggerStarPassives(); 
 
             if (CheckStarPassive())
             {
@@ -302,7 +359,8 @@ public class Prince : Character, IShootable
         }
     }
 
-    private void CastArcaneComet()
+
+private void CastArcaneComet()
     {
         if (arcaneCometPrefab == null) return;
 
@@ -310,8 +368,10 @@ public class Prince : Character, IShootable
 
         if (target != null)
         {
+
             
-            Vector3 spawnPos = target.transform.position + new Vector3(0, 3.5f, 0);
+
+            Vector3 spawnPos = target.transform.position + new Vector3(0, 7f, 0);
 
             GameObject comet = Instantiate(arcaneCometPrefab, spawnPos, Quaternion.identity);
 
@@ -610,6 +670,12 @@ private IEnumerator BatSpawnerRoutine()
         if (TeleportSound != null && AudioSource != null)
         {
             AudioSource.PlayOneShot(TeleportSound);
+        }
+
+        if (teleportVFX != null)
+        {
+
+            Instantiate(teleportVFX, transform.position, Quaternion.identity);
         }
 
         Vector3 mouseScreenPos = Input.mousePosition;

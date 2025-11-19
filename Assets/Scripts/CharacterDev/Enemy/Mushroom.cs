@@ -6,7 +6,7 @@ public class Mushroom : Enemy
     {
         base.Start();
         base.Initialized(50);
-        DamageHit = 20;
+        DamageHit = 10;
         moveSpeed = 3f;
     }
 

@@ -13,7 +13,7 @@ public class FlyingEye : Enemy
     protected override void Start()
     {
         base.Start();
-        base.Initialized(20);
+        base.Initialized(30);
         moveSpeed = 2.5f; 
 
 

@@ -5,8 +5,8 @@ public class Skeleton : Enemy
     protected override void Start()
     {
         base.Start();
-        base.Initialized(3000);
-        DamageHit = 25;
+        base.Initialized(70);
+        DamageHit = 15;
         moveSpeed = 1.5f;
     }
 
