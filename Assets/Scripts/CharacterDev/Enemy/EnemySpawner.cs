@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -13,42 +14,89 @@ public class EnemySpawner : MonoBehaviour
     [Header("Enemy Prefabs")]
     [SerializeField] private Enemy[] enemyPrefabs;
 
-    [Header("Difficulty Settings")]
+    [Header("Difficulty & Progression")]
     [SerializeField] private SpawnDifficulty difficulty;
     [SerializeField] private Timer timer;
 
+    [Header("Elite Settings")]
+    [Range(0f, 1f)][SerializeField] private float baseEliteChance = 0.05f;
+    [SerializeField] private float eliteSizeMultiplier = 1.5f;
+
+    [Header("Boss Events")]
+    [SerializeField] private List<BossSpawnEvent> bossEvents;
+
+   
+    [Header("Overtime Scaling")]
+    [Tooltip("ทุกๆ 10 วินาทีใน Overtime จะเพิ่มจำนวนมอนสเตอร์กี่ตัว")]
+    [SerializeField] private float overtimeSpawnIncreaseRate = 0.5f;
+    [Tooltip("เวลาเกิดต่ำสุดที่เป็นไปได้ในช่วง Overtime")]
+    [SerializeField] private float minOvertimeSpawnInterval = 0.1f;
+
     private float currentSpawnInterval;
     private int currentSpawnAmount;
-
-    private float timerMaxTime;
+    private float elapsedTime;
 
     void Start()
     {
-        if (timer != null)
-            timerMaxTime = timer.GetRemainingTime();
-
         StartCoroutine(SpawnLoop());
     }
 
     void Update()
     {
+        if (timer == null) return;
+
+     
+        elapsedTime = timer.GetTotalElapsedTime();
+
         UpdateDifficulty();
+        CheckBossSpawns();
     }
 
     private void UpdateDifficulty()
     {
-        if (timer == null || difficulty == null) return;
+        if (difficulty == null) return;
 
-        float t = 1f - (timer.GetRemainingTime() / timerMaxTime);
-        float curve = difficulty.difficultyByTime.Evaluate(t);
+        if (!timer.IsOvertime)
+        {
+           
+            float t = 1f - (timer.GetRemainingTime() / timer.MaxTime);
+            float curve = difficulty.difficultyByTime.Evaluate(t);
 
-        currentSpawnInterval =
-            Mathf.Lerp(difficulty.baseSpawnInterval, difficulty.minSpawnInterval, curve);
+            currentSpawnInterval = Mathf.Lerp(difficulty.baseSpawnInterval, difficulty.minSpawnInterval, curve);
+            currentSpawnAmount = Mathf.RoundToInt(Mathf.Lerp(difficulty.baseSpawnAmount, difficulty.maxSpawnAmount, curve));
+        }
+        else
+        {
+            
 
-        currentSpawnAmount =
-            Mathf.RoundToInt(Mathf.Lerp(difficulty.baseSpawnAmount, difficulty.maxSpawnAmount, curve));
+            float extraDifficulty = timer.OvertimeDuration * overtimeSpawnIncreaseRate; 
+
+            
+            currentSpawnAmount = difficulty.maxSpawnAmount + Mathf.FloorToInt(extraDifficulty);
+
+        
+            currentSpawnInterval = Mathf.Max(minOvertimeSpawnInterval, difficulty.minSpawnInterval - (timer.OvertimeDuration * 0.001f));
+        }
     }
+    private void CheckBossSpawns()
+    {
+        for (int i = 0; i < bossEvents.Count; i++)
+        {
+            var bossEvent = bossEvents[i];
 
+            
+            if (!bossEvent.hasSpawned && elapsedTime >= bossEvent.spawnTime)
+            {
+                SpawnBoss(bossEvent.bossPrefab);
+
+                // Mark as spawned
+                bossEvent.hasSpawned = true;
+                bossEvents[i] = bossEvent;
+
+                Debug.Log($"Spawned Boss: {bossEvent.bossName} at {elapsedTime}s");
+            }
+        }
+    }
     private IEnumerator SpawnLoop()
     {
         while (true)
@@ -68,8 +116,37 @@ public class EnemySpawner : MonoBehaviour
 
         Vector2 spawnPos = GetSpawnPosition();
 
+       
         Enemy prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
-        Instantiate(prefab, spawnPos, Quaternion.identity);
+
+       
+        Enemy newEnemy = Instantiate(prefab, spawnPos, Quaternion.identity);
+
+       
+        if (Random.value < baseEliteChance)
+        {
+            MakeElite(newEnemy);
+        }
+    }
+
+    private void SpawnBoss(GameObject bossPrefab)
+    {
+        Vector2 spawnPos = GetSpawnPosition();
+        Instantiate(bossPrefab, spawnPos, Quaternion.identity);
+    }
+
+    private void MakeElite(Enemy enemy)
+    {
+        enemy.transform.localScale *= eliteSizeMultiplier;
+        enemy.MaxHealth *= 3;
+        enemy.Health = enemy.MaxHealth;
+        enemy.DamageHit *= 2;
+
+        enemy.xpDrop = 30;
+
+     
+        Color goldColor = new Color(1f, 0.84f, 0f);
+        enemy.SetCharacterColor(goldColor);
     }
 
     [SerializeField] private LayerMask groundLayer;
@@ -99,6 +176,15 @@ public class EnemySpawner : MonoBehaviour
 
        
         return player.position + Vector3.right * (minDistanceFromPlayer + 1f);
+    }
+
+    [System.Serializable]
+    public struct BossSpawnEvent
+    {
+        public string bossName;
+        public GameObject bossPrefab;
+        public float spawnTime;
+        [HideInInspector] public bool hasSpawned;
     }
 
 }

@@ -3,67 +3,76 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI timerText;
-    [SerializeField] float remainingTime;
+    [Header("UI References")]
+    [SerializeField] private TextMeshProUGUI timerText;
 
-    [SerializeField] GameObject gameOverPanel; 
-    private bool timerIsRunning = true; 
 
-    void Start()
+    [Header("Settings")]
+    [SerializeField] private float duration = 900f; 
+
+    private float remainingTime;
+    public float MaxTime { get; private set; }
+
+
+    public float OvertimeDuration { get; private set; } = 0f;
+    public bool IsOvertime => remainingTime <= 0;
+
+    void Awake()
     {
-     
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(false);
-        }
+        remainingTime = duration;
+        MaxTime = duration;
     }
 
     void Update()
     {
-
-        if (!timerIsRunning)
-        {
-            return;
-        }
-
-
         if (remainingTime > 0)
         {
-            remainingTime -= Time.deltaTime; 
+            remainingTime -= Time.deltaTime;
+            UpdateTimerUI(false);
         }
-        else 
+        else
         {
+        
             remainingTime = 0;
-            timerIsRunning = false; 
-
-            
-            GameOver();
+            OvertimeDuration += Time.deltaTime;
+            UpdateTimerUI(true);
         }
-
-     
-        int minutes = Mathf.FloorToInt(remainingTime / 60);
-        int seconds = Mathf.FloorToInt(remainingTime % 60);
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
- 
-    void GameOver()
+    void UpdateTimerUI(bool isOvertime)
     {
-        timerText.color = Color.red; 
-
-  
-        Time.timeScale = 0f;
-
-       
-        if (gameOverPanel != null)
+        if (timerText != null)
         {
-            gameOverPanel.SetActive(true);
+            if (!isOvertime)
+            {
+                
+                int minutes = Mathf.FloorToInt(remainingTime / 60);
+                int seconds = Mathf.FloorToInt(remainingTime % 60);
+                timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+                timerText.color = Color.white;
+            }
+            else
+            {
+               
+                int minutes = Mathf.FloorToInt(OvertimeDuration / 60);
+                int seconds = Mathf.FloorToInt(OvertimeDuration % 60);
+                timerText.text = string.Format("+{0:00}:{1:00}", minutes, seconds);
+                timerText.color = Color.red;
+            }
         }
-
     }
 
     public float GetRemainingTime()
     {
         return remainingTime;
+    }
+
+    // ฟังก์ชันสำหรับหาเวลาที่ผ่านไปทั้งหมด (Normal + Overtime)
+    public float GetTotalElapsedTime()
+    {
+        if (IsOvertime)
+            return MaxTime + OvertimeDuration;
+        else
+            return MaxTime - remainingTime;
     }
 }

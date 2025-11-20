@@ -9,13 +9,29 @@ public abstract class Enemy : Character
 
     protected PlayerLevel playerLevel;
 
+    [Header("Rewards")]
+    public int xpDrop = 10;
+
     public AudioClip hitSound;
     protected AudioSource audioSourceRef;
-    public int DamageHit { get; protected set; }
+    public int DamageHit { get; set; }
     protected float deathDelayTime = 1.0f;
+
+    protected SpriteRenderer sr;
+    private Color originalColor = Color.white;
+
 
     protected bool isStunned = false;
     [SerializeField] protected float stunDuration = 0.5f;
+
+    protected virtual void Awake()
+    {
+        sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+        {
+            originalColor = sr.color; 
+        }
+    }
 
     protected virtual void Start()
     {
@@ -34,6 +50,8 @@ public abstract class Enemy : Character
 
         playerLevel = player.GetComponent<PlayerLevel>();
     }
+
+
 
 
     void Update()
@@ -74,6 +92,15 @@ public abstract class Enemy : Character
         }
     }
 
+    public void SetEliteColor(Color color)
+    {
+        if (sr != null)
+        {
+            sr.color = color;      
+            originalColor = color; 
+        }
+    }
+
     protected IEnumerator StunRoutine()
     {
         isStunned = true; 
@@ -102,7 +129,7 @@ public abstract class Enemy : Character
     {
         if (playerLevel != null)
         {
-            playerLevel.AddXP();
+            playerLevel.AddXP(xpDrop);
         }
 
         Collider2D col = GetComponent<Collider2D>();

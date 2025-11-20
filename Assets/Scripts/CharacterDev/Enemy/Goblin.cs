@@ -3,12 +3,17 @@ using UnityEngine;
 public class Goblin : Enemy
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         base.Initialized(40);
         moveSpeed = 3f;
         DamageHit = 10;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
     public override void Move()

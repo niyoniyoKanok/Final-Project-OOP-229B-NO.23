@@ -29,7 +29,7 @@ MonoBehaviour:
 
 
     CD
-    : 4.5s'
+    : {0} second.'
   skill2Name: Star Falling
   skill2Icon: {fileID: 2097989297919222410, guid: 07014d382e319af4ca2ae960fc65652b, type: 3}
   skill2Desc: 'Ability: Summons 3 falling stars to strike 3 random enemies.
@@ -39,7 +39,7 @@ MonoBehaviour:
     25% of Sword Wave Damage per star (~7-8).
 
 
-    CD : 5s'
+    CD : {0} second.'
   skill3Name: Arcane Comet
   skill3Icon: {fileID: -6292230534184451920, guid: 2adb9d40f53a6714cbf4a971056229b4, type: 3}
   skill3Desc: 'Ability: Summons a massive comet to fall on a random enemy, passing
@@ -50,4 +50,4 @@ MonoBehaviour:
     (AOE) upon impact.
 
 
-    CD : 7s'
+    CD : {0} second.'

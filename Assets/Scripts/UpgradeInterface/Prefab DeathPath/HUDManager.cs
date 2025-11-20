@@ -54,31 +54,33 @@ public class HUDManager : MonoBehaviour
     {
         if (currentData == null || princeRef == null) return;
 
-        // 💡 ดึงค่า Description เริ่มต้นจาก PathData
+        
         string desc1 = currentData.skill1Desc;
         string desc2 = currentData.skill2Desc;
         string desc3 = currentData.skill3Desc;
+
+        float cdrPercent = princeRef.BonusCooldownReduction;
+        float multiplier = 1f - (cdrPercent / 100f);
 
         switch (currentData.pathType)
         {
             case PathType.Death:
                 {
-                    float cd1 = princeRef.deathCircleInterval;
-                    float cd2 = princeRef.deathSliceInterval;
-                    float cd3 = princeRef.curseShoutInterval;
+                    float cd1 = princeRef.deathCircleInterval * multiplier;
+                    float cd2 = princeRef.deathSliceInterval * multiplier;
+                    float cd3 = princeRef.curseShoutInterval * multiplier;
 
-                    // 🛠️ แก้ไข: ใช้ string.Format และ ToString("F1") เพื่อบังคับการแสดงผลทศนิยม 1 ตำแหน่ง
-                    s1Desc.text = string.Format(desc1, cd1.ToString("F1"));
-                    s2Desc.text = string.Format(desc2, cd2.ToString("F1"));
-                    s3Desc.text = string.Format(desc3, cd3.ToString("F1"));
+                    s1Desc.text = string.Format(currentData.skill1Desc, cd1.ToString("F1"));
+                    s2Desc.text = string.Format(currentData.skill2Desc, cd2.ToString("F1"));
+                    s3Desc.text = string.Format(currentData.skill3Desc, cd3.ToString("F1"));
                     break;
                 }
 
             case PathType.Star:
                 {
-                    float cd1 = princeRef.starImpactInterval;
-                    float cd2 = princeRef.starFallingInterval;
-                    float cd3 = princeRef.arcaneCometInterval;
+                    float cd1 = princeRef.starImpactInterval * multiplier;
+                    float cd2 = princeRef.starFallingInterval * multiplier;
+                    float cd3 = princeRef.arcaneCometInterval * multiplier;
 
                     s1Desc.text = string.Format(desc1, cd1.ToString("F1"));
                     s2Desc.text = string.Format(desc2, cd2.ToString("F1"));
@@ -88,9 +90,9 @@ public class HUDManager : MonoBehaviour
 
             case PathType.Vampire:
                 {
-                    float cd1 = princeRef.batSpawnInterval;
-                    float cd2 = princeRef.vampireBladeInterval;
-                    float cd3 = princeRef.vampireScratchInterval;
+                    float cd1 = princeRef.batSpawnInterval * multiplier;
+                    float cd2 = princeRef.vampireBladeInterval * multiplier;
+                    float cd3 = princeRef.vampireScratchInterval * multiplier;
 
                     s1Desc.text = string.Format(desc1, cd1.ToString("F1"));
                     s2Desc.text = string.Format(desc2, cd2.ToString("F1"));
@@ -132,26 +134,23 @@ public class HUDManager : MonoBehaviour
     public void ToggleTabInfo()
     {
         bool isCurrentlyActive = tabInfoPanel.activeSelf;
-        bool newActiveState = !isCurrentlyActive; 
+        bool newActiveState = !isCurrentlyActive;
 
-        
         tabInfoPanel.SetActive(newActiveState);
 
-     
         if (inGameHUD != null)
         {
             inGameHUD.SetActive(!newActiveState);
         }
 
-      
         if (newActiveState)
         {
-         
+            UpdateSkillDescriptions();
+
             Time.timeScale = 0f;
         }
         else
         {
-            
             Time.timeScale = 1f;
         }
     }

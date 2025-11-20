@@ -5,7 +5,7 @@ public abstract class Character : MonoBehaviour
 {
     private int health;
     public int BaseMaxHealth { get; set; }
-    public int MaxHealth { get; private set; }
+    public int MaxHealth { get; set; }
 
     protected Animator animator;
     protected Rigidbody2D rb;
@@ -13,6 +13,10 @@ public abstract class Character : MonoBehaviour
     private Coroutine hideHealthBarCoroutine;
 
     protected SpriteRenderer spriteRenderer;
+
+    // 1. ✅ เพิ่มตัวแปรเก็บสีเริ่มต้น
+    protected Color defaultColor = Color.white;
+
     [Header("Hit FX")]
     [SerializeField] private float flashDuration = 0.1f;
 
@@ -21,7 +25,7 @@ public abstract class Character : MonoBehaviour
     public int Health
     {
         get { return health; }
-        protected set
+        set
         {
             health = Mathf.Clamp(value, 0, MaxHealth);
             if (healthBar != null)
@@ -45,13 +49,29 @@ public abstract class Character : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+
+        
+        if (spriteRenderer != null)
+        {
+            defaultColor = spriteRenderer.color;
+        }
     }
+
+
+    public void SetCharacterColor(Color newColor)
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = newColor;
+            defaultColor = newColor; 
+        }
+    }
+
     public virtual void AddMaxHealth(int amount)
     {
         if (amount <= 0) return;
 
         MaxHealth += amount;
-     
         Health = Mathf.Min(Health, MaxHealth);
 
         ShowHealthBarThenHide();
@@ -71,17 +91,14 @@ public abstract class Character : MonoBehaviour
         {
             if (animator != null)
             {
-                animator.SetTrigger("TakeHit");
+                animator.SetTrigger("TakeHit"); 
             }
 
             ShowHealthBarThenHide();
-
- 
             TriggerHitVisuals();
         }
     }
 
-   
     protected virtual void TriggerHitVisuals()
     {
         if (this.gameObject.activeInHierarchy)
@@ -92,13 +109,14 @@ public abstract class Character : MonoBehaviour
 
     private IEnumerator HitFlashRoutine()
     {
+     
         if (spriteRenderer != null)
-            spriteRenderer.color = Color.red;
+            spriteRenderer.color = Color.red; 
 
         yield return new WaitForSeconds(flashDuration);
 
         if (spriteRenderer != null)
-            spriteRenderer.color = Color.white;
+            spriteRenderer.color = defaultColor;
     }
 
     protected void ShowHealthBarThenHide()

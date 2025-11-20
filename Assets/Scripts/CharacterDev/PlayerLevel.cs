@@ -1,11 +1,11 @@
+using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class PlayerLevel : MonoBehaviour
 {
     [Header("XP Settings")]
-    [SerializeField] private int xpPerKill = 10;
     [SerializeField] private int baseXPToLevelUp = 100;
     [SerializeField] private float xpGrowthMultiplier = 1.5f;
 
@@ -52,12 +52,12 @@ public class PlayerLevel : MonoBehaviour
         UpdateUI();
     }
 
-    public void AddXP()
+    public void AddXP(int amount)
     {
   
         float bonusRate = 1f + (BonusXPMultiplier / 100f);
 
-        int gainedXP = Mathf.RoundToInt(xpPerKill * bonusRate);
+        int gainedXP = Mathf.RoundToInt(amount * bonusRate);
 
         CurrentXP += gainedXP;
         KillCount++;

@@ -2,14 +2,18 @@ using UnityEngine;
 
 public class Mushroom : Enemy
 {
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         base.Initialized(50);
         DamageHit = 10;
         moveSpeed = 3f;
     }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
     public override void Move()
     {
 

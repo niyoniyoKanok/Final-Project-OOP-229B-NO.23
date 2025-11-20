@@ -2,12 +2,17 @@ using UnityEngine;
 
 public class Skeleton : Enemy
 {
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         base.Initialized(70);
         DamageHit = 15;
         moveSpeed = 1.5f;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
     public override void Move()

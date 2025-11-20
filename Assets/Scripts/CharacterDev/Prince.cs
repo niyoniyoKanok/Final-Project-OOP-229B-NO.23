@@ -218,7 +218,7 @@ public class Prince : Character, IShootable
             SpawnDarkStar();
         }
     }
-
+    // -------Star Path---------------
     private void SpawnDarkStar()
     {
 
@@ -254,7 +254,9 @@ public class Prince : Character, IShootable
     {
         while (true)
         {
-            yield return new WaitForSeconds(starImpactInterval);
+            float actualInterval = GetReducedCooldown(starImpactInterval);
+            yield return new WaitForSeconds(actualInterval);
+
             if (IsDead()) continue;
 
             if (playerLevel != null && playerLevel.CurrentLevel < 3) continue;
@@ -316,7 +318,9 @@ public class Prince : Character, IShootable
     {
         while (true)
         {
-            yield return new WaitForSeconds(starFallingInterval);
+            float actualInterval = GetReducedCooldown(starFallingInterval);
+            yield return new WaitForSeconds(actualInterval);
+
             if (IsDead()) continue;
 
             if (playerLevel != null && playerLevel.CurrentLevel < 7) continue;
@@ -373,7 +377,10 @@ public class Prince : Character, IShootable
     {
         while (true)
         {
-            yield return new WaitForSeconds(arcaneCometInterval);
+            float actualInterval = GetReducedCooldown(arcaneCometInterval);
+            yield return new WaitForSeconds(actualInterval);
+
+
             if (IsDead()) continue;
 
             if (playerLevel != null && playerLevel.CurrentLevel < 11) continue;
@@ -413,11 +420,14 @@ public class Prince : Character, IShootable
             comet.GetComponent<ArcaneComet>().Init(dmg);
         }
     }
+
+    // ----------Death Path---------------
     private IEnumerator DeathCircleSpawner()
     {
         while (true)
         {
-            yield return new WaitForSeconds(deathCircleInterval);
+            float actualInterval = GetReducedCooldown(deathCircleInterval);
+            yield return new WaitForSeconds(actualInterval);
 
             if (!IsDead() && deathCirclePrefab != null)
             {
@@ -457,7 +467,8 @@ public class Prince : Character, IShootable
     {
         while (true)
         {
-            yield return new WaitForSeconds(deathSliceInterval);
+            float actualInterval = GetReducedCooldown(deathSliceInterval);
+            yield return new WaitForSeconds(actualInterval);
 
             if (playerLevel != null && playerLevel.CurrentLevel < 7) continue;
 
@@ -520,7 +531,8 @@ public class Prince : Character, IShootable
     {
         while (true)
         {
-            yield return new WaitForSeconds(curseShoutInterval);
+            float actualInterval = GetReducedCooldown(curseShoutInterval);
+            yield return new WaitForSeconds(actualInterval);
 
             if (playerLevel != null && playerLevel.CurrentLevel < 11) continue;
 
@@ -555,11 +567,14 @@ public class Prince : Character, IShootable
         if (enemies.Count > 0) return enemies[Random.Range(0, enemies.Count)];
         return null;
     }
+
+    // ----------Vampire Path--------------
     private IEnumerator VampireScratchSpawnerRoutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(vampireScratchInterval);
+            float actualInterval = GetReducedCooldown(vampireScratchInterval);
+            yield return new WaitForSeconds(actualInterval);
 
             if (playerLevel != null && playerLevel.CurrentLevel < 11) continue;
 
@@ -621,7 +636,8 @@ public class Prince : Character, IShootable
     {
         while (true)
         {
-            yield return new WaitForSeconds(vampireBladeInterval);
+            float actualInterval = GetReducedCooldown(vampireBladeInterval);
+            yield return new WaitForSeconds(actualInterval);
 
             if (playerLevel != null && playerLevel.CurrentLevel < 7) continue;
 
@@ -653,7 +669,8 @@ public class Prince : Character, IShootable
     {
         while (true)
         {
-            yield return new WaitForSeconds(batSpawnInterval);
+            float actualInterval = GetReducedCooldown(batSpawnInterval);
+            yield return new WaitForSeconds(actualInterval);
 
             if (playerLevel != null && playerLevel.CurrentLevel < 3) continue;
 
@@ -1030,5 +1047,11 @@ public class Prince : Character, IShootable
                 }
                 break;
         }
+    }
+
+    private float GetReducedCooldown(float baseCooldown)
+    {
+        float reduction = Mathf.Clamp(BonusCooldownReduction, 0f, 90f);
+        return baseCooldown * (1f - (reduction / 100f));
     }
 }

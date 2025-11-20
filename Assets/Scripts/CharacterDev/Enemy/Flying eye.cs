@@ -16,9 +16,9 @@ public class FlyingEye : Enemy
     private float attackTimer;
     private bool isAttacking = false; 
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         base.Initialized(30);
         moveSpeed = 2.5f;
 
@@ -27,6 +27,11 @@ public class FlyingEye : Enemy
         {
             rb.gravityScale = 0;
         }
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
 
     public override void Move()
