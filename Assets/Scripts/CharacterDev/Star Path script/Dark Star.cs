@@ -60,6 +60,11 @@ public class DarkStar : Weapon
             if (!hitTargets.Contains(character.gameObject))
             {
                 character.TakeDamage(this.damage);
+
+                if (Shooter is Prince prince)
+                {
+                    prince.Ability3Heal(this.damage / 2);
+                }
                 hitTargets.Add(character.gameObject); 
 
                 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using System.Collections.Generic;
 public enum PathType
 {
     None,       
@@ -11,9 +11,13 @@ public enum PathType
 }
 public class Prince : Character, IShootable
 {
+    [Header("Dependencies")]
+    public PlayerLevel playerLevel;
+    public GameManager GameManager;
+
     [Header("--- Star Path ---")]
     public AudioClip starRepeatSound;
-  
+
     public AudioClip darkStarSound;
 
     [Header("Star Path: Passive 2")]
@@ -29,7 +33,7 @@ public class Prince : Character, IShootable
     [Header("Skill 2: Star Falling")]
     public GameObject starFallingPrefab;
     public float starFallingInterval = 4f;
-    public float starFallingHeight = 5f; 
+    public float starFallingHeight = 5f;
 
     [Header("Skill 3: Arcane Comet")]
     public GameObject arcaneCometPrefab;
@@ -56,14 +60,14 @@ public class Prince : Character, IShootable
     [Header("Skill 1: Bat")]
     public GameObject batPrefab;
     public float batSpawnInterval = 2f;
-    
+
     [Header("Skill 2: Vampire Blade")]
-    public GameObject vampireBladePrefab; 
+    public GameObject vampireBladePrefab;
     public float vampireBladeInterval = 3f;
-    
-    [Header("Skill 2: Vampire Scratch")]
-    public GameObject vampireScratchPrefab; 
-    public float vampireScratchInterval = 5f; 
+
+    [Header("Skill 3: Vampire Scratch")]
+    public GameObject vampireScratchPrefab;
+    public float vampireScratchInterval = 5f;
     public float scratchSearchRadius = 8f;
 
     [Header("Player Stats (Bonuses)")]
@@ -97,7 +101,6 @@ public class Prince : Character, IShootable
 
     [Header("Game Dependencies")]
     public Camera PlayerCamera;
-    public GameManager GameManager;
 
     [Header("Ability 1")]
     public Image AbilityImage1;
@@ -173,7 +176,7 @@ public class Prince : Character, IShootable
         currentPathType = data.pathType;
         Debug.Log($"Prince selected path: {currentPathType}");
 
-        // ตรวจสอบว่าเลือกสายไหน แล้วเปิดสกิลของสายนั้น
+
         switch (currentPathType)
         {
             case PathType.Vampire:
@@ -194,14 +197,14 @@ public class Prince : Character, IShootable
                 StartCoroutine(ArcaneCometSpawner());
                 break;
         }
-        }
+    }
     private bool CheckStarPassive()
     {
-       
+
         bool isRepeat = Random.value <= 0.1f;
         if (isRepeat && AudioSource != null && starRepeatSound != null)
         {
-            AudioSource.PlayOneShot(starRepeatSound); 
+            AudioSource.PlayOneShot(starRepeatSound);
             Debug.Log("Star Passive Triggered! Skill Repeated.");
         }
         return isRepeat;
@@ -209,7 +212,7 @@ public class Prince : Character, IShootable
 
     private void TriggerStarPassives()
     {
-        
+
         if (Random.value <= darkStarChance)
         {
             SpawnDarkStar();
@@ -218,12 +221,12 @@ public class Prince : Character, IShootable
 
     private void SpawnDarkStar()
     {
-    
+
         if (activeDarkStar != null)
         {
             return;
         }
-    
+
 
         if (darkStarPrefab != null)
         {
@@ -232,11 +235,11 @@ public class Prince : Character, IShootable
                 AudioSource.PlayOneShot(darkStarSound);
             }
             activeDarkStar = Instantiate(darkStarPrefab, ShootPoint.position, Quaternion.identity);
-           
+
 
             int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 2f);
 
-            DarkStar dsScript = activeDarkStar.GetComponent<DarkStar>(); 
+            DarkStar dsScript = activeDarkStar.GetComponent<DarkStar>();
             if (dsScript != null)
             {
                 dsScript.InitWeapon(dmg, this);
@@ -247,41 +250,43 @@ public class Prince : Character, IShootable
     }
 
 
-private IEnumerator StarImpactSpawner()
+    private IEnumerator StarImpactSpawner()
     {
         while (true)
         {
             yield return new WaitForSeconds(starImpactInterval);
             if (IsDead()) continue;
 
+            if (playerLevel != null && playerLevel.CurrentLevel < 3) continue;
+
             CastStarImpact();
 
-           
+
             TriggerStarPassives();
 
-          
+
             if (CheckStarPassive())
             {
                 yield return new WaitForSeconds(0.2f);
                 CastStarImpact();
-                
+
             }
         }
     }
     private void CastStarImpact()
     {
-        
+
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, starImpactRadius);
 
-    
+
         int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) * 0.25f);
 
         bool hitAny = false;
 
         foreach (var hit in hits)
         {
-            
+
             if (hit == null || hit.gameObject == null) continue;
 
             Enemy enemy = hit.GetComponent<Enemy>();
@@ -289,18 +294,18 @@ private IEnumerator StarImpactSpawner()
             {
                 hitAny = true;
 
-                
+
                 if (starImpactPrefab != null)
                 {
                     Instantiate(starImpactPrefab, enemy.transform.position, Quaternion.identity);
                 }
 
-                
+
                 enemy.TakeDamage(dmg);
             }
         }
 
-       
+
         if (!hitAny)
         {
             Debug.Log("No targets for Star Impact");
@@ -314,8 +319,10 @@ private IEnumerator StarImpactSpawner()
             yield return new WaitForSeconds(starFallingInterval);
             if (IsDead()) continue;
 
+            if (playerLevel != null && playerLevel.CurrentLevel < 7) continue;
+
             CastStarFalling();
-            TriggerStarPassives(); 
+            TriggerStarPassives();
 
             if (CheckStarPassive())
             {
@@ -328,12 +335,12 @@ private IEnumerator StarImpactSpawner()
     private void CastStarFalling()
     {
 
-        
+
 
         if (starFallingPrefab == null) return;
 
-       
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 10f); 
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 10f);
         System.Collections.Generic.List<Transform> targets = new System.Collections.Generic.List<Transform>();
 
         foreach (var hit in hits)
@@ -342,7 +349,7 @@ private IEnumerator StarImpactSpawner()
                 targets.Add(hit.transform);
         }
 
-       
+
         int count = 0;
         while (count < 3 && targets.Count > 0)
         {
@@ -350,11 +357,11 @@ private IEnumerator StarImpactSpawner()
             Transform target = targets[randIndex];
             targets.RemoveAt(randIndex);
 
-           
+
             Vector3 spawnPos = target.position + new Vector3(0, starFallingHeight, 0);
             GameObject star = Instantiate(starFallingPrefab, spawnPos, Quaternion.identity);
 
-           
+
             int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) * 0.25f);
             star.GetComponent<StarFalling>().Init(dmg);
 
@@ -369,8 +376,10 @@ private IEnumerator StarImpactSpawner()
             yield return new WaitForSeconds(arcaneCometInterval);
             if (IsDead()) continue;
 
+            if (playerLevel != null && playerLevel.CurrentLevel < 11) continue;
+
             CastArcaneComet();
-            TriggerStarPassives(); 
+            TriggerStarPassives();
 
             if (CheckStarPassive())
             {
@@ -381,7 +390,7 @@ private IEnumerator StarImpactSpawner()
     }
 
 
-private void CastArcaneComet()
+    private void CastArcaneComet()
     {
         if (arcaneCometPrefab == null) return;
 
@@ -390,16 +399,16 @@ private void CastArcaneComet()
         if (target != null)
         {
 
-            
+
 
             Vector3 spawnPos = target.transform.position + new Vector3(0, 7f, 0);
 
             GameObject comet = Instantiate(arcaneCometPrefab, spawnPos, Quaternion.identity);
 
-     
-            comet.transform.localScale = new Vector3(2f, 2f, 1f); 
 
-          
+            comet.transform.localScale = new Vector3(2f, 2f, 1f);
+
+
             int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) * 0.5f);
             comet.GetComponent<ArcaneComet>().Init(dmg);
         }
@@ -412,6 +421,8 @@ private void CastArcaneComet()
 
             if (!IsDead() && deathCirclePrefab != null)
             {
+                if (playerLevel != null && playerLevel.CurrentLevel < 3) continue;
+
                 Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, deathCircleRange);
 
                 int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 4f);
@@ -419,22 +430,22 @@ private void CastArcaneComet()
 
                 foreach (var hit in hits)
                 {
-                    
+
                     if (hit == null || hit.gameObject == null)
                     {
-                        continue; 
+                        continue;
                     }
-                   
+
 
                     Enemy enemy = hit.GetComponent<Enemy>();
 
-                   
+
                     if (enemy != null && !enemy.IsDead() && enemy.GetComponent<Death>() == null)
                     {
                         GameObject circle = Instantiate(deathCirclePrefab, enemy.transform.position, Quaternion.identity);
                         circle.GetComponent<DeathCircle>().Init(enemy, dmg, explodeDmg);
 
-                  
+
                         yield return new WaitForSeconds(0.1f);
                     }
                 }
@@ -448,19 +459,61 @@ private void CastArcaneComet()
         {
             yield return new WaitForSeconds(deathSliceInterval);
 
-          
-            Enemy target = FindRandomEnemy(8f);
+            if (playerLevel != null && playerLevel.CurrentLevel < 7) continue;
+
+
+            Enemy target = FindPriorityEnemy(30f);
 
             if (!IsDead() && target != null && deathSlicePrefab != null)
             {
                 GameObject slice = Instantiate(deathSlicePrefab, target.transform.position, Quaternion.identity);
 
-                
                 int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 2f);
 
-                slice.GetComponent<DeathSlice>().Init(target, dmg);
+                slice.GetComponent<DeathSlice>().Init(target, dmg, this);
             }
         }
+    }
+
+
+    private Enemy FindPriorityEnemy(float range)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range);
+
+        System.Collections.Generic.List<Enemy> deathTargets = new System.Collections.Generic.List<Enemy>();
+        System.Collections.Generic.List<Enemy> normalTargets = new System.Collections.Generic.List<Enemy>();
+
+        foreach (var hit in hits)
+        {
+            Enemy e = hit.GetComponent<Enemy>();
+
+
+            if (e != null && !e.IsDead())
+            {
+
+                if (e.GetComponent<Death>() != null)
+                {
+                    deathTargets.Add(e);
+                }
+                else
+                {
+                    normalTargets.Add(e);
+                }
+            }
+        }
+
+        if (deathTargets.Count > 0)
+        {
+            return deathTargets[Random.Range(0, deathTargets.Count)];
+        }
+
+
+        if (normalTargets.Count > 0)
+        {
+            return normalTargets[Random.Range(0, normalTargets.Count)];
+        }
+
+        return null;
     }
 
     private IEnumerator CurseShoutSpawner()
@@ -469,13 +522,15 @@ private void CastArcaneComet()
         {
             yield return new WaitForSeconds(curseShoutInterval);
 
+            if (playerLevel != null && playerLevel.CurrentLevel < 11) continue;
+
             if (!IsDead() && curseShoutPrefab != null)
             {
                 GameObject shout = Instantiate(curseShoutPrefab, ShootPoint.position, Quaternion.identity);
 
-                
+
                 shout.transform.SetParent(this.transform);
-      
+
 
                 CurseShout shoutScript = shout.GetComponent<CurseShout>();
 
@@ -500,11 +555,13 @@ private void CastArcaneComet()
         if (enemies.Count > 0) return enemies[Random.Range(0, enemies.Count)];
         return null;
     }
-private IEnumerator VampireScratchSpawnerRoutine()
+    private IEnumerator VampireScratchSpawnerRoutine()
     {
         while (true)
         {
             yield return new WaitForSeconds(vampireScratchInterval);
+
+            if (playerLevel != null && playerLevel.CurrentLevel < 11) continue;
 
             if (!IsDead() && vampireScratchPrefab != null)
             {
@@ -518,10 +575,10 @@ private IEnumerator VampireScratchSpawnerRoutine()
 
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, scratchSearchRadius);
 
-       
+
         Transform targetEnemy = null;
 
-       
+
         System.Collections.Generic.List<Transform> validEnemies = new System.Collections.Generic.List<Transform>();
 
         foreach (var col in enemies)
@@ -533,13 +590,13 @@ private IEnumerator VampireScratchSpawnerRoutine()
             }
         }
 
-     
+
         if (validEnemies.Count > 0)
         {
             targetEnemy = validEnemies[Random.Range(0, validEnemies.Count)];
         }
 
- 
+
         if (targetEnemy != null)
         {
             GameObject scratchObj = Instantiate(vampireScratchPrefab, targetEnemy.position, Quaternion.identity);
@@ -547,12 +604,12 @@ private IEnumerator VampireScratchSpawnerRoutine()
             VampireScratch scratchScript = scratchObj.GetComponent<VampireScratch>();
             if (scratchScript != null)
             {
-                
+
                 int totalSwordDamage = SwordWaveDamage + BonusSwordWaveDamage;
 
                 int scratchDamage = Mathf.RoundToInt(totalSwordDamage / 2f);
 
-            
+
                 int scratchHeal = Mathf.RoundToInt(totalSwordDamage / 4f);
 
                 scratchScript.Init(scratchDamage, scratchHeal, this);
@@ -560,11 +617,13 @@ private IEnumerator VampireScratchSpawnerRoutine()
         }
     }
 
-private IEnumerator VampireBladeSpawnerRoutine()
+    private IEnumerator VampireBladeSpawnerRoutine()
     {
         while (true)
         {
             yield return new WaitForSeconds(vampireBladeInterval);
+
+            if (playerLevel != null && playerLevel.CurrentLevel < 7) continue;
 
             if (!IsDead() && vampireBladePrefab != null)
             {
@@ -580,7 +639,7 @@ private IEnumerator VampireBladeSpawnerRoutine()
         GameObject bladeObj = Instantiate(vampireBladePrefab, ShootPoint.position, Quaternion.identity);
 
         bladeObj.transform.SetParent(this.transform);
-    
+
 
         VampireBlade bladeScript = bladeObj.GetComponent<VampireBlade>();
         if (bladeScript != null)
@@ -590,11 +649,13 @@ private IEnumerator VampireBladeSpawnerRoutine()
             bladeScript.InitWeapon(bladeDamage, this);
         }
     }
-private IEnumerator BatSpawnerRoutine()
+    private IEnumerator BatSpawnerRoutine()
     {
         while (true)
         {
             yield return new WaitForSeconds(batSpawnInterval);
+
+            if (playerLevel != null && playerLevel.CurrentLevel < 3) continue;
 
             if (!IsDead() && batPrefab != null)
             {
@@ -605,20 +666,20 @@ private IEnumerator BatSpawnerRoutine()
 
     private void SpawnBat()
     {
-   
+
         GameObject batObj = Instantiate(batPrefab, transform.position, Quaternion.identity);
 
-        
+
         Bat batScript = batObj.GetComponent<Bat>();
         if (batScript != null)
         {
-           
+
             int batDamage = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 2f);
 
-         
+
             batScript.InitWeapon(batDamage, this);
         }
-    } 
+    }
     public void OnHitWith(Enemy enemy)
     {
         if (enemy == null) return;
@@ -628,7 +689,7 @@ private IEnumerator BatSpawnerRoutine()
 
     public override void Initialized(int starterHealth)
     {
-        
+
         base.Initialized(starterHealth);
         AddMaxHealth(BonusMaxHealth);
     }
@@ -664,13 +725,13 @@ private IEnumerator BatSpawnerRoutine()
     {
         if (Input.GetKeyDown(Ability1Key) && !isAbility1Cooldown)
         {
-        
+
             float cdr = Mathf.Clamp(BonusCooldownReduction / 100f, 0f, 0.99f);
             effectiveAbility1Max = Ability1Cooldown * (1f - cdr);
 
             if (effectiveAbility1Max <= 0f)
             {
-             
+
                 Ability1Teleport();
                 return;
             }
@@ -708,13 +769,13 @@ private IEnumerator BatSpawnerRoutine()
 
         teleportTarget = new Vector2(worldPos.x, worldPos.y);
 
-       
+
         if (rb != null)
             rb.MovePosition(teleportTarget);
         else
             transform.position = teleportTarget;
 
-       
+
         if (rb != null)
             rb.linearVelocity = Vector2.zero;
     }
@@ -771,7 +832,7 @@ private IEnumerator BatSpawnerRoutine()
 
             if (effectiveAbility3Max <= 0f)
             {
-              
+
                 return;
             }
 
@@ -790,21 +851,24 @@ private IEnumerator BatSpawnerRoutine()
 
         Health += healAmount;
         ShowHealthBarThenHide();
+
+        if (FloatingTextManager.Instance != null)
+            FloatingTextManager.Instance.ShowHeal(healAmount, transform.position);
     }
 
-    
+
     private void AbilityCooldownTick(ref float currentCooldown, float baseMaxCooldown, ref bool isCooldown, Image skillImage, Text skillText, ref float effectiveMax)
     {
         if (!isCooldown) return;
 
-       
+
         if (effectiveMax <= 0f)
         {
             float cdr = Mathf.Clamp(BonusCooldownReduction / 100f, 0f, 0.99f);
             effectiveMax = baseMaxCooldown * (1f - cdr);
             if (effectiveMax <= 0f)
             {
-             
+
                 isCooldown = false;
                 currentCooldown = 0f;
                 if (skillImage != null) skillImage.fillAmount = 0f;
@@ -885,10 +949,10 @@ private IEnumerator BatSpawnerRoutine()
         }
     }
 
-   
+
     protected override void TriggerHitVisuals()
     {
-        
+
     }
 
     private IEnumerator InvincibilityRoutine()
@@ -903,7 +967,7 @@ private IEnumerator BatSpawnerRoutine()
         {
             if (spriteRenderer != null)
             {
-               
+
                 spriteRenderer.color = flashOn ? Color.red : Color.white;
                 flashOn = !flashOn;
             }
@@ -917,5 +981,54 @@ private IEnumerator BatSpawnerRoutine()
 
         isInvincible = false;
         invincibilityCoroutine = null;
+    }
+
+    public void ApplyUpgrade(UpgradeData data, float value)
+    {
+        switch (data.type)
+        {
+            case UpgradeType.AttackDamage:
+                
+                BonusAttackDamage += Mathf.RoundToInt(value);
+                Debug.Log($"Upgraded Damage: +{value}");
+                break;
+
+            case UpgradeType.MaxHealth:
+                int hpAdd = Mathf.RoundToInt(value);
+                BonusMaxHealth += hpAdd;
+                AddMaxHealth(hpAdd);
+                Debug.Log($"Upgraded Max HP: +{value}");
+                break;
+
+            case UpgradeType.CooldownReduction:
+             
+                BonusCooldownReduction += value;
+                Debug.Log($"Upgraded CDR: +{value}%");
+                break;
+
+            case UpgradeType.PotionHeal:
+                BonusPotionHeal += Mathf.RoundToInt(value);
+                Debug.Log($"Upgraded Potion Heal: +{value}");
+                break;
+
+            case UpgradeType.SwordWaveDamage:
+                BonusSwordWaveDamage += Mathf.RoundToInt(value);
+                Debug.Log($"Upgraded Sword Wave Dmg: +{value}");
+                break;
+
+            case UpgradeType.AttackSpeed:
+                BonusAttackSpeed += value;
+                Debug.Log($"Upgraded Attack Speed: +{value * 100}%");
+                break;
+                
+            case UpgradeType.XPMultiplier:
+               
+                if (playerLevel != null)
+                {
+                    playerLevel.BonusXPMultiplier += value;
+                    Debug.Log($"Upgraded XP Gain: +{value}%");
+                }
+                break;
+        }
     }
 }

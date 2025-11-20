@@ -19,35 +19,44 @@ MonoBehaviour:
     focus)
   skill1Name: Bat
   skill1Icon: {fileID: 6360131877946120522, guid: a25d93ba082329c4cb78fa29a8b795ea, type: 3}
-  skill1Desc: 'Ability: Summons a bat every 2 seconds that homes in on an enemy,
-    deals damage upon impact, and disappears.
+  skill1Desc: 'Ability: Summons a bat that homes in on an enemy, deals damage upon
+    impact, and disappears.
 
 
-    Damage: 50% of Sword Wave Damage
-    (~15).
+    Damage: 50% of Sword Wave Damage (~15).
 
 
-    Effect: Heals the player for an amount equal to the damage dealt.'
+    Effect:
+    Heals the player for an amount equal to the damage dealt.
+
+
+    CD : 3s'
   skill2Name: Vampire Blade
   skill2Icon: {fileID: 5160979380686935779, guid: c56c6cbb63908a544a431689b0f50541, type: 3}
-  skill2Desc: 'Ability: Thrusts a blood blade forward every 3 seconds.
+  skill2Desc: 'Ability: Thrusts a blood blade forward
+
+
+    Damage: 50% of Sword
+    Wave Damage (~15).
+
+
+    Effect: Inflicts Bleed status on enemies, dealing continuous
+    damage over time.
+
+
+    CD : 5s'
+  skill3Name: Vampire Scratch
+  skill3Icon: {fileID: -5484168563719466894, guid: d87750b5c6c72e045a1ad6b5db04b7bd, type: 3}
+  skill3Desc: 'Ability: Randomly spawns a scratch attack on a nearby enemy (auto-targeting).
 
 
     Damage:
-    50% of Sword Wave Damage (~15).
+    50% of Sword Wave Damage (~15), split into 2 ticks.
 
 
-    Effect: Inflicts Bleed status on enemies,
-    dealing continuous damage over time.'
-  skill3Name: Vampire Scratch
-  skill3Icon: {fileID: -5484168563719466894, guid: d87750b5c6c72e045a1ad6b5db04b7bd, type: 3}
-  skill3Desc: 'Ability: Randomly spawns a scratch attack on a nearby enemy every
-    5 seconds (auto-targeting).
+    Effect: Lifesteals
+    a small amount on each successful hit (25% of total damage per tick).
 
 
-    Damage: 50% of Sword Wave Damage (~15), split
-    into 2 ticks.
-
-
-    Effect: Lifesteals a small amount on each successful hit
-    (25% of total damage per tick).'
+    CD
+    : 6s'

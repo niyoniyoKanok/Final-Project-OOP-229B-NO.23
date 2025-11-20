@@ -24,7 +24,7 @@ public class SwordWave : Weapon
 
         int direction = GetShootDirection();
         speed = 6.0f * direction;
-        damage = 30;
+        
 
         if (direction < 0)
         {

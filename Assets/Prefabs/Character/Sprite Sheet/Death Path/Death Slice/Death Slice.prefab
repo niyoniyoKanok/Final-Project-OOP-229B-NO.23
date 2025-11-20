@@ -128,8 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathSlice
   hitSound: {fileID: 8300000, guid: 3914f62cb86d1374dbc914560b54f5cb, type: 3}
-  doubleHitSound: {fileID: 8300000, guid: 2bb856a9d1df01542b7030573762f311, type: 3}
-  doubleHitTextPrefab: {fileID: 8333412442207783679, guid: 6b954c5e84a8a5642b40dd7ffb5aa5a0, type: 3}
+  chainSound: {fileID: 8300000, guid: 3914f62cb86d1374dbc914560b54f5cb, type: 3}
 --- !u!114 &981035837162582801
 MonoBehaviour:
   m_ObjectHideFlags: 0

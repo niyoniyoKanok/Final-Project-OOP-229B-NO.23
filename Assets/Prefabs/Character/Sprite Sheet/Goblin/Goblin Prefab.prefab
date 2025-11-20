@@ -110,6 +110,7 @@ MonoBehaviour:
   flashDuration: 0.1
   healthBar: {fileID: 0}
   moveSpeed: 0
+  hitSound: {fileID: 8300000, guid: 21b374ac652c5254886c2293f3dfb00b, type: 3}
   stunDuration: 0.5
 --- !u!95 &954632101301404601
 Animator:

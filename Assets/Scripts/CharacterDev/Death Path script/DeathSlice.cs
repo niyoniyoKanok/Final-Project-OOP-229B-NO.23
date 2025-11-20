@@ -1,79 +1,131 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DeathSlice : MonoBehaviour
 {
     [Header("Audio")]
-    [SerializeField] private AudioClip hitSound;       
-    [SerializeField] private AudioClip doubleHitSound;
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip chainSound; 
 
     private int damage;
+    private Prince princeOwner;
+    private float chainRadius = 100.0f;
+    private HashSet<Enemy> visitedEnemies = new HashSet<Enemy>(); 
 
-    public void Init(Enemy target, int dmg)
+    public void Init(Enemy target, int dmg, Prince owner)
     {
         this.damage = dmg;
-        StartCoroutine(SliceRoutine(target));
+        this.princeOwner = owner;
+
+      
+        StartCoroutine(ProcessSlice(target));
     }
 
-    private IEnumerator SliceRoutine(Enemy target)
+    private IEnumerator ProcessSlice(Enemy initialTarget)
     {
-        if (target == null || target.IsDead())
+       
+        if (initialTarget == null || initialTarget.IsDead())
         {
             Destroy(gameObject);
             yield break;
         }
 
-       
-        bool isBonusActive = false;
+      
+        Death deathStatus = initialTarget.GetComponent<Death>();
 
-        Death deathStatus = target.GetComponent<Death>();
-        DeathSliceTracker tracker = target.GetComponent<DeathSliceTracker>();
+        if (deathStatus != null)
+        {
+          
+            yield return StartCoroutine(ChainReactionRoutine(initialTarget));
+        }
+        else
+        {
+           
+            DealDamage(initialTarget, false);
+            Destroy(gameObject, 0.2f); 
+        }
+    }
+
+    private IEnumerator ChainReactionRoutine(Enemy startTarget)
+    {
+    
+        Queue<Enemy> targetsToSlash = new Queue<Enemy>();
+        targetsToSlash.Enqueue(startTarget);
+
+        while (targetsToSlash.Count > 0)
+        {
+            Enemy currentTarget = targetsToSlash.Dequeue();
 
       
-        if (deathStatus != null && tracker != null && (Time.time - tracker.lastHitTime < 5f))
-        {
-            isBonusActive = true;
+            if (currentTarget == null || currentTarget.IsDead() || visitedEnemies.Contains(currentTarget)) continue;
+
+
+            visitedEnemies.Add(currentTarget);
+
+            transform.position = currentTarget.transform.position;
+
+            DealDamage(currentTarget, true);
+
+            FindNextTargets(currentTarget.transform.position, targetsToSlash);
+
+          
+            yield return new WaitForSeconds(0.15f);
         }
 
-      
-        if (tracker == null) tracker = target.gameObject.AddComponent<DeathSliceTracker>();
-        tracker.lastHitTime = Time.time;
+        Destroy(gameObject);
+    }
 
+    private void FindNextTargets(Vector3 center, Queue<Enemy> queue)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, chainRadius);
 
-        if (isBonusActive)
+        foreach (var hit in hits)
         {
-            
-            if (target != null && !target.IsDead())
+            Enemy enemy = hit.GetComponent<Enemy>();
+
+           
+            if (enemy != null && !enemy.IsDead() && enemy.GetComponent<Death>() != null && !visitedEnemies.Contains(enemy))
             {
-                target.TakeDamage(damage);
-                target.TakeDamage(damage); 
-
-
-                if (doubleHitSound != null)
+             
+                if (!queue.Contains(enemy))
                 {
-                    AudioSource.PlayClipAtPoint(doubleHitSound, transform.position);
+                    queue.Enqueue(enemy);
                 }
+            }
+        }
+    }
 
-                Debug.Log("Death Slice: INSTANT DOUBLE HIT!");
+    private void DealDamage(Enemy target, bool isExecute)
+    {
+        if (target == null) return;
+
+       
+
+        if (isExecute)
+        {
+       
+            Debug.Log($"<color=red>DEATH SLICE EXECUTE: {target.name}</color>");
+
+       
+            if (chainSound != null) AudioSource.PlayClipAtPoint(chainSound, transform.position);
+            else if (hitSound != null) AudioSource.PlayClipAtPoint(hitSound, transform.position);
+
+
+            target.TakeDamage(99999);
+
+           
+            if (princeOwner != null)
+            {
+                int healAmount = Mathf.RoundToInt(damage / 2f);
+                princeOwner.Ability3Heal(healAmount);
             }
         }
         else
         {
-
-            if (target != null && !target.IsDead())
-            {
-                target.TakeDamage(damage);
-
-                
-                if (hitSound != null)
-                {
-                    AudioSource.PlayClipAtPoint(hitSound, transform.position);
-                }
-            }
+           
+            if (hitSound != null) AudioSource.PlayClipAtPoint(hitSound, transform.position);
+            target.TakeDamage(damage);
         }
-
-     
-        yield return new WaitForSeconds(0.5f);
-        Destroy(gameObject);
     }
 }

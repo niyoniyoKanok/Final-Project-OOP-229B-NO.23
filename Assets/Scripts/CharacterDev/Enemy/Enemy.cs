@@ -8,6 +8,9 @@ public abstract class Enemy : Character
     public float moveSpeed;
 
     protected PlayerLevel playerLevel;
+
+    public AudioClip hitSound;
+    protected AudioSource audioSourceRef;
     public int DamageHit { get; protected set; }
     protected float deathDelayTime = 1.0f;
 
@@ -20,6 +23,13 @@ public abstract class Enemy : Character
         if (player != null)
         {
             playerTransform = player.transform;
+        }
+
+        audioSourceRef = GetComponent<AudioSource>();
+        if (audioSourceRef == null)
+        {
+           
+            audioSourceRef = gameObject.AddComponent<AudioSource>();
         }
 
         playerLevel = player.GetComponent<PlayerLevel>();
@@ -42,6 +52,19 @@ public abstract class Enemy : Character
     public override void TakeDamage(int damageAmount)
     {
         base.TakeDamage(damageAmount);
+
+        if (FloatingTextManager.Instance != null)
+        {
+          
+            bool isCrit = damageAmount > 1000;
+
+            FloatingTextManager.Instance.ShowDamage(damageAmount, transform.position, isCrit);
+        }
+
+        if (hitSound != null && audioSourceRef != null)
+        {
+            audioSourceRef.PlayOneShot(hitSound);
+        }
 
         if (!IsDead())
         {

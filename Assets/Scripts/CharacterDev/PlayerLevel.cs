@@ -18,6 +18,10 @@ public class PlayerLevel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI xpText;
     [SerializeField] private TextMeshProUGUI killCountText;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip levelUpSound;
+
     private Prince princeRef;
 
     public int CurrentLevel { get; private set; }
@@ -37,6 +41,13 @@ public class PlayerLevel : MonoBehaviour
         KillCount = 0;
 
         princeRef = GetComponent<Prince>();
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        
 
         UpdateUI();
     }
@@ -66,13 +77,24 @@ public class PlayerLevel : MonoBehaviour
         CurrentXP -= XpToNextLevel;
 
 
+        if (audioSource != null && levelUpSound != null)
+        {
+            audioSource.PlayOneShot(levelUpSound);
+        }
+
         if (princeRef != null)
         {
             princeRef.BonusAttackDamage += attackDamagePerLevel;
         }
 
-       
+        if (LevelUpManager.Instance != null)
+        {
+            LevelUpManager.Instance.ShowLevelUpOptions();
+        }
+
         XpToNextLevel = Mathf.RoundToInt(XpToNextLevel * xpGrowthMultiplier);
+
+      
     }
 
     private void UpdateUI()
