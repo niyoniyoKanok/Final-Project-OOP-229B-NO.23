@@ -1,11 +1,10 @@
-using Unity.VisualScripting;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public abstract class Enemy : Character
 {
     protected Transform playerTransform;
-    public float moveSpeed;
+    public float moveSpeed = 2f;
 
     protected PlayerLevel playerLevel;
 
@@ -18,52 +17,77 @@ public abstract class Enemy : Character
     protected float deathDelayTime = 1.0f;
 
     protected SpriteRenderer sr;
-    private Color originalColor = Color.white;
-
+    protected Color originalColor = Color.white;
 
     protected bool isStunned = false;
     [SerializeField] protected float stunDuration = 0.5f;
+
+    protected Vector3 originalScale;
+    protected int originalMaxHealth;
+    protected int originalDamage;
+    protected int originalXP;
+
+    // physics refs
+    
+    protected Collider2D colRef;
+
+    // store original gravity/bodyType
+    protected float originalGravityScale = 1f;
+    protected RigidbodyType2D originalBodyType = RigidbodyType2D.Dynamic;
+
+    // flying / grounded flag (child can override)
+    protected bool canFly = false;
 
     protected virtual void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
         if (sr != null)
         {
-            originalColor = sr.color; 
+            originalColor = sr.color;
         }
+
+        originalScale = transform.localScale;
+
+        rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            originalGravityScale = rb.gravityScale;
+            originalBodyType = rb.bodyType;
+        }
+
+        colRef = GetComponent<Collider2D>();
     }
 
     protected virtual void Start()
     {
-        Prince player = FindFirstObjectByType<Prince>();
-        if (player != null)
+        // try to find player (your project used Prince)
+        var playerObj = FindFirstObjectByType<Prince>();
+        if (playerObj != null)
         {
-            playerTransform = player.transform;
+            playerTransform = playerObj.transform;
+            playerLevel = playerObj.GetComponent<PlayerLevel>();
         }
 
         audioSourceRef = GetComponent<AudioSource>();
         if (audioSourceRef == null)
         {
-           
             audioSourceRef = gameObject.AddComponent<AudioSource>();
         }
-
-        playerLevel = player.GetComponent<PlayerLevel>();
     }
 
-
-
-
-    void Update()
+    protected virtual void Update()
     {
-        if (IsDead() || playerTransform == null)
-        {
-            return;
-        }
-
+        if (IsDead() || playerTransform == null) return;
         if (isStunned) return;
 
         FlipTowardsPlayer();
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        if (IsDead() || playerTransform == null) return;
+        if (isStunned) return;
+
         Move();
     }
 
@@ -73,9 +97,7 @@ public abstract class Enemy : Character
 
         if (FloatingTextManager.Instance != null)
         {
-          
             bool isCrit = damageAmount > 1000;
-
             FloatingTextManager.Instance.ShowDamage(damageAmount, transform.position, isCrit);
         }
 
@@ -86,7 +108,6 @@ public abstract class Enemy : Character
 
         if (!IsDead())
         {
-           
             StopCoroutine(StunRoutine());
             StartCoroutine(StunRoutine());
         }
@@ -96,82 +117,189 @@ public abstract class Enemy : Character
     {
         if (sr != null)
         {
-            sr.color = color;      
-            originalColor = color; 
+            sr.color = color;
+            originalColor = color;
         }
     }
 
     protected IEnumerator StunRoutine()
     {
-        isStunned = true; 
+        isStunned = true;
 
-   
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null) rb.linearVelocity = Vector2.zero;
 
-        yield return new WaitForSeconds(stunDuration); 
+        yield return new WaitForSeconds(stunDuration);
 
         isStunned = false;
     }
 
-    public abstract void Move();
-
-    public void ApplyStun(float duration)
+    // ----------------------
+    // Reset state for pooling
+    // ----------------------
+    public virtual void ResetState()
     {
-        if (!isStunned)
+        // transform
+        transform.localScale = originalScale;
+
+        // renderer
+        if (sr != null) sr.color = originalColor;
+
+        // physics
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
         {
-            stunDuration = duration;
-            StartCoroutine(StunRoutine());
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.bodyType = originalBodyType;
+            rb.gravityScale = originalGravityScale;
+        }
+
+        // collider
+        if (colRef == null) colRef = GetComponent<Collider2D>();
+        if (colRef != null) colRef.enabled = true;
+
+        // animator
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.Update(0f);
+        }
+
+        // runtime flags
+        isStunned = false;
+
+        // reset xp/dmg defaults (child OnEnable may initialize different values)
+        xpDrop = 10;
+
+        // ensure any child-specific flags are defaulted; e.g. flying default false
+        canFly = false;
+    }
+
+    protected void PhysicsMove(bool allowFly)
+    {
+        if (playerTransform == null) return;
+
+        Vector2 direction = Vector2.zero;
+
+        if (allowFly)
+        {
+            direction = (playerTransform.position - transform.position).normalized;
+        }
+        else
+        {
+            float dirX = playerTransform.position.x - transform.position.x;
+            direction = new Vector2(dirX, 0f).normalized;
+        }
+
+        if (rb != null)
+        {
+            Vector2 newPos = rb.position + (direction * moveSpeed * Time.fixedDeltaTime);
+
+            if (!allowFly)
+            {
+                // stick to current Y (we will correct Y using StickToGround in non-rb path)
+                newPos.y = rb.position.y;
+            }
+
+            rb.MovePosition(newPos);
+        }
+        else
+        {
+            Vector3 targetPos;
+            if (!allowFly)
+                targetPos = new Vector3(playerTransform.position.x, transform.position.y, transform.position.z);
+            else
+                targetPos = playerTransform.position;
+
+            Vector3 newPos = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+
+            if (!allowFly)
+            {
+                newPos = StickToGround(newPos);
+            }
+
+            transform.position = newPos;
         }
     }
 
+    // Stick to ground using raycast — prevents sinking / floating
+    protected Vector3 StickToGround(Vector3 pos)
+    {
+        // cast from slightly above the target pos downward to find ground
+        RaycastHit2D hit = Physics2D.Raycast(pos + Vector3.up * 0.5f, Vector2.down, 3f, LayerMask.GetMask("Ground"));
+        if (hit.collider != null)
+        {
+            pos.y = hit.point.y + (colRef != null ? colRef.bounds.extents.y : 0.5f);
+        }
+        return pos;
+    }
+
+    protected bool IsGrounded()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + Vector3.up * 0.1f, Vector2.down, 0.2f, LayerMask.GetMask("Ground"));
+        return hit.collider != null;
+    }
+
+    public abstract void Move();
+
     protected override void Die()
     {
-        if (playerLevel != null)
-        {
-            playerLevel.AddXP(xpDrop);
-        }
+        if (playerLevel != null) playerLevel.AddXP(xpDrop);
 
-        Collider2D col = GetComponent<Collider2D>();
-        if (col != null)
-        {
-            col.enabled = false;
-        }
+        if (colRef != null) colRef.enabled = false;
 
-     
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
         }
-        Prince prince = FindFirstObjectByType<Prince>();
-       
+
         if (animator != null)
         {
             animator.SetTrigger("Dead");
         }
 
+        StartCoroutine(ReturnToPoolRoutine());
+    }
 
-      
-        Destroy(this.gameObject, deathDelayTime);
+    private IEnumerator ReturnToPoolRoutine()
+    {
+        yield return new WaitForSeconds(deathDelayTime);
+
+        if (EnemyPool.Instance != null)
+            EnemyPool.Instance.ReturnToPool(this);
+        else
+            Destroy(gameObject);
     }
 
     public void DestroySelf()
     {
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
+    }
+
+    protected virtual void OnEnable()
+    {
+        // Keep OnEnable minimal: visual resets and flags only. Heavy resets done in ResetState() called by pool.
+        transform.localScale = originalScale;
+        if (sr != null) sr.color = originalColor;
+        isStunned = false;
+
+        if (colRef == null) colRef = GetComponent<Collider2D>();
+        if (colRef != null) colRef.enabled = true;
+
+        xpDrop = 10;
     }
 
     private void FlipTowardsPlayer()
     {
+        if (playerTransform == null) return;
+
         if (playerTransform.position.x > transform.position.x)
         {
-          
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else
         {
-            
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
     }

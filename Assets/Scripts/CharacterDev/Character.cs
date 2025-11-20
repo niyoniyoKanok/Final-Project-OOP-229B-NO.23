@@ -109,12 +109,16 @@ public abstract class Character : MonoBehaviour
 
     private IEnumerator HitFlashRoutine()
     {
+       
+        Color currentEliteColor = defaultColor;
+
      
         if (spriteRenderer != null)
             spriteRenderer.color = Color.red; 
 
         yield return new WaitForSeconds(flashDuration);
 
+       
         if (spriteRenderer != null)
             spriteRenderer.color = defaultColor;
     }

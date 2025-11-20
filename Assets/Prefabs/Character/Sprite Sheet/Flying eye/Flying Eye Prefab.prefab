@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6332214096487222738}
   - component: {fileID: -4013331375659482921}
   - component: {fileID: 5343602186939883699}
+  - component: {fileID: 3683970716046374164}
   m_Layer: 0
   m_Name: Flying Eye Prefab
   m_TagString: Untagged
@@ -109,10 +110,12 @@ MonoBehaviour:
   flashDuration: 0.1
   healthBar: {fileID: 0}
   moveSpeed: 0
+  xpDrop: 10
   hitSound: {fileID: 8300000, guid: 21b374ac652c5254886c2293f3dfb00b, type: 3}
   stunDuration: 0.5
   idealDistance: 6
   attackCooldown: 3
+  attackAnimDelay: 0.4
   projectilePrefab: {fileID: 6282259654324480118, guid: fa504f4cc3e62b54aa950af06ca43604, type: 3}
 --- !u!70 &-4013331375659482921
 CapsuleCollider2D:
@@ -173,3 +176,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &3683970716046374164
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7886277527524934135}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: f865426dc1340c24d89b8587cc1c5583, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4

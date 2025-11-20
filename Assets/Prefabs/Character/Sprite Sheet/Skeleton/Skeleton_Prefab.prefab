@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -10
   m_Sprite: {fileID: 4723107735738678597, guid: 5e7603376ed55c44a815458c202eb589, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -110,6 +110,7 @@ MonoBehaviour:
   flashDuration: 0.1
   healthBar: {fileID: 0}
   moveSpeed: 0
+  xpDrop: 10
   hitSound: {fileID: 8300000, guid: 21b374ac652c5254886c2293f3dfb00b, type: 3}
   stunDuration: 0.5
 --- !u!95 &21392369907006214
@@ -187,7 +188,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f865426dc1340c24d89b8587cc1c5583, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

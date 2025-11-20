@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [Header("UI")]
+    [SerializeField] private FloodWarningUI floodUI;
+
     [Header("Player")]
     [SerializeField] private Transform player;
 
     [Header("Spawn Settings")]
-    [SerializeField] private float spawnRadius = 8f;
-    [SerializeField] private float minDistanceFromPlayer = 2f;
+    [SerializeField] private float minSpawnDistance = 6f;   // ใกล้สุดจาก player
+    [SerializeField] private float maxSpawnDistance = 12f;  // ไกลสุดจาก player
+    [SerializeField] private float spawnYOffset = 0.1f;     // ยกเหนือพื้นเล็กน้อย
 
     [Header("Enemy Prefabs")]
     [SerializeField] private Enemy[] enemyPrefabs;
 
-    [Header("Difficulty & Progression")]
+    [Header("Difficulty Settings")]
     [SerializeField] private SpawnDifficulty difficulty;
     [SerializeField] private Timer timer;
 
@@ -25,19 +29,39 @@ public class EnemySpawner : MonoBehaviour
     [Header("Boss Events")]
     [SerializeField] private List<BossSpawnEvent> bossEvents;
 
-   
+    [Header("Flood Events")]
+    [SerializeField] private List<FloodEvent> floodEvents;
+    private Enemy floodOverridePrefab;
+
     [Header("Overtime Scaling")]
-    [Tooltip("ทุกๆ 10 วินาทีใน Overtime จะเพิ่มจำนวนมอนสเตอร์กี่ตัว")]
     [SerializeField] private float overtimeSpawnIncreaseRate = 0.5f;
-    [Tooltip("เวลาเกิดต่ำสุดที่เป็นไปได้ในช่วง Overtime")]
     [SerializeField] private float minOvertimeSpawnInterval = 0.1f;
+
+    [Header("Ground Detection")]
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask obstacleMask; // for obstacle checks
 
     private float currentSpawnInterval;
     private int currentSpawnAmount;
+
     private float elapsedTime;
+    private bool isWarningShown = false;
+    public bool IsFlooding { get; private set; }
 
     void Start()
     {
+        if (difficulty != null)
+        {
+            currentSpawnInterval = difficulty.baseSpawnInterval;
+            currentSpawnAmount = difficulty.baseSpawnAmount;
+        }
+
+        if (player == null)
+        {
+            var p = FindFirstObjectByType<Prince>();
+            if (p != null) player = p.transform;
+        }
+
         StartCoroutine(SpawnLoop());
     }
 
@@ -45,7 +69,6 @@ public class EnemySpawner : MonoBehaviour
     {
         if (timer == null) return;
 
-     
         elapsedTime = timer.GetTotalElapsedTime();
 
         UpdateDifficulty();
@@ -56,9 +79,30 @@ public class EnemySpawner : MonoBehaviour
     {
         if (difficulty == null) return;
 
+        IsFlooding = CheckFloodStatus();
+
+        if (IsFlooding)
+        {
+            if (!isWarningShown)
+            {
+                floodUI?.ShowWarning("FLOODED!!");
+                isWarningShown = true;
+            }
+            return;
+        }
+        else
+        {
+            if (isWarningShown)
+            {
+                floodUI?.HideWarning();
+                isWarningShown = false;
+            }
+        }
+
+        floodOverridePrefab = null;
+
         if (!timer.IsOvertime)
         {
-           
             float t = 1f - (timer.GetRemainingTime() / timer.MaxTime);
             float curve = difficulty.difficultyByTime.Evaluate(t);
 
@@ -67,36 +111,45 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            
+            float extraDifficulty = timer.OvertimeDuration * overtimeSpawnIncreaseRate;
 
-            float extraDifficulty = timer.OvertimeDuration * overtimeSpawnIncreaseRate; 
-
-            
             currentSpawnAmount = difficulty.maxSpawnAmount + Mathf.FloorToInt(extraDifficulty);
-
-        
             currentSpawnInterval = Mathf.Max(minOvertimeSpawnInterval, difficulty.minSpawnInterval - (timer.OvertimeDuration * 0.001f));
         }
     }
+
+    private bool CheckFloodStatus()
+    {
+        foreach (var flood in floodEvents)
+        {
+            if (elapsedTime >= flood.startTime && elapsedTime < flood.startTime + flood.duration)
+            {
+                currentSpawnInterval = flood.spawnInterval;
+                currentSpawnAmount = flood.spawnAmount;
+                floodOverridePrefab = flood.specificEnemy;
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void CheckBossSpawns()
     {
         for (int i = 0; i < bossEvents.Count; i++)
         {
-            var bossEvent = bossEvents[i];
-
-            
-            if (!bossEvent.hasSpawned && elapsedTime >= bossEvent.spawnTime)
+            var evt = bossEvents[i];
+            if (!evt.hasSpawned && elapsedTime >= evt.spawnTime)
             {
-                SpawnBoss(bossEvent.bossPrefab);
+                SpawnBoss(evt.bossPrefab);
 
-                // Mark as spawned
-                bossEvent.hasSpawned = true;
-                bossEvents[i] = bossEvent;
+                evt.hasSpawned = true;
+                bossEvents[i] = evt;
 
-                Debug.Log($"Spawned Boss: {bossEvent.bossName} at {elapsedTime}s");
+                Debug.Log($"Spawned Boss: {evt.bossName} at {elapsedTime}s");
             }
         }
     }
+
     private IEnumerator SpawnLoop()
     {
         while (true)
@@ -112,70 +165,64 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (player == null || enemyPrefabs.Length == 0) return;
+        if (player == null || enemyPrefabs == null || enemyPrefabs.Length == 0) return;
 
         Vector2 spawnPos = GetSpawnPosition();
+        if (spawnPos == Vector2.zero) return; // failed to find
 
-       
-        Enemy prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+        Enemy prefab = floodOverridePrefab != null
+            ? floodOverridePrefab
+            : enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
 
-       
-        Enemy newEnemy = Instantiate(prefab, spawnPos, Quaternion.identity);
+        Enemy newEnemy = EnemyPool.Instance.Get(prefab, (Vector3)spawnPos, Quaternion.identity);
 
-       
         if (Random.value < baseEliteChance)
         {
-            MakeElite(newEnemy);
+            // apply elite after spawn (since ResetState was called)
+            newEnemy.transform.localScale *= eliteSizeMultiplier;
+            newEnemy.MaxHealth *= 3;
+            newEnemy.Health = newEnemy.MaxHealth;
+            newEnemy.DamageHit *= 2;
+            newEnemy.xpDrop = 30;
+            newEnemy.SetCharacterColor(new Color(1f, 0.84f, 0f));
         }
     }
 
     private void SpawnBoss(GameObject bossPrefab)
     {
         Vector2 spawnPos = GetSpawnPosition();
+        if (spawnPos == Vector2.zero) return;
         Instantiate(bossPrefab, spawnPos, Quaternion.identity);
     }
 
-    private void MakeElite(Enemy enemy)
-    {
-        enemy.transform.localScale *= eliteSizeMultiplier;
-        enemy.MaxHealth *= 3;
-        enemy.Health = enemy.MaxHealth;
-        enemy.DamageHit *= 2;
-
-        enemy.xpDrop = 30;
-
-     
-        Color goldColor = new Color(1f, 0.84f, 0f);
-        enemy.SetCharacterColor(goldColor);
-    }
-
-    [SerializeField] private LayerMask groundLayer;
-
+    // find spawn point in ring around player, ensure ground exists below, avoid obstacles
     private Vector2 GetSpawnPosition()
     {
-        Vector2 finalPos = player.position;
-        int safety = 20;
-
-        while (safety-- > 0)
+        for (int i = 0; i < 20; i++)
         {
-           
-            Vector2 offset = Random.insideUnitCircle.normalized * spawnRadius;
-            Vector2 candidatePos = (Vector2)player.position + new Vector2(offset.x, 0);
+            float dist = Random.Range(minSpawnDistance, maxSpawnDistance);
+            float angle = Random.Range(0f, 360f);
+            Vector2 offset = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * dist;
 
-           
-            RaycastHit2D hit = Physics2D.Raycast(candidatePos + Vector2.up * 3f, Vector2.down, 10f, groundLayer);
+            Vector2 candidate = (Vector2)player.position + offset;
 
+            // check obstacles (small circle)
+            if (Physics2D.OverlapCircle(candidate, 0.4f, obstacleMask)) continue;
+
+            // raycast downwards to find ground
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(candidate.x, player.position.y + 10f), Vector2.down, 30f, groundLayer);
             if (hit.collider != null)
             {
-                finalPos = hit.point;
-
-                if (Vector2.Distance(finalPos, player.position) >= minDistanceFromPlayer)
-                    return finalPos;
+                return new Vector2(candidate.x, hit.point.y + spawnYOffset);
             }
         }
 
-       
-        return player.position + Vector3.right * (minDistanceFromPlayer + 1f);
+        // fallback: try a simple offset to right if nothing found
+        RaycastHit2D fallbackHit = Physics2D.Raycast(new Vector2(player.position.x + minSpawnDistance, player.position.y + 10f), Vector2.down, 30f, groundLayer);
+        if (fallbackHit.collider != null)
+            return new Vector2(player.position.x + minSpawnDistance, fallbackHit.point.y + spawnYOffset);
+
+        return Vector2.zero;
     }
 
     [System.Serializable]
@@ -187,4 +234,14 @@ public class EnemySpawner : MonoBehaviour
         [HideInInspector] public bool hasSpawned;
     }
 
+    [System.Serializable]
+    public struct FloodEvent
+    {
+        public string eventName;
+        public float startTime;
+        public float duration;
+        public float spawnInterval;
+        public int spawnAmount;
+        public Enemy specificEnemy;
+    }
 }

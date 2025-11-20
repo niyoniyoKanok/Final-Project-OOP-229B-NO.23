@@ -3,9 +3,9 @@ using UnityEngine;
 public class VampireBlade : Weapon
 {
     [Header("Settings")]
-    [SerializeField] private float stabSpeed = 5f; 
-    [SerializeField] private float maxDistance = 2f; 
-    [SerializeField] private float lifeTime = 0.5f;
+    [SerializeField] private float speed = 8f;
+    [SerializeField] private float lifeTime = 3f;
+    private int direction = 1;
 
     [Header("Bleed Effects")] 
     [SerializeField] private GameObject bleedVFX;
@@ -15,9 +15,20 @@ public class VampireBlade : Weapon
 
     void Start()
     {
-        startLocalPos = transform.localPosition;
+        direction = GetShootDirection();
+
+
+        if (direction < 0)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * -1;
+            transform.localScale = scale;
+        }
+
+        
         Destroy(gameObject, lifeTime);
     }
+
 
     private void FixedUpdate()
     {
@@ -26,11 +37,8 @@ public class VampireBlade : Weapon
 
     public override void Move()
     {
-        float distance = Vector3.Distance(startLocalPos, transform.localPosition);
-        if (distance < maxDistance)
-        {
-            transform.localPosition += Vector3.right * stabSpeed * Time.fixedDeltaTime;
-        }
+        
+        transform.Translate(Vector3.right * speed * direction * Time.deltaTime);
     }
 
     public override void OnHitWith(Character character)

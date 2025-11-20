@@ -14,6 +14,7 @@ public class Prince : Character, IShootable
     [Header("Dependencies")]
     public PlayerLevel playerLevel;
     public GameManager GameManager;
+    public Timer timer;
 
     [Header("--- Star Path ---")]
     public AudioClip starRepeatSound;
@@ -141,6 +142,8 @@ public class Prince : Character, IShootable
     private float effectiveAbility1Max;
     private float effectiveAbility2Max;
     private float effectiveAbility3Max;
+
+    public EnemySpawner enemySpawner;
 
     [Header("AttackPanel")]
     public Transform AttackPoint;
@@ -727,6 +730,16 @@ public class Prince : Character, IShootable
         }
     }
 
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        Enemy enemy = other.gameObject.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+         
+            OnHitWith(enemy);
+        }
+    }
+
     void Update()
     {
         Ability1Input();
@@ -951,13 +964,19 @@ public class Prince : Character, IShootable
 
     public override void TakeDamage(int damageAmount)
     {
-        if (isInvincible) return;
+        bool isOvertime = (timer != null && timer.IsOvertime);
+        bool isFlooding = (enemySpawner != null && enemySpawner.IsFlooding);
 
-        // call base to handle HP reduction, animator, healthbar, etc.
+     
+        bool noIframes = isOvertime || isFlooding;
+
+       
+        if (isInvincible && !noIframes) return;
+
         base.TakeDamage(damageAmount);
 
-        // start invincibility (single coroutine)
-        if (!isInvincible)
+        
+        if (!noIframes)
         {
             if (invincibilityCoroutine != null)
                 StopCoroutine(invincibilityCoroutine);
