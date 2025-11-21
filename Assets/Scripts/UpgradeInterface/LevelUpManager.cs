@@ -116,30 +116,29 @@ public class LevelUpManager : MonoBehaviour
     }
     public void SelectUpgrade(UpgradeData data, float rolledValue)
     {
-        // เล่นเสียง
+        
         if (audioSource != null && selectSound != null)
         {
             audioSource.PlayOneShot(selectSound);
         }
 
-        // อัปเกรดค่าให้ผู้เล่น
         if (player != null)
         {
             player.ApplyUpgrade(data, rolledValue);
         }
 
-        // 🛠️ ลดจำนวนคิวลง 1
+       
         levelsToProcess--;
 
-        // 3. เช็คว่ายังมีเลเวลค้างอยู่ไหม?
+   
         if (levelsToProcess > 0)
         {
-            // ถ้ายังมีค้าง -> สุ่มการ์ดชุดใหม่ทันที (หน้าต่างไม่ปิด)
+            
             GenerateCards();
         }
         else
         {
-            // ถ้าหมดคิวแล้ว -> ปิดหน้าต่าง + เดินเกมต่อ
+          
             levelUpPanel.SetActive(false);
             Time.timeScale = 1f;
         }
