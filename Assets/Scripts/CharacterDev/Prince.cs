@@ -964,25 +964,24 @@ public class Prince : Character, IShootable
 
     public override void TakeDamage(int damageAmount)
     {
-        bool isOvertime = (timer != null && timer.IsOvertime);
-        bool isFlooding = (enemySpawner != null && enemySpawner.IsFlooding);
-
      
-        bool noIframes = isOvertime || isFlooding;
+        if (isInvincible) return;
 
        
-        if (isInvincible && !noIframes) return;
-
         base.TakeDamage(damageAmount);
 
-        
-        if (!noIframes)
-        {
-            if (invincibilityCoroutine != null)
-                StopCoroutine(invincibilityCoroutine);
 
-            invincibilityCoroutine = StartCoroutine(InvincibilityRoutine());
-        }
+        bool isOvertime = (timer != null && timer.IsOvertime);
+        bool isFlooding = (enemySpawner != null && enemySpawner.IsFlooding);
+        bool isDangerMode = isOvertime || isFlooding;
+
+        
+        float currentIframeDuration = isDangerMode ? 0.5f : invincibilityDuration;
+
+        if (invincibilityCoroutine != null)
+            StopCoroutine(invincibilityCoroutine);
+
+        invincibilityCoroutine = StartCoroutine(InvincibilityRoutine(currentIframeDuration));
     }
 
 
@@ -991,19 +990,20 @@ public class Prince : Character, IShootable
 
     }
 
-    private IEnumerator InvincibilityRoutine()
+    private IEnumerator InvincibilityRoutine(float duration)
     {
         isInvincible = true;
+
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
 
         float timer = 0f;
         bool flashOn = true;
 
-        while (timer < invincibilityDuration)
+       
+        while (timer < duration)
         {
             if (spriteRenderer != null)
             {
-
                 spriteRenderer.color = flashOn ? Color.red : Color.white;
                 flashOn = !flashOn;
             }

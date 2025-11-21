@@ -89,7 +89,7 @@ public class CurseShout : MonoBehaviour
 
         enemy.TakeDamage(damage);
 
-
+        enemy.ApplyStun(stunDuration);
 
 
         Death status = enemy.GetComponent<Death>();

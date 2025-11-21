@@ -109,6 +109,7 @@ MonoBehaviour:
   healthBarVisibleTime: 3
   flashDuration: 0.1
   healthBar: {fileID: 0}
+  spriteFacesLeft: 0
   moveSpeed: 0
   xpDrop: 10
   hitSound: {fileID: 8300000, guid: 21b374ac652c5254886c2293f3dfb00b, type: 3}
@@ -148,7 +149,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.8
   m_AngularDamping: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: f865426dc1340c24d89b8587cc1c5583, type: 2}

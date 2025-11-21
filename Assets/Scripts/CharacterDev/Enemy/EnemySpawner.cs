@@ -168,7 +168,7 @@ public class EnemySpawner : MonoBehaviour
         if (player == null || enemyPrefabs == null || enemyPrefabs.Length == 0) return;
 
         Vector2 spawnPos = GetSpawnPosition();
-        if (spawnPos == Vector2.zero) return; // failed to find
+        if (spawnPos == Vector2.zero) return;
 
         Enemy prefab = floodOverridePrefab != null
             ? floodOverridePrefab
@@ -178,7 +178,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (Random.value < baseEliteChance)
         {
-            // apply elite after spawn (since ResetState was called)
+            
             newEnemy.transform.localScale *= eliteSizeMultiplier;
             newEnemy.MaxHealth *= 3;
             newEnemy.Health = newEnemy.MaxHealth;
@@ -195,35 +195,45 @@ public class EnemySpawner : MonoBehaviour
         Instantiate(bossPrefab, spawnPos, Quaternion.identity);
     }
 
-    // find spawn point in ring around player, ensure ground exists below, avoid obstacles
+
     private Vector2 GetSpawnPosition()
     {
-        for (int i = 0; i < 20; i++)
+        float safeZone = 4f;
+
+        for (int i = 0; i < 25; i++)
         {
             float dist = Random.Range(minSpawnDistance, maxSpawnDistance);
             float angle = Random.Range(0f, 360f);
-            Vector2 offset = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * dist;
+
+            Vector2 offset = new Vector2(
+                Mathf.Cos(angle * Mathf.Deg2Rad),
+                Mathf.Sin(angle * Mathf.Deg2Rad)
+            ) * dist;
 
             Vector2 candidate = (Vector2)player.position + offset;
 
-            // check obstacles (small circle)
-            if (Physics2D.OverlapCircle(candidate, 0.4f, obstacleMask)) continue;
+          
+            if (Vector2.Distance(candidate, player.position) < safeZone)
+                continue;
 
-            // raycast downwards to find ground
-            RaycastHit2D hit = Physics2D.Raycast(new Vector2(candidate.x, player.position.y + 10f), Vector2.down, 30f, groundLayer);
+           
+            if (Physics2D.OverlapCircle(candidate, 0.5f, obstacleMask))
+                continue;
+
+            Vector2 rayStart = new Vector2(candidate.x, candidate.y + 8f);
+            RaycastHit2D hit = Physics2D.Raycast(rayStart, Vector2.down, 20f, groundLayer);
+
             if (hit.collider != null)
             {
-                return new Vector2(candidate.x, hit.point.y + spawnYOffset);
+                float y = hit.point.y + spawnYOffset;
+                return new Vector2(candidate.x, y);
             }
         }
 
-        // fallback: try a simple offset to right if nothing found
-        RaycastHit2D fallbackHit = Physics2D.Raycast(new Vector2(player.position.x + minSpawnDistance, player.position.y + 10f), Vector2.down, 30f, groundLayer);
-        if (fallbackHit.collider != null)
-            return new Vector2(player.position.x + minSpawnDistance, fallbackHit.point.y + spawnYOffset);
-
-        return Vector2.zero;
+        // fallback
+        return new Vector2(player.position.x + minSpawnDistance, player.position.y + 1f);
     }
+
 
     [System.Serializable]
     public struct BossSpawnEvent

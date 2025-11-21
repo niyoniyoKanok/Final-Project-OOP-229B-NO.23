@@ -14,7 +14,6 @@ public abstract class Character : MonoBehaviour
 
     protected SpriteRenderer spriteRenderer;
 
-    // 1. ✅ เพิ่มตัวแปรเก็บสีเริ่มต้น
     protected Color defaultColor = Color.white;
 
     [Header("Hit FX")]

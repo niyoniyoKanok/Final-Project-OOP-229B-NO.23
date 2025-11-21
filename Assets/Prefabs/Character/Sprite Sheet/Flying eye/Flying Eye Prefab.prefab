@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -4013331375659482921}
   - component: {fileID: 5343602186939883699}
   - component: {fileID: 3683970716046374164}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Flying Eye Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,12 +109,14 @@ MonoBehaviour:
   healthBarVisibleTime: 3
   flashDuration: 0.1
   healthBar: {fileID: 0}
+  spriteFacesLeft: 0
   moveSpeed: 0
   xpDrop: 10
   hitSound: {fileID: 8300000, guid: 21b374ac652c5254886c2293f3dfb00b, type: 3}
   stunDuration: 0.5
   idealDistance: 6
   attackCooldown: 3
+  flyHeight: 2
   attackAnimDelay: 0.4
   projectilePrefab: {fileID: 6282259654324480118, guid: fa504f4cc3e62b54aa950af06ca43604, type: 3}
 --- !u!70 &-4013331375659482921

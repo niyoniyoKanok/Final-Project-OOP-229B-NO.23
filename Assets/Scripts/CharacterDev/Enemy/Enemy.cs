@@ -3,6 +3,10 @@ using UnityEngine;
 
 public abstract class Enemy : Character
 {
+    [Header("Sprite Settings")]
+   
+    [SerializeField] protected bool spriteFacesLeft = false;
+
     protected Transform playerTransform;
     public float moveSpeed = 2f;
 
@@ -162,16 +166,14 @@ public abstract class Enemy : Character
         if (animator != null)
         {
             animator.Rebind();
-            animator.Update(0f);
+   
         }
 
-        // runtime flags
         isStunned = false;
 
-        // reset xp/dmg defaults (child OnEnable may initialize different values)
         xpDrop = 10;
 
-        // ensure any child-specific flags are defaulted; e.g. flying default false
+
         canFly = false;
     }
 
@@ -197,7 +199,7 @@ public abstract class Enemy : Character
 
             if (!allowFly)
             {
-                // stick to current Y (we will correct Y using StickToGround in non-rb path)
+               
                 newPos.y = rb.position.y;
             }
 
@@ -222,10 +224,10 @@ public abstract class Enemy : Character
         }
     }
 
-    // Stick to ground using raycast — prevents sinking / floating
+   
     protected Vector3 StickToGround(Vector3 pos)
     {
-        // cast from slightly above the target pos downward to find ground
+       
         RaycastHit2D hit = Physics2D.Raycast(pos + Vector3.up * 0.5f, Vector2.down, 3f, LayerMask.GetMask("Ground"));
         if (hit.collider != null)
         {
@@ -279,7 +281,7 @@ public abstract class Enemy : Character
 
     protected virtual void OnEnable()
     {
-        // Keep OnEnable minimal: visual resets and flags only. Heavy resets done in ResetState() called by pool.
+      
         transform.localScale = originalScale;
         if (sr != null) sr.color = originalColor;
         isStunned = false;
@@ -294,13 +296,37 @@ public abstract class Enemy : Character
     {
         if (playerTransform == null) return;
 
-        if (playerTransform.position.x > transform.position.x)
+
+        bool playerIsOnRight = playerTransform.position.x > transform.position.x;
+
+      
+        float scaleX = Mathf.Abs(transform.localScale.x);
+
+      
+        if (playerIsOnRight)
         {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            
+            scaleX = spriteFacesLeft ? -scaleX : scaleX;
         }
         else
         {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+           
+            scaleX = spriteFacesLeft ? scaleX : -scaleX;
+        }
+
+    
+        transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
+    }
+
+    public void ApplyStun(float duration)
+    {
+       
+        if (!isStunned)
+        {
+            stunDuration = duration;
+            StartCoroutine(StunRoutine());
         }
     }
+
+  
 }
