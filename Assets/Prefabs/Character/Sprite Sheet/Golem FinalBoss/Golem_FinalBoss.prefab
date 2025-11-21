@@ -655,7 +655,7 @@ Transform:
   m_GameObject: {fileID: 6005110499226754965}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7, y: 0, z: 0}
+  m_LocalPosition: {x: -5.62381, y: -1.27514, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -801,19 +801,25 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   spriteFacesLeft: 0
   moveSpeed: 2
-  xpDrop: 10
+  xpDrop: 2000
   hitSound: {fileID: 8300000, guid: 3914f62cb86d1374dbc914560b54f5cb, type: 3}
   stunDuration: 0.5
-  projectilePrefab: {fileID: 5276173231956465576, guid: 5099da80a58258d42b97cb7baf37d80e, type: 3}
+  phase1Health: 1500
   attackRange: 12
   shootCooldown: 2
   stopDistance: 8
-  windUpTime: 0.4
-  intervalTime: 2
+  projectilePrefab: {fileID: 5276173231956465576, guid: 5099da80a58258d42b97cb7baf37d80e, type: 3}
+  projectileScale: 7
   projectileCount: 1
   spreadAngle: 15
   offsetFeet: -1.5
   offsetChest: 0
+  phase2Health: 2000
+  laserPrefab: {fileID: 7671430011002916419, guid: de78917928b2cac46abadded02a287d0, type: 3}
+  laserDuration: 3
+  bigLaserScale: 5
+  offsetHead: 1.5
+  laserLength: 30
 --- !u!95 &2652808983352578994
 Animator:
   serializedVersion: 7

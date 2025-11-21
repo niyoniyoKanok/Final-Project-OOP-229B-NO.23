@@ -692,6 +692,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165187715}
   m_CullTransparentMesh: 1
+--- !u!1001 &173326622
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1681092063466810210, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1681092063466810210, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.62381
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.27514
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903528619577283193, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005110499226754965, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
+      propertyPath: m_Name
+      value: Golem_FinalBoss
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
 --- !u!1 &186514583
 GameObject:
   m_ObjectHideFlags: 0
@@ -41989,7 +42054,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1220404056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46969,3 +47034,4 @@ SceneRoots:
   - {fileID: 996357085}
   - {fileID: 491797481}
   - {fileID: 1242058847}
+  - {fileID: 173326622}
