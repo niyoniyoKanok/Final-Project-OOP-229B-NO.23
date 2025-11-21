@@ -11,9 +11,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform player;
 
     [Header("Spawn Settings")]
-    [SerializeField] private float minSpawnDistance = 6f;   // ใกล้สุดจาก player
-    [SerializeField] private float maxSpawnDistance = 12f;  // ไกลสุดจาก player
-    [SerializeField] private float spawnYOffset = 0.1f;     // ยกเหนือพื้นเล็กน้อย
+    [SerializeField] private float minSpawnDistance = 6f;   
+    [SerializeField] private float maxSpawnDistance = 12f;  
+    [SerializeField] private float spawnYOffset = 0.1f;     
 
     [Header("Enemy Prefabs")]
     [SerializeField] private Enemy[] enemyPrefabs;
@@ -39,8 +39,7 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Ground Detection")]
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask obstacleMask; // for obstacle checks
-
+    [SerializeField] private LayerMask obstacleMask; 
     private float currentSpawnInterval;
     private int currentSpawnAmount;
 

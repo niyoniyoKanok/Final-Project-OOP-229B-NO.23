@@ -639,6 +639,9 @@ GameObject:
   - component: {fileID: 1985749876241891296}
   - component: {fileID: 8972336214008168260}
   - component: {fileID: 2652808983352578994}
+  - component: {fileID: -2178684220506431969}
+  - component: {fileID: -2161770264717167498}
+  - component: {fileID: 4300703249775613364}
   m_Layer: 7
   m_Name: Golem_FinalBoss
   m_TagString: Untagged
@@ -842,6 +845,57 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2178684220506431969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6005110499226754965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ab40db9fc3e744791af7220b7df37c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveFallingEnemy
+  fallLimitY: -4.75
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  resetHeightOffset: 0.5
+--- !u!114 &-2161770264717167498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6005110499226754965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ab40db9fc3e744791af7220b7df37c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveFallingEnemy
+  fallLimitY: -4.75
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  resetHeightOffset: 0.5
+--- !u!114 &4300703249775613364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6005110499226754965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ab40db9fc3e744791af7220b7df37c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveFallingEnemy
+  fallLimitY: -4.75
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  resetHeightOffset: 0.5
 --- !u!1 &6717316217045353716
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,753 @@
+fileFormatVersion: 2
+guid: bb5b0189e486b4e48881a77d8d84b7fa
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7486773729938535868
+    second: Sprite Sheet Prince (2)_0
+  - first:
+      213: -441477416118250804
+    second: Sprite Sheet Prince (2)_1
+  - first:
+      213: 7705498005628847223
+    second: Sprite Sheet Prince (2)_2
+  - first:
+      213: 5457509395068496233
+    second: Sprite Sheet Prince (2)_3
+  - first:
+      213: 1896395963583254634
+    second: Sprite Sheet Prince (2)_4
+  - first:
+      213: 8622162904253983812
+    second: Sprite Sheet Prince (2)_5
+  - first:
+      213: -4588645892416849902
+    second: Sprite Sheet Prince (2)_6
+  - first:
+      213: 3702008695596182802
+    second: Sprite Sheet Prince (2)_7
+  - first:
+      213: 3372181886757336343
+    second: Sprite Sheet Prince (2)_8
+  - first:
+      213: 9119745437599069224
+    second: Sprite Sheet Prince (2)_9
+  - first:
+      213: 4172006536030068869
+    second: Sprite Sheet Prince (2)_10
+  - first:
+      213: -5761861156761579948
+    second: Sprite Sheet Prince (2)_11
+  - first:
+      213: 1959089091791758970
+    second: Sprite Sheet Prince (2)_12
+  - first:
+      213: 4188086488529356973
+    second: Sprite Sheet Prince (2)_13
+  - first:
+      213: -238208224470888874
+    second: Sprite Sheet Prince (2)_14
+  - first:
+      213: 8475292357583793921
+    second: Sprite Sheet Prince (2)_15
+  - first:
+      213: 2422850768464974806
+    second: Sprite Sheet Prince (2)_16
+  - first:
+      213: 3012562128771644155
+    second: Sprite Sheet Prince (2)_17
+  - first:
+      213: 3725926483733898802
+    second: Sprite Sheet Prince (2)_18
+  - first:
+      213: 384706699738424577
+    second: Sprite Sheet Prince (2)_19
+  - first:
+      213: -2560441022956136403
+    second: Sprite Sheet Prince (2)_20
+  - first:
+      213: -1043426319286300558
+    second: Sprite Sheet Prince (2)_21
+  - first:
+      213: -188297971517476096
+    second: Sprite Sheet Prince (2)_22
+  - first:
+      213: -8052774493816836457
+    second: Sprite Sheet Prince (2)_23
+  - first:
+      213: -7282465216937581487
+    second: Sprite Sheet Prince (2)_24
+  - first:
+      213: 4791561768389017696
+    second: Sprite Sheet Prince (2)_25
+  - first:
+      213: 6106962115232771192
+    second: Sprite Sheet Prince (2)_26
+  - first:
+      213: 7925417629025912634
+    second: Sprite Sheet Prince (2)_27
+  - first:
+      213: -917920566844060814
+    second: Sprite Sheet Prince (2)_28
+  - first:
+      213: 4380381536835112942
+    second: Sprite Sheet Prince (2)_29
+  - first:
+      213: 1976943290585279772
+    second: Sprite Sheet Prince (2)_30
+  - first:
+      213: 8656943603840840683
+    second: Sprite Sheet Prince (2)_31
+  - first:
+      213: -5220510902433230765
+    second: Sprite Sheet Prince (2)_32
+  - first:
+      213: 3638043485756162965
+    second: Sprite Sheet Prince (2)_33
+  - first:
+      213: -2061051899154097204
+    second: Sprite Sheet Prince (2)_34
+  - first:
+      213: 7563372759248419236
+    second: Sprite Sheet Prince (2)_35
+  - first:
+      213: 5517715275410719292
+    second: Sprite Sheet Prince (2)_36
+  - first:
+      213: -1625448558989883458
+    second: Sprite Sheet Prince (2)_37
+  - first:
+      213: -3555083243900165595
+    second: Sprite Sheet Prince (2)_38
+  - first:
+      213: 5071804565268117419
+    second: Sprite Sheet Prince (2)_39
+  - first:
+      213: -730235383452342412
+    second: Sprite Sheet Prince (2)_40
+  - first:
+      213: -8933888019003570603
+    second: Sprite Sheet Prince (2)_41
+  - first:
+      213: 4211177485111632663
+    second: Sprite Sheet Prince (2)_42
+  - first:
+      213: 2905733790035908435
+    second: Sprite Sheet Prince (2)_43
+  - first:
+      213: 4133442737753292188
+    second: Sprite Sheet Prince (2)_44
+  - first:
+      213: -4604841331956590187
+    second: Sprite Sheet Prince (2)_45
+  - first:
+      213: -8191476970468280420
+    second: Sprite Sheet Prince (2)_46
+  - first:
+      213: -1477064016060575426
+    second: Sprite Sheet Prince (2)_47
+  - first:
+      213: -777231892853319677
+    second: Sprite Sheet Prince (2)_48
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 36
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_2
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 11860
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7740df25c9d6fea60800000000000000
+      internalID: 7705498005628847223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_6
+      rect:
+        serializedVersion: 2
+        x: 4313
+        y: 10389
+        width: 488
+        height: 762
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 218307e5fdad150c0800000000000000
+      internalID: -4588645892416849902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_8
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 8743
+        width: 1029
+        height: 680
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7157d263f856cce20800000000000000
+      internalID: 3372181886757336343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_9
+      rect:
+        serializedVersion: 2
+        x: 2649
+        y: 8677
+        width: 652
+        height: 707
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 824f4123828df8e70800000000000000
+      internalID: 9119745437599069224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_10
+      rect:
+        serializedVersion: 2
+        x: 3650
+        y: 8677
+        width: 810
+        height: 707
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5802eac17d1f5e930800000000000000
+      internalID: 4172006536030068869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_11
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 6802
+        width: 527
+        height: 561
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45eca1a3ec1c900b0800000000000000
+      internalID: -5761861156761579948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_12
+      rect:
+        serializedVersion: 2
+        x: 776
+        y: 6802
+        width: 810
+        height: 586
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7627973625103b10800000000000000
+      internalID: 1959089091791758970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_13
+      rect:
+        serializedVersion: 2
+        x: 1535
+        y: 6802
+        width: 408
+        height: 598
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da8c76dc8721f1a30800000000000000
+      internalID: 4188086488529356973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_14
+      rect:
+        serializedVersion: 2
+        x: 2772
+        y: 6483
+        width: 483
+        height: 926
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65e06d5c1e6b1bcf0800000000000000
+      internalID: -238208224470888874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_15
+      rect:
+        serializedVersion: 2
+        x: 4081
+        y: 6483
+        width: 487
+        height: 974
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10f6d55ce794e9570800000000000000
+      internalID: 8475292357583793921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_16
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 4308
+        width: 475
+        height: 679
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d31326efe1bf9120800000000000000
+      internalID: 2422850768464974806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_17
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 4369
+        width: 488
+        height: 684
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfa7a3d7b45cec920800000000000000
+      internalID: 3012562128771644155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_18
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 4374
+        width: 490
+        height: 679
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 236ed2a656625b330800000000000000
+      internalID: 3725926483733898802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_20
+      rect:
+        serializedVersion: 2
+        x: 3454
+        y: 4731
+        width: 674
+        height: 714
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d289c56947c777cd0800000000000000
+      internalID: -2560441022956136403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_21
+      rect:
+        serializedVersion: 2
+        x: 4202
+        y: 4697
+        width: 604
+        height: 680
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27095a97a410581f0800000000000000
+      internalID: -1043426319286300558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_32
+      rect:
+        serializedVersion: 2
+        x: 616
+        y: 4433
+        width: 11
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 350d9626ef40d87b0800000000000000
+      internalID: -5220510902433230765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_43
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2776
+        width: 598
+        height: 651
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35790fe9c7d335820800000000000000
+      internalID: 2905733790035908435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_44
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 2779
+        width: 612
+        height: 645
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9df3332540fc5930800000000000000
+      internalID: 4133442737753292188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_45
+      rect:
+        serializedVersion: 2
+        x: 1241
+        y: 2775
+        width: 612
+        height: 652
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 599d0b1c4315810c0800000000000000
+      internalID: -4604841331956590187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sprite Sheet Prince (2)_46
+      rect:
+        serializedVersion: 2
+        x: 1241
+        y: 2919
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c97f17d7817025e80800000000000000
+      internalID: -8191476970468280420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: ec5ed2462d21a6b48b1d0a272b5f3e28
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Sprite Sheet Prince (2)_0: 7486773729938535868
+      Sprite Sheet Prince (2)_1: -441477416118250804
+      Sprite Sheet Prince (2)_10: 4172006536030068869
+      Sprite Sheet Prince (2)_11: -5761861156761579948
+      Sprite Sheet Prince (2)_12: 1959089091791758970
+      Sprite Sheet Prince (2)_13: 4188086488529356973
+      Sprite Sheet Prince (2)_14: -238208224470888874
+      Sprite Sheet Prince (2)_15: 8475292357583793921
+      Sprite Sheet Prince (2)_16: 2422850768464974806
+      Sprite Sheet Prince (2)_17: 3012562128771644155
+      Sprite Sheet Prince (2)_18: 3725926483733898802
+      Sprite Sheet Prince (2)_19: 384706699738424577
+      Sprite Sheet Prince (2)_2: 7705498005628847223
+      Sprite Sheet Prince (2)_20: -2560441022956136403
+      Sprite Sheet Prince (2)_21: -1043426319286300558
+      Sprite Sheet Prince (2)_22: -188297971517476096
+      Sprite Sheet Prince (2)_23: -8052774493816836457
+      Sprite Sheet Prince (2)_24: -7282465216937581487
+      Sprite Sheet Prince (2)_25: 4791561768389017696
+      Sprite Sheet Prince (2)_26: 6106962115232771192
+      Sprite Sheet Prince (2)_27: 7925417629025912634
+      Sprite Sheet Prince (2)_28: -917920566844060814
+      Sprite Sheet Prince (2)_29: 4380381536835112942
+      Sprite Sheet Prince (2)_3: 5457509395068496233
+      Sprite Sheet Prince (2)_30: 1976943290585279772
+      Sprite Sheet Prince (2)_31: 8656943603840840683
+      Sprite Sheet Prince (2)_32: -5220510902433230765
+      Sprite Sheet Prince (2)_33: 3638043485756162965
+      Sprite Sheet Prince (2)_34: -2061051899154097204
+      Sprite Sheet Prince (2)_35: 7563372759248419236
+      Sprite Sheet Prince (2)_36: 5517715275410719292
+      Sprite Sheet Prince (2)_37: -1625448558989883458
+      Sprite Sheet Prince (2)_38: -3555083243900165595
+      Sprite Sheet Prince (2)_39: 5071804565268117419
+      Sprite Sheet Prince (2)_4: 1896395963583254634
+      Sprite Sheet Prince (2)_40: -730235383452342412
+      Sprite Sheet Prince (2)_41: -8933888019003570603
+      Sprite Sheet Prince (2)_42: 4211177485111632663
+      Sprite Sheet Prince (2)_43: 2905733790035908435
+      Sprite Sheet Prince (2)_44: 4133442737753292188
+      Sprite Sheet Prince (2)_45: -4604841331956590187
+      Sprite Sheet Prince (2)_46: -8191476970468280420
+      Sprite Sheet Prince (2)_47: -1477064016060575426
+      Sprite Sheet Prince (2)_48: -777231892853319677
+      Sprite Sheet Prince (2)_5: 8622162904253983812
+      Sprite Sheet Prince (2)_6: -4588645892416849902
+      Sprite Sheet Prince (2)_7: 3702008695596182802
+      Sprite Sheet Prince (2)_8: 3372181886757336343
+      Sprite Sheet Prince (2)_9: 9119745437599069224
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
