@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 21392369907006214}
   - component: {fileID: 8154625368299817712}
   - component: {fileID: 2435311653626631679}
+  - component: {fileID: 6743213669707742975}
   m_Layer: 7
   m_Name: Skeleton_Prefab
   m_TagString: Untagged
@@ -109,6 +110,7 @@ MonoBehaviour:
   healthBarVisibleTime: 3
   flashDuration: 0.1
   healthBar: {fileID: 0}
+  spriteFacesLeft: 0
   moveSpeed: 0
   xpDrop: 10
   hitSound: {fileID: 8300000, guid: 21b374ac652c5254886c2293f3dfb00b, type: 3}
@@ -199,3 +201,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6743213669707742975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474165373923272439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ab40db9fc3e744791af7220b7df37c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveFallingEnemy
+  fallLimitY: -4.75
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  resetHeightOffset: 0.5

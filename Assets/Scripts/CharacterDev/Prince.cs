@@ -703,7 +703,6 @@ public class Prince : Character, IShootable
     public void OnHitWith(Enemy enemy)
     {
         if (enemy == null) return;
-        Debug.Log("Prince hit by Enemy. Enemy's DamageHit is: " + enemy.DamageHit);
         TakeDamage(enemy.DamageHit);
     }
 

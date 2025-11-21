@@ -5,8 +5,13 @@ public class PlayerController : MonoBehaviour
 {
     public Animator animator;
     public Rigidbody2D rb;
+    [Header("Jump Settings")]
+    public float jumpHeight = 15f;       
+    public float doubleJumpHeight = 10f; 
+    public int maxJumps = 2;
+    private int remainingJumps;
+    private float currentJumpForce;
 
-    private float jumpHeight = 15f;
     private Prince prince;
     private Character princeCharacter;
 
@@ -43,10 +48,8 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController Instance;
 
-    // --- ส่วนที่เพิ่มใหม่ ---
-    public bool IsAttacking = false; // ตัวแปรเช็คสถานะการตี
-    private float attackAnimLength = 0.40f; // ความยาวอนิเมชั่น (วินาที)
-    // --------------------
+    public bool IsAttacking = false;
+    private float attackAnimLength = 0.40f;
 
     void Start()
     {
@@ -61,6 +64,8 @@ public class PlayerController : MonoBehaviour
         princeCharacter = GetComponent<Character>();
 
         if (Instance == null) Instance = this;
+
+        remainingJumps = maxJumps;
     }
 
     void Update()
@@ -75,24 +80,36 @@ public class PlayerController : MonoBehaviour
         movement = Input.GetAxis("Horizontal");
         animator.SetFloat("Run", Mathf.Abs(movement));
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsGround)
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            jumpPressed = true;
-            audioSource.PlayOneShot(JumpSound);
+            if (IsGround || remainingJumps > 0)
+            {
+                jumpPressed = true;
+                audioSource.PlayOneShot(JumpSound);
+
+                if (IsGround)
+                {
+                    currentJumpForce = jumpHeight;        
+                }
+                else
+                {
+                    currentJumpForce = jumpHeight * 0.5f;      
+                    remainingJumps--;
+                }
+            }
         }
+
 
         if (Input.GetKeyDown(KeyCode.F))
         {
             animator.SetTrigger("Execution");
         }
 
-        // --- แก้ไข Logic การโจมตีตรงนี้ ---
-        // เช็คว่า ถ้า "ไม่" ได้กำลังโจมตีอยู่ (!IsAttacking) ถึงจะให้ทำงาน
         if (Input.GetMouseButtonDown(0) && !IsAttacking)
         {
             StartCoroutine(AttackRoutine());
         }
-        // -------------------------------
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
@@ -100,30 +117,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // --- Coroutine สำหรับจัดการจังหวะการโจมตี ---
     IEnumerator AttackRoutine()
     {
-        // 1. ล็อคทันที ห้ามกดซ้ำ
         IsAttacking = true;
-
-        // 2. คำนวณความเร็ว (Speed)
         float speedMultiplier = 1f + (prince.BonusAttackSpeed / 100f);
         animator.SetFloat("AttackSpeed", speedMultiplier);
-
-        // 3. สั่งเล่น Animation
         animator.SetTrigger("Attack");
-
-        // 4. คำนวณเวลารอจริง (0.4 หารด้วยความเร็ว)
-        // เช่น ถ้าตีเร็วขึ้น 2 เท่า ก็จะรอแค่ 0.2 วิ
         float waitTime = attackAnimLength / speedMultiplier;
-
-        // 5. รอจนกว่าเวลาจะครบ (ช่วงนี้กดคลิกซ้ายไปก็จะไม่เกิดอะไรขึ้นเพราะติด IsAttacking = true)
         yield return new WaitForSeconds(waitTime);
-
-        // 6. ปลดล็อค ให้กดใหม่ได้
         IsAttacking = false;
     }
-    // ----------------------------------------
 
     private void FixedUpdate()
     {
@@ -135,10 +138,21 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+
         bool isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
         if (isTouchingGround)
         {
             IsGround = true;
+
+            if (Mathf.Abs(rb.linearVelocity.y) < 0.1f)
+            {
+                remainingJumps = maxJumps;
+            }
+        }
+        else
+        {
+            IsGround = false;
         }
 
         rb.linearVelocity = new Vector2(movement * moveSpeed, rb.linearVelocity.y);
@@ -182,12 +196,18 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        rb.AddForce(new Vector2(0f, jumpHeight), ForceMode2D.Impulse);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+        rb.AddForce(new Vector2(0f, currentJumpForce), ForceMode2D.Impulse);
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground") IsGround = true;
+        if (collision.gameObject.tag == "Ground")
+        {
+            IsGround = true;
+
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -215,6 +235,6 @@ public class PlayerController : MonoBehaviour
     public void PlayerExecuteFX()
     {
         if (attackFXPrefab_2 != null && attackFXSpawnPoint_2 != null)
-            Instantiate(attackFXPrefab_2, attackFXSpawnPoint_2.position, attackFXSpawnPoint_2.rotation);
+            Instantiate(attackFXPrefab_2, attackFXSpawnPoint_2);
     }
 }
