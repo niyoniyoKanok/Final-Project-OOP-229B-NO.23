@@ -45,17 +45,28 @@ public class VampireBlade : Weapon
     {
         if (character is Enemy enemy)
         {
-            BleedEffect existingBleed = enemy.GetComponent<BleedEffect>();
+        
+            int finalDamage = this.damage;
 
+          
+            if (Shooter is Prince prince)
+            {
+                finalDamage = prince.CalculateVampireDamage(enemy, this.damage);
+            }
+           
+
+
+            enemy.TakeDamage(finalDamage);
+
+          
+            BleedEffect existingBleed = enemy.GetComponent<BleedEffect>();
             if (existingBleed == null)
             {
                 BleedEffect bleed = enemy.gameObject.AddComponent<BleedEffect>();
-           
                 bleed.Initialize(enemy, this.damage, bleedVFX, bleedSound);
             }
             else
             {
-             
                 existingBleed.Initialize(enemy, this.damage, bleedVFX, bleedSound);
             }
         }

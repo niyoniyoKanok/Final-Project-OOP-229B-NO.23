@@ -42,7 +42,6 @@ public class VampireScratch : MonoBehaviour
     private void DealDamageAndHeal()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
-
         bool didHitEnemy = false;
 
         foreach (Collider2D hit in hits)
@@ -50,25 +49,30 @@ public class VampireScratch : MonoBehaviour
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy != null && !enemy.IsDead())
             {
+               
+                int finalDamage = damage;
+
+                if (shooter != null)
+                {
+                    finalDamage = shooter.CalculateVampireDamage(enemy, damage);
+                }
               
-                enemy.TakeDamage(damage);
+
+                enemy.TakeDamage(finalDamage); 
                 didHitEnemy = true;
 
-              
-                if (bleedVFX != null)
-                {
-                   
-                    Instantiate(bleedVFX, enemy.transform.position, Quaternion.identity);
-                }
-
-                if (scratchSound != null)
-                {
-                
-                    AudioSource.PlayClipAtPoint(scratchSound, enemy.transform.position);
-                }
-               
+                if (bleedVFX != null) Instantiate(bleedVFX, enemy.transform.position, Quaternion.identity);
+                if (scratchSound != null) AudioSource.PlayClipAtPoint(scratchSound, enemy.transform.position);
             }
         }
+
+        if (didHitEnemy && shooter != null)
+        {
+            shooter.Ability3Heal(healAmount);
+        }
+
+    
+        
 
         if (didHitEnemy && shooter != null)
         {

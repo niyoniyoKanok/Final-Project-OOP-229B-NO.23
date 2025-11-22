@@ -26,6 +26,9 @@ public class Prince : Character, IShootable
     public float darkStarChance = 0.4f;
     private GameObject activeDarkStar;
 
+    [Header("--- Star Path Spammer Upgrades ---")]
+    public GameObject starFragmentPrefab;
+
     [Header("Skill 1: Star Impact")]
     public GameObject starImpactPrefab;
     public float starImpactInterval = 3f;
@@ -57,6 +60,16 @@ public class Prince : Character, IShootable
     public Transform shoutPoint;
 
     [Header("--- Vampire Path ---")]
+
+    [Header("Passive 1: Normal Attack Bleed")]
+    public GameObject normalAttackBleedVFX;
+    public AudioClip normalAttackBleedSound;
+
+    public GameObject vampireShieldPrefab; 
+    [Range(0f, 1f)] public float vampireShieldChance = 0.2f;
+    public float vampireShieldDuration = 5f;
+    public float vampireShieldRadius = 3f;
+    private GameObject activeVampireShield; 
 
     [Header("Skill 1: Bat")]
     public GameObject batPrefab;
@@ -307,6 +320,21 @@ public class Prince : Character, IShootable
 
 
                 enemy.TakeDamage(dmg);
+
+                if (starFragmentPrefab != null)
+                {
+                    for (int i = 0; i < 2; i++) 
+                    {
+                        GameObject frag = Instantiate(starFragmentPrefab, enemy.transform.position, Quaternion.identity);
+                        StarProjectile fragScript = frag.GetComponent<StarProjectile>();
+                        if (fragScript != null)
+                        {
+                            
+                            Vector2 randomDir = Random.insideUnitCircle.normalized;
+                            fragScript.Init(Mathf.CeilToInt(dmg * 0.5f), randomDir);
+                        }
+                    }
+                }
             }
         }
 
@@ -341,38 +369,51 @@ public class Prince : Character, IShootable
 
     private void CastStarFalling()
     {
-
-
-
         if (starFallingPrefab == null) return;
 
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 10f);
+        // 1. หาศัตรูรอบๆ (เพิ่มระยะค้นหาหน่อยจาก 10 เป็น 12-15)
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 12f);
         System.Collections.Generic.List<Transform> targets = new System.Collections.Generic.List<Transform>();
 
         foreach (var hit in hits)
         {
+            // เช็คว่าเป็น Enemy และยังไม่ตาย
             if (hit.GetComponent<Enemy>() && !hit.GetComponent<Enemy>().IsDead())
                 targets.Add(hit.transform);
         }
 
+      
+        int spamCount = 8;
 
-        int count = 0;
-        while (count < 3 && targets.Count > 0)
+        for (int i = 0; i < spamCount; i++)
         {
-            int randIndex = Random.Range(0, targets.Count);
-            Transform target = targets[randIndex];
-            targets.RemoveAt(randIndex);
+            Vector3 targetPos;
 
+         
+            if (targets.Count > 0)
+            {
+                Transform t = targets[Random.Range(0, targets.Count)];
+                targetPos = t.position;
+            }
+            else
+            {
+                
+                targetPos = transform.position;
+            }
 
-            Vector3 spawnPos = target.position + new Vector3(0, starFallingHeight, 0);
+            
+            float randomOffset = Random.Range(-2f, 2f);
+            Vector3 spawnPos = targetPos + new Vector3(randomOffset, starFallingHeight, 0);
+
             GameObject star = Instantiate(starFallingPrefab, spawnPos, Quaternion.identity);
 
-
+            
             int dmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) * 0.25f);
-            star.GetComponent<StarFalling>().Init(dmg);
 
-            count++;
+            if (star.GetComponent<StarFalling>())
+            {
+                star.GetComponent<StarFalling>().Init(dmg);
+            }
         }
     }
 
@@ -408,8 +449,6 @@ public class Prince : Character, IShootable
 
         if (target != null)
         {
-
-
 
             Vector3 spawnPos = target.transform.position + new Vector3(0, 7f, 0);
 
@@ -572,6 +611,37 @@ public class Prince : Character, IShootable
     }
 
     // ----------Vampire Path--------------
+
+
+   
+    private void TryTriggerVampireShield()
+    {
+        if (currentPathType != PathType.Vampire || activeVampireShield != null) return;
+
+        if (Random.value <= vampireShieldChance)
+        {
+            if (vampireShieldPrefab != null)
+            {
+                activeVampireShield = Instantiate(vampireShieldPrefab, transform.position, Quaternion.identity);
+
+                
+                activeVampireShield.transform.SetParent(this.transform);
+
+              
+                activeVampireShield.transform.localPosition = Vector3.zero;
+
+                VampireShield shieldScript = activeVampireShield.GetComponent<VampireShield>();
+                if (shieldScript != null)
+                {
+                    int shieldDmg = Mathf.RoundToInt((SwordWaveDamage + BonusSwordWaveDamage) / 3f);
+                    if (shieldDmg < 1) shieldDmg = 1;
+
+                    shieldScript.Init(this, shieldDmg, vampireShieldDuration, vampireShieldRadius);
+                }
+                Debug.Log("Vampire Shield Activated!");
+            }
+        }
+    }
     private IEnumerator VampireScratchSpawnerRoutine()
     {
         while (true)
@@ -632,6 +702,7 @@ public class Prince : Character, IShootable
 
                 scratchScript.Init(scratchDamage, scratchHeal, this);
             }
+            TryTriggerVampireShield();
         }
     }
 
@@ -667,6 +738,8 @@ public class Prince : Character, IShootable
 
             bladeScript.InitWeapon(bladeDamage, this);
         }
+
+        TryTriggerVampireShield();
     }
     private IEnumerator BatSpawnerRoutine()
     {
@@ -699,6 +772,8 @@ public class Prince : Character, IShootable
 
             batScript.InitWeapon(batDamage, this);
         }
+
+        TryTriggerVampireShield();
     }
     public void OnHitWith(Enemy enemy)
     {
@@ -878,11 +953,28 @@ public class Prince : Character, IShootable
     {
         if (healAmount <= 0 || IsDead()) return;
 
-        Health += healAmount;
-        ShowHealthBarThenHide();
+        if (Health >= MaxHealth)
+        {
+            if (currentPathType == PathType.Vampire)
+            {
+                int shieldLimit = Mathf.RoundToInt(MaxHealth * 0.7f);
+             
+                CurrentShield += healAmount;
 
-        if (FloatingTextManager.Instance != null)
-            FloatingTextManager.Instance.ShowHeal(healAmount, transform.position);
+                if (CurrentShield > shieldLimit)
+                    CurrentShield = shieldLimit;
+
+                Debug.Log($"Overheal converted to Shield: {CurrentShield} / {shieldLimit}");
+            }
+        }
+        else
+        {
+            Health += healAmount;
+            if (Health > MaxHealth) Health = MaxHealth;
+
+            if (FloatingTextManager.Instance != null)
+                FloatingTextManager.Instance.ShowHeal(healAmount, transform.position);
+        }
     }
 
 
@@ -951,6 +1043,25 @@ public class Prince : Character, IShootable
             {
                 int totalDamage = BaseAttackDamage + BonusAttackDamage;
                 enemy.TakeDamage(totalDamage);
+
+             
+                if (currentPathType == PathType.Vampire)
+                {
+                    BleedEffect existingBleed = enemy.GetComponent<BleedEffect>();
+                   
+                    if (existingBleed == null)
+                    {
+                        BleedEffect bleed = enemy.gameObject.AddComponent<BleedEffect>();
+                      
+                        bleed.Initialize(enemy, totalDamage, normalAttackBleedVFX, normalAttackBleedSound);
+                    }
+                    else
+                    {
+         
+                        existingBleed.Initialize(enemy, totalDamage, normalAttackBleedVFX, normalAttackBleedSound);
+                    }
+                }
+              
             }
         }
     }
@@ -963,14 +1074,36 @@ public class Prince : Character, IShootable
 
     public override void TakeDamage(int damageAmount)
     {
-     
         if (isInvincible) return;
 
-       
-        base.TakeDamage(damageAmount);
+        int remainingDamage = damageAmount;
+
+        // ใช้ CurrentShield แทน currentBloodShield
+        if (CurrentShield > 0)
+        {
+            if (CurrentShield >= remainingDamage)
+            {
+                CurrentShield -= remainingDamage;
+                remainingDamage = 0;
+            }
+            else
+            {
+                remainingDamage -= CurrentShield;
+                CurrentShield = 0;
+            }
+            Debug.Log("Blood Shield Absorbed Damage!");
+        }
 
 
-        bool isOvertime = (timer != null && timer.IsOvertime);
+        if (remainingDamage > 0)
+        {
+            base.TakeDamage(remainingDamage);
+            
+        }
+    
+
+
+    bool isOvertime = (timer != null && timer.IsOvertime);
         bool isFlooding = (enemySpawner != null && enemySpawner.IsFlooding);
         bool isDangerMode = isOvertime || isFlooding;
 
@@ -1018,6 +1151,26 @@ public class Prince : Character, IShootable
         invincibilityCoroutine = null;
     }
 
+    public int CalculateVampireDamage(Enemy enemy, int baseDamage)
+    {
+       
+        if (currentPathType != PathType.Vampire) return baseDamage;
+
+        
+        BleedEffect bleed = enemy.GetComponent<BleedEffect>();
+
+        if (bleed != null)
+        {
+          
+            float bonus = baseDamage * 1.5f;
+
+          
+
+            return Mathf.RoundToInt(bonus);
+        }
+
+        return baseDamage;
+    }
     public void ApplyUpgrade(UpgradeData data, float value)
     {
         switch (data.type)
@@ -1066,6 +1219,7 @@ public class Prince : Character, IShootable
                 break;
         }
     }
+
 
     private float GetReducedCooldown(float baseCooldown)
     {

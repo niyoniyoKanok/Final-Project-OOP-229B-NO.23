@@ -48,26 +48,29 @@ public class Bat : Weapon
         }
     }
 
-   
+
     public override void OnHitWith(Character character)
     {
-     
-        if (character is Enemy)
+        if (character is Enemy enemy)
         {
-            character.TakeDamage(this.damage);
+            int finalDamage = this.damage;
 
-           
-         
             if (Shooter is Prince prince)
             {
-                prince.Ability3Heal(this.damage);
+                finalDamage = prince.CalculateVampireDamage(enemy, this.damage);
+
+     
+                prince.Ability3Heal(finalDamage);
             }
+       
+
+            enemy.TakeDamage(finalDamage);
 
             Destroy(this.gameObject);
         }
     }
 
-    
+
     private void FindClosestEnemy()
     {
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, searchRadius);

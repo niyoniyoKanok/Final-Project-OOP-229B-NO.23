@@ -4,13 +4,12 @@ using System.Collections;
 public abstract class Character : MonoBehaviour
 {
     private int health;
+    private int currentShield;
     public int BaseMaxHealth { get; set; }
     public int MaxHealth { get; set; }
 
     protected Animator animator;
     protected Rigidbody2D rb;
-    [SerializeField] private float healthBarVisibleTime = 3f;
-    private Coroutine hideHealthBarCoroutine;
 
     protected SpriteRenderer spriteRenderer;
 
@@ -27,10 +26,29 @@ public abstract class Character : MonoBehaviour
         set
         {
             health = Mathf.Clamp(value, 0, MaxHealth);
-            if (healthBar != null)
-            {
-                healthBar.UpdateBar(health, MaxHealth);
-            }
+            UpdateHealthBar();
+        }
+    }
+
+    public int CurrentShield
+    {
+        get { return currentShield; }
+        set
+        {
+            bool hadShield = currentShield > 0;
+            currentShield = Mathf.Max(value, 0);
+
+           
+            UpdateHealthBar();
+        }
+    }
+
+    protected void UpdateHealthBar()
+    {
+        if (healthBar != null)
+        {
+
+            healthBar.UpdateBar(health, MaxHealth, currentShield);
         }
     }
 
@@ -39,10 +57,12 @@ public abstract class Character : MonoBehaviour
         BaseMaxHealth = starterHealth;
         MaxHealth = starterHealth;
         Health = starterHealth;
+        currentShield = 0;
 
         if (healthBar != null)
         {
-            healthBar.gameObject.SetActive(false);
+            healthBar.UpdateBar(health, MaxHealth, currentShield);
+            healthBar.gameObject.SetActive(true);
         }
 
         animator = GetComponent<Animator>();
@@ -73,19 +93,40 @@ public abstract class Character : MonoBehaviour
         MaxHealth += amount;
         Health = Mathf.Min(Health, MaxHealth);
 
-        ShowHealthBarThenHide();
+       
     }
 
     public virtual void TakeDamage(int damageAmount)
     {
         if (health <= 0) return;
 
-        Health -= damageAmount;
+        int remainingDamage = damageAmount;
+
+        if (CurrentShield > 0)
+        {
+            if (CurrentShield >= remainingDamage)
+            {
+                CurrentShield -= remainingDamage;
+                remainingDamage = 0;
+            }
+            else
+            {
+                remainingDamage -= CurrentShield;
+                CurrentShield = 0;
+            }
+        }
+
+        if (remainingDamage > 0)
+        {
+            Health -= remainingDamage;
+        }
 
         if (health <= 0)
         {
             Die();
         }
+
+     
         else
         {
             if (animator != null)
@@ -93,7 +134,7 @@ public abstract class Character : MonoBehaviour
                 animator.SetTrigger("TakeHit"); 
             }
 
-            ShowHealthBarThenHide();
+         
             TriggerHitVisuals();
         }
     }
@@ -122,27 +163,6 @@ public abstract class Character : MonoBehaviour
             spriteRenderer.color = defaultColor;
     }
 
-    protected void ShowHealthBarThenHide()
-    {
-        if (healthBar == null) return;
-
-        if (hideHealthBarCoroutine != null)
-        {
-            StopCoroutine(hideHealthBarCoroutine);
-            hideHealthBarCoroutine = null;
-        }
-
-        healthBar.gameObject.SetActive(true);
-        hideHealthBarCoroutine = StartCoroutine(HideHealthBarRoutine());
-    }
-
-    protected IEnumerator HideHealthBarRoutine()
-    {
-        yield return new WaitForSeconds(healthBarVisibleTime);
-        if (healthBar != null)
-            healthBar.gameObject.SetActive(false);
-        hideHealthBarCoroutine = null;
-    }
 
     protected abstract void Die();
 
