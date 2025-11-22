@@ -11,7 +11,7 @@ public class Skeleton : Enemy
     {
         base.OnEnable();
 
-        base.Initialized(70);
+        base.Initialized(startingHealth);
         DamageHit = 15;
         moveSpeed = 1.5f;
         canFly = false;

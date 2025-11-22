@@ -74327,8 +74327,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -105.54879, y: 269.79834}
-  m_SizeDelta: {x: 204.7345, y: 34.7446}
+  m_AnchoredPosition: {x: -76.9, y: 269.79834}
+  m_SizeDelta: {x: 289.95422, y: 34.7446}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &625633414
 MonoBehaviour:
@@ -75472,7 +75472,7 @@ GameObject:
   - component: {fileID: 920880797}
   - component: {fileID: 920880796}
   m_Layer: 5
-  m_Name: Game Over Panel
+  m_Name: GameWin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78005,34 +78005,32 @@ MonoBehaviour:
     spawnTime: 300
     hasSpawned: 0
   - bossName: Mini Boss 2
-    bossPrefab: {fileID: 1188189564373258724, guid: fea82d68a59aadf41b6c306c640c4497, type: 3}
+    bossPrefab: {fileID: 1188189564373258724, guid: ea9dc8fd15e5765488bb64240de09f8a, type: 3}
     spawnTime: 600
     hasSpawned: 0
   - bossName: Final Boss
     bossPrefab: {fileID: 6005110499226754965, guid: a54edc0627e75694f962184578d0a1fd, type: 3}
-    spawnTime: 780
+    spawnTime: 810
     hasSpawned: 0
   floodEvents:
   - eventName: Flood Event #1
     startTime: 180
     duration: 30
-    spawnInterval: 0.2
-    spawnAmount: 5
+    spawnInterval: 0.5
+    spawnAmount: 3
     specificEnemy: {fileID: 6332214096487222738, guid: 87ee05074cb2dcd459a478eba29dedb0, type: 3}
   - eventName: Flood Event #2
     startTime: 480
     duration: 30
-    spawnInterval: 0.1
-    spawnAmount: 4
+    spawnInterval: 0.3
+    spawnAmount: 3
     specificEnemy: {fileID: 422926953550875068, guid: 32727455af9e882408c8b3096a420c5a, type: 3}
   - eventName: Flood Event #3
     startTime: 780
     duration: 30
-    spawnInterval: 0.1
+    spawnInterval: 0.15
     spawnAmount: 2
     specificEnemy: {fileID: -1281457933448282314, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
-  overtimeSpawnIncreaseRate: 0.5
-  minOvertimeSpawnInterval: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -81122,6 +81120,63 @@ MonoBehaviour:
   iconImage: {fileID: 1008444830}
   nameText: {fileID: 1913020082}
   descText: {fileID: 402308695}
+--- !u!1001 &1637419884
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 79.57412
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.0006602
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 176450955774512624, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474165373923272439, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
+      propertyPath: m_Name
+      value: Skeleton_Prefab
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d2d227297273bf24eabd52b04a764aa1, type: 3}
 --- !u!1 &1642486326
 GameObject:
   m_ObjectHideFlags: 0
@@ -82228,7 +82283,7 @@ GameObject:
   - component: {fileID: 1859793223}
   - component: {fileID: 1859793222}
   m_Layer: 5
-  m_Name: GameOverTitle
+  m_Name: GamewinTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84394,6 +84449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba617bbd93d98f4b840ec608cc005a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Prince
+  startingHealth: 100
   flashDuration: 0.1
   healthBar: {fileID: 1878320526696037457}
   playerLevel: {fileID: 629041011}
@@ -84423,7 +84479,7 @@ MonoBehaviour:
   normalAttackBleedVFX: {fileID: 2180600948740694189, guid: 49bb9e6df8e20a148acf798689f03698, type: 3}
   normalAttackBleedSound: {fileID: 8300000, guid: 3b799620f9350944bbe07986d91bedc0, type: 3}
   vampireShieldPrefab: {fileID: 5546498278170446976, guid: 70cb98781597cf149b7a29d032e9c433, type: 3}
-  vampireShieldChance: 1
+  vampireShieldChance: 0.05
   vampireShieldDuration: 5
   vampireShieldRadius: 3
   batPrefab: {fileID: 7533745090165456474, guid: 0718281c4dad0f845942f5e445e5d8f3, type: 3}
@@ -84671,3 +84727,4 @@ SceneRoots:
   - {fileID: 491797481}
   - {fileID: 1242058847}
   - {fileID: 86216439}
+  - {fileID: 1637419884}

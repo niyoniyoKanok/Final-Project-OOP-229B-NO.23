@@ -1078,7 +1078,6 @@ public class Prince : Character, IShootable
 
         int remainingDamage = damageAmount;
 
-        // ใช้ CurrentShield แทน currentBloodShield
         if (CurrentShield > 0)
         {
             if (CurrentShield >= remainingDamage)

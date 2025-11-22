@@ -10,7 +10,7 @@ public class Goblin : Enemy
     protected override void OnEnable()
     {
         base.OnEnable();
-        base.Initialized(40); 
+        base.Initialized(startingHealth); 
         moveSpeed = 3f;
         DamageHit = 10;
         canFly = false;

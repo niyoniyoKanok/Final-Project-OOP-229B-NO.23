@@ -11,7 +11,7 @@ public class Mushroom : Enemy
     {
         base.OnEnable();
 
-        base.Initialized(50);
+        base.Initialized(startingHealth);
         DamageHit = 10;
         moveSpeed = 3f;
         canFly = false;

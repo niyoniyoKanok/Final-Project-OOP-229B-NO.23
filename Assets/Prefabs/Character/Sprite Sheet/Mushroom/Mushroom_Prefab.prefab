@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7934178eccc340541a0254ce6006cce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mushroom
-  healthBarVisibleTime: 3
+  startingHealth: 40
   flashDuration: 0.1
   healthBar: {fileID: 0}
   spriteFacesLeft: 0

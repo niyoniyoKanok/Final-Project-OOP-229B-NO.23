@@ -25,14 +25,14 @@ public class FlyingEye : Enemy
     {
         base.ResetState();
 
-        // Flying unit specifics
+
         canFly = true;
 
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         if (rb != null)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
-            rb.gravityScale = 0f; // no gravity for flyers
+            rb.gravityScale = 0f; 
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
@@ -45,7 +45,7 @@ public class FlyingEye : Enemy
     {
         base.OnEnable();
 
-        base.Initialized(30);
+        base.Initialized(startingHealth);
         moveSpeed = 2.5f;
 
         // do not change gravity here (ResetState already set it)

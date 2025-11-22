@@ -30,7 +30,7 @@ public class MiniBoss : Enemy
 
         DamageHit = 30;
         moveSpeed = 2.0f; 
-        base.Initialized(750);
+        base.Initialized(startingHealth);
         xpDrop = 500;
         transform.localScale = Vector3.one * 2f;
     }

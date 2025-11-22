@@ -797,12 +797,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f053e9119439734db90049f65fd46e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FinalBoss
-  healthBarVisibleTime: 3
+  startingHealth: 100
   flashDuration: 0.1
   healthBar: {fileID: 0}
   spriteFacesLeft: 0
   moveSpeed: 2
-  xpDrop: 2000
+  xpDrop: 15000
   hitSound: {fileID: 8300000, guid: 3914f62cb86d1374dbc914560b54f5cb, type: 3}
   stunDuration: 0.5
   phase1Health: 1500

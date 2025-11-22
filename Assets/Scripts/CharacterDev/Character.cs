@@ -3,6 +3,9 @@ using System.Collections;
 
 public abstract class Character : MonoBehaviour
 {
+
+    [Header("Stats Settings")]
+    [SerializeField] protected int startingHealth = 100;
     private int health;
     private int currentShield;
     public int BaseMaxHealth { get; set; }
@@ -54,6 +57,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Initialized(int starterHealth)
     {
+        int finalMaxHealth = (starterHealth > 0) ? starterHealth : startingHealth;
         BaseMaxHealth = starterHealth;
         MaxHealth = starterHealth;
         Health = starterHealth;

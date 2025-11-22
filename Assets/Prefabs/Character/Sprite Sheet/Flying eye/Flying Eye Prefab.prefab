@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a9a629f3a6cbc94da29527c8a9f9f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyingEye
-  healthBarVisibleTime: 3
+  startingHealth: 30
   flashDuration: 0.1
   healthBar: {fileID: 0}
   spriteFacesLeft: 0

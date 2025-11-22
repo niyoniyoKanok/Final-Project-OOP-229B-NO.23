@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 6964958138799494082}
   - component: {fileID: 6265898554800716384}
   m_Layer: 7
-  m_Name: Prefab_Miniboss
+  m_Name: Prefab_Stronger_Miniboss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -204,12 +204,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a360df1de6da82343866025ad3cd7bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiniBoss
-  startingHealth: 750
+  startingHealth: 1500
   flashDuration: 0.1
   healthBar: {fileID: 0}
   spriteFacesLeft: 1
   moveSpeed: 2
-  xpDrop: 300
+  xpDrop: 2000
   hitSound: {fileID: 8300000, guid: 3914f62cb86d1374dbc914560b54f5cb, type: 3}
   stunDuration: 0.5
 --- !u!70 &6964958138799494082

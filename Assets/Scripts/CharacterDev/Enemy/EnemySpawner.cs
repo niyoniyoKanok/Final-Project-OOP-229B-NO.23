@@ -33,10 +33,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private List<FloodEvent> floodEvents;
     private Enemy floodOverridePrefab;
 
-    [Header("Overtime Scaling")]
-    [SerializeField] private float overtimeSpawnIncreaseRate = 0.5f;
-    [SerializeField] private float minOvertimeSpawnInterval = 0.1f;
-
     [Header("Ground Detection")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask obstacleMask; 
@@ -63,10 +59,12 @@ public class EnemySpawner : MonoBehaviour
 
         StartCoroutine(SpawnLoop());
     }
-
     void Update()
     {
         if (timer == null) return;
+
+       
+        if (timer.GetRemainingTime() <= 0) return;
 
         elapsedTime = timer.GetTotalElapsedTime();
 
@@ -100,22 +98,15 @@ public class EnemySpawner : MonoBehaviour
 
         floodOverridePrefab = null;
 
-        if (!timer.IsOvertime)
-        {
-            float t = 1f - (timer.GetRemainingTime() / timer.MaxTime);
-            float curve = difficulty.difficultyByTime.Evaluate(t);
+        float t = 1f - (timer.GetRemainingTime() / timer.MaxTime);
+        t = Mathf.Clamp01(t);
 
-            currentSpawnInterval = Mathf.Lerp(difficulty.baseSpawnInterval, difficulty.minSpawnInterval, curve);
-            currentSpawnAmount = Mathf.RoundToInt(Mathf.Lerp(difficulty.baseSpawnAmount, difficulty.maxSpawnAmount, curve));
-        }
-        else
-        {
-            float extraDifficulty = timer.OvertimeDuration * overtimeSpawnIncreaseRate;
+        float curve = difficulty.difficultyByTime.Evaluate(t);
 
-            currentSpawnAmount = difficulty.maxSpawnAmount + Mathf.FloorToInt(extraDifficulty);
-            currentSpawnInterval = Mathf.Max(minOvertimeSpawnInterval, difficulty.minSpawnInterval - (timer.OvertimeDuration * 0.001f));
-        }
+        currentSpawnInterval = Mathf.Lerp(difficulty.baseSpawnInterval, difficulty.minSpawnInterval, curve);
+        currentSpawnAmount = Mathf.RoundToInt(Mathf.Lerp(difficulty.baseSpawnAmount, difficulty.maxSpawnAmount, curve));
     }
+    
 
     private bool CheckFloodStatus()
     {

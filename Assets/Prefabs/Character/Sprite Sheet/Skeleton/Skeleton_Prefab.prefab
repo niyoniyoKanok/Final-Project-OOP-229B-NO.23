@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ece80c5c5dfa54d97f9d7937ff16b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skeleton
-  healthBarVisibleTime: 3
+  startingHealth: 70
   flashDuration: 0.1
   healthBar: {fileID: 0}
   spriteFacesLeft: 0
